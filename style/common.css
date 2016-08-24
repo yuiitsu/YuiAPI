@@ -1,0 +1,11 @@
+*{padding:0;margin:0;}
+html,body{font-size:14px;height:100%;}
+
+.fl{float:left;}
+.fr{float:right;}
+
+.container{height:100%;}
+.main{width:80%;height:100%;}
+.form{width:100%;height:50px;}
+
+.sidebar{width:20%;height:100%;}

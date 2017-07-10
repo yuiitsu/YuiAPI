@@ -1,11 +1,38 @@
-*{padding:0;margin:0;}
-html,body{font-size:14px;height:100%;}
+*{padding:0;margin:0;box-sizing: border-box;}
+html,body{font-size:14px;height:100%;font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;}
+a{text-decoration: none;color:#444;}
 
 .fl{float:left;}
 .fr{float:right;}
+.display-inline{display:inline-block;}
+.vertical-middle{vertical-align: middle;}
+.vertical-top{vertical-align: top;}
+.hide{display: none;}
+.input-text{width:100%;height:100%;padding:0 10px;}
+button{width:100%;height:100%;}
 
 .container{height:100%;}
-.main{width:80%;height:100%;}
+.main{width:100%;height:100%;padding-left:50%;padding-right:20px;}
 .form{width:100%;height:50px;}
 
-.sidebar{width:20%;height:100%;}
+.sidebar{width:50%;height:100%;background-color:#ccc;position: fixed;left:0;top:0;bottom:0;}
+.form-line{height:40px;}
+.tab-line{height:40px;}
+.request-type-box{height:100%;width:100px;border:1px solid #999;position: relative;text-align: center;
+    line-height:2.5;cursor:pointer;}
+.request-type-in{height:100%;width:100%;}
+.request-type{}
+.request-type-box i{}
+.request-type-list{position: absolute;top:40px;left:-1px;width:100px;border:1px solid #999;background-color:#fff;}
+.request-type-list a{display: block;height:30px;line-height:30px;text-align: center;}
+.url-box{height:100%;line-height:40px;width:500px;}
+.request-button{height:100%;width:100px;}
+
+.result-box{width:100%;height:500px;border:1px solid #ccc;border-radius: 3px;margin-top:30px;padding:10px;
+    font-family:Consolas;overflow-y: auto;}
+
+.code-string{color:#000066;}
+.code-number{color:#000033;}
+.code-boolean{color:#000033;}
+.code-null{color:magenta;}
+.code-key{color:#A52A2A;}

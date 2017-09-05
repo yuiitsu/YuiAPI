@@ -10,31 +10,99 @@
 </head>
 <body>
 <div class="container">
-    <div class="sidebar"></div>
-    <div class="main">
-        <div class="tab-line"></div>
-        <div class="form">
-            <div class="form-line">
-                <div class="request-type-box display-inline vertical-middle">
-                    <div class="request-type-in">
-                        <div class="request-type display-inline">GET</div>
-                        <i class="mdi mdi-chevron-down"></i>
-                    </div>
-                    <div class="request-type-list hide">
-                        <a href="javascript:;" data-key="GET">GET</a>
-                        <a href="javascript:;" data-key="POST">POST</a>
-                    </div>
-                </div>
-                <div class="url-box display-inline vertical-middle">
-                    <input type="text" id="url" class="input-text" />
-                </div>
-                <div class="display-inline request-button vertical-middle">
-                    <button id="send">发送</button>
+    <div class="content-left">
+        <div class="left-top-line">
+            <div class="tabs">
+                <ul>
+                    <li class="focus" data-id="output-content">Output</li>
+                    <li data-id="history-content">History</li>
+                    <li>API</li>
+                </ul>
+            </div>
+        </div>
+        <div class="left-content" id="output-content">
+            <div class="tabs-bottom">
+                <ul>
+                    <li>body</li>
+                    <li>headers</li>
+                    <li>cookies</li>
+                </ul>
+                <div class="display-inline send-time">
+                    <label>更新时间：</label>
+                    <span id="send-time"></span>
                 </div>
             </div>
             <pre id="result" class="result-box">
                 <div>点击“发送”按钮获取响应</div>
             </pre>
+        </div>
+        <div class="left-content hide" id="history-content">
+            <table class="history-table">
+            </table>
+        </div>
+    </div>
+    <div class="content-right">
+        <div class="content-box">
+            <div class="tab-line">
+                <select id="host-select"></select>
+                <div class="api-name-line display-inline">
+                    <input type="text" placeholder="API名称" id="api-name" />
+                </div>
+            </div>
+            <div class="form">
+                <div class="form-line">
+                    <div class="request-type-box display-inline vertical-middle">
+                        <div class="request-type-in">
+                            <div class="request-type display-inline">GET</div>
+                            <i class="mdi mdi-chevron-down"></i>
+                        </div>
+                        <div class="request-type-list hide">
+                            <a href="javascript:;" data-key="GET">GET</a>
+                            <a href="javascript:;" data-key="POST">POST</a>
+                        </div>
+                    </div>
+                    <div class="url-box vertical-middle">
+                        <input type="text" id="url" class="input-text" />
+                    </div>
+                    <div class="display-inline request-button vertical-middle">
+                        <button id="send">发送</button>
+                    </div>
+                </div>
+                <div class="form-params-type">
+                    <ul>
+                        <li>headers</li>
+                        <li>body</li>
+                    </ul>
+                </div>
+                <div class="form-data">
+                    <table class="">
+                        <thead>
+                            <tr>
+                                <td colspan="3">
+                                    <!--
+                                    <label><input type="radio" name="form-data-type" /> form-data</label>
+                                    -->
+                                    <label><input type="radio" name="form-data-type" checked="checked" /> x-www-form-urlencoded</label>
+                                    <label><input type="radio" name="form-data-type" /> raw</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Key</td>
+                                <td>Value</td>
+                            </tr>
+                        </thead>
+                        <tbody id="form-data">
+                            <tr>
+                                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                                <td><input type="text" class="form-key form-data-item" /> </td>
+                                <td><input type="text" class="form-value form-data-item" /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

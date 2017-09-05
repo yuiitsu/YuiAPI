@@ -224,15 +224,15 @@ var App = {
                 for (var i in data) {
                     var _htmlItem = '<tr>' +
                                 '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                                '<td><input type="text" class="form-key form-data-item" value="'+ i +'" /> </td>' +
-                                '<td><input type="text" class="form-value form-data-item" value="'+ data[i] +'" /> </td>' +
+                                '<td><input type="text" class="form-key form-data-item input-text" value="'+ i +'" /> </td>' +
+                                '<td><input type="text" class="form-value form-data-item input-text" value="'+ data[i] +'" /> </td>' +
                             '</tr>';
                     _html.push(_htmlItem);
                 }
                 _html.push('<tr>' +
                             '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                            '<td><input type="text" class="form-key form-data-item" value="" /> </td>' +
-                            '<td><input type="text" class="form-value form-data-item" value="" /> </td>' +
+                            '<td><input type="text" class="form-key form-data-item input-text" value="" /> </td>' +
+                            '<td><input type="text" class="form-value form-data-item input-text" value="" /> </td>' +
                         '</tr>');
                 if (_html.length > 0) {
                     $('#form-data').html(_html.join(""));
@@ -258,7 +258,9 @@ var App = {
             if (url) {
                 if (url.substr(0, 7) !== 'http://' && url.substr(0, 8) !== 'https://') {
                     url = 'http://' + url;
+                    $('#url').val(url);
                 }
+                $('.tabs li').eq(0).click();
                 // 获取参数
                 var formData = self.getFormParams(self.requestType);
                 $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> 发送中...');

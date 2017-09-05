@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "UnRestClient",
+    "name": "UnAPIClient",
     "version": "0.0.1",
     "background": {
         "scripts": [
@@ -8,7 +8,7 @@
         ]
     },
     "browser_action": {
-        "default_title": "RestClient"
+        "default_title": "UnAPIClient"
     },
     "permissions": [
         "tabs",

@@ -22,6 +22,11 @@ button{width:100%;height:100%;}
 .tabs ul{}
 .tabs ul li{float:left;padding:0 20px;cursor:pointer;}
 .tabs ul li.focus{background-color:#fff;}
+
+.login-action{height:40px;line-height:40px;}
+.login-action span{color:#999;}
+.login-action a{font-weight:bold;}
+
 .left-content{background-color:#fff;padding:10px;-webkit-box-flex: 1;display: -webkit-box;-webkit-box-orient: vertical;}
 .tabs-bottom{height:40px;line-height:40px;}
 .tabs-bottom ul{}
@@ -43,6 +48,8 @@ button{width:100%;height:100%;}
 .tab-line{height:40px;}
 .host-tab{}
 .host-tab li{float:left;margin-right:10px;}
+#host-select{padding: 5px 10px;}
+.api-name-line input{padding:5px 10px;}
 
 .form-line{height:40px;display: -webkit-box;}
 .request-type-box{height:100%;width:100px;border:1px solid #999;position: relative;text-align: center;
@@ -61,6 +68,7 @@ button{width:100%;height:100%;}
 .form-data{width:100%}
 .form-data table{width:100%}
 .form-data table td{border-bottom:1px solid #efefef;padding:10px 5px;}
+.form-data .input-text{padding:5px 10px;}
 
 .code-string{color:#000066;}
 .code-number{color:#000033;}

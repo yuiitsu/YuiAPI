@@ -212,7 +212,7 @@ var App = {
                 var result = historyData[key]['result'];
                 var apiName = historyData[key]['name'];
                 var time = historyData[key]['time'];
-                $('.request-type').html(requestType);
+                $('#request-type').html(requestType);
                 self.requestType = requestType;
                 $('#url').val(url);
                 $('#result').html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)));

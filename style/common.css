@@ -16,7 +16,7 @@ button{width:100%;height:100%;}
 .form{width:100%;height:50px;}
 
 .content-left{width:50%;height:100%;background-color:#ccc;position: fixed;left:0;top:0;bottom:0;padding:10px;
-    display: -webkit-box;-webkit-box-orient: vertical;}
+    display: -webkit-flex;-webkit-flex-direction: column;}
 .left-top-line{height:40px;}
 .tabs{height:40px;line-height:40px;border-bottom:1px solid #efefef;}
 .tabs ul{}
@@ -27,13 +27,13 @@ button{width:100%;height:100%;}
 .login-action span{color:#999;}
 .login-action a{font-weight:bold;}
 
-.left-content{background-color:#fff;padding:10px;-webkit-box-flex: 1;display: -webkit-box;-webkit-box-orient: vertical;}
+.left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column}
 .tabs-bottom{height:40px;line-height:40px;}
 .tabs-bottom ul{}
 .tabs-bottom ul li{float:left;padding:0 20px;}
 .send-time{float:right;}
 .result-box{width:100%;border:1px solid #ccc;border-radius: 3px;margin-top:10px;padding:10px;
-    font-family:Consolas;overflow-y: auto;-webkit-box-flex: 1;}
+    font-family:Consolas;overflow-y: auto;-webkit-flex: 1;}
 
 .history-table{width:100%;}
 .history-table tr{cursor:pointer;}
@@ -51,7 +51,7 @@ button{width:100%;height:100%;}
 #host-select{padding: 5px 10px;}
 .api-name-line input{padding:5px 10px;}
 
-.form-line{height:40px;display: -webkit-box;}
+.form-line{height:40px;display: -webkit-flex;}
 .request-type-box{height:100%;width:100px;border:1px solid #999;position: relative;text-align: center;
     line-height:2.5;cursor:pointer;}
 .request-type-in{height:100%;width:100%;}
@@ -59,7 +59,7 @@ button{width:100%;height:100%;}
 .request-type-box i{}
 .request-type-list{position: absolute;top:40px;left:-1px;width:100px;border:1px solid #999;background-color:#fff;}
 .request-type-list a{display: block;height:30px;line-height:30px;text-align: center;}
-.url-box{height:100%;line-height:40px;-webkit-box-flex: 1;}
+.url-box{height:100%;line-height:40px;-webkit-flex: 1;margin:0 1px;}
 .request-button{height:100%;width:100px;}
 
 .form-params-type{width:100%;height:40px;line-height:40px;}

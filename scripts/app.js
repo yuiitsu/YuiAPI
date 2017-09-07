@@ -47,7 +47,7 @@ var App = {
             $('#' + id).removeClass('hide');
         });
         //
-        $('#form-data').on('keyup', '.form-data-item', function() {
+        $('#form-data').on('input', '.form-data-item', function() {
             var parent = $(this).parent().parent();
             if (parent.index() + 1 === $('#form-data > tr').length) {
                 // 创建新的一行

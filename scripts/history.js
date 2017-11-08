@@ -80,8 +80,8 @@ var History = {
                 var key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
                     var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
-                        '<td><i class="mdi mdi-close history-del"></i></td>' +
-                        '<td class="align-center request-type request-type-' + historyData[key]['type'] + '">' +
+                        '<td class="w-30"><i class="mdi mdi-close history-del"></i></td>' +
+                        '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
                         historyData[key]['type'] +
                         '</td>' +
                         '<td>' + historyData[key]['name'] + '</td>' +

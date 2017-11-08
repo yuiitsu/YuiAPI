@@ -79,13 +79,13 @@ var History = {
             for (var i = len - 1; i >=0; i--) {
                 var key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
-                    var _htmlItem = '<tr data-key="' + key + '">' +
-                        '<td class="request-type request-type-' + historyData[key]['type'] + '">' +
+                    var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
+                        '<td><i class="mdi mdi-close history-del"></i></td>' +
+                        '<td class="align-center request-type request-type-' + historyData[key]['type'] + '">' +
                         historyData[key]['type'] +
                         '</td>' +
                         '<td>' + historyData[key]['name'] + '</td>' +
                         '<td>' + historyData[key]['url'] + '</td>' +
-                        '<td><i class="mdi mdi-delete history-del"></i></td>' +
                         '</tr>';
                     _html.push(_htmlItem);
                 } else {
@@ -93,7 +93,7 @@ var History = {
                 }
             }
         }
-        $('#history-content > table').html(_html.join(""));
+        $('#history-content').find('tbody').html(_html.join(""));
         //
         if (hostData) {
             _html = [];

@@ -1,5 +1,5 @@
 /**
- * UnRestClient
+ * YuiApi
  * @Author: onlyfu
  * @Date: 2017-07-07
  */
@@ -47,9 +47,10 @@ var App = {
             $('#' + id).removeClass('hide');
         });
         //
-        $('#form-data').on('input', '.form-data-item', function() {
+        var form_data_obj = $('#form-data');
+        form_data_obj.on('input', '.form-data-item', function() {
             var parent = $(this).parent().parent();
-            if (parent.index() + 1 === $('#form-data > tr').length) {
+            if (parent.index() + 1 === form_data_obj.find('tr').length) {
                 // 创建新的一行
                 var _htmlItem = '<tr>' +
                             '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
@@ -68,9 +69,7 @@ var App = {
                 }
             }
             e.stopPropagation();
-        });
-        // history记录项点击事件
-        $('.history-table').on('click', 'tr', function() {
+        }).on('click', 'tr', function() {
             var key = $(this).attr('data-key');
             // 从缓存中获取数据
             var historyData = History.getData();
@@ -81,7 +80,7 @@ var App = {
                 var result = historyData[key]['result'];
                 var apiName = historyData[key]['name'];
                 var time = historyData[key]['time'];
-                $('#request-type').html(requestType);
+                $('#request-type').val(requestType);
                 self.requestType = requestType;
                 $('#url').val(url);
                 $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
@@ -91,12 +90,20 @@ var App = {
                 // 显示参数
                 var _html = [];
                 for (var i in data) {
-                    var _htmlItem = '<tr>' +
-                                '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                                '<td><input type="text" class="form-key form-data-item input-text" value="'+ i +'" /> </td>' +
-                                '<td><input type="text" class="form-value form-data-item input-text" value="'+ data[i] +'" /> </td>' +
+                    if (data.hasOwnProperty(i)) {
+                        var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
+                        var value = data[i].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
+                        var _htmlItem = '<tr>' +
+                            '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
+                            '<td>' +
+                            '<input type="text" class="form-key form-data-item input-text" value="' + item_key + '" />' +
+                            '</td>' +
+                            '<td>' +
+                            '<input type="text" class="form-value form-data-item input-text" value="' + value + '" />' +
+                            '</td>' +
                             '</tr>';
-                    _html.push(_htmlItem);
+                        _html.push(_htmlItem);
+                    }
                 }
                 _html.push('<tr>' +
                             '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
@@ -122,20 +129,23 @@ var App = {
         // 提交
         $('#send').click(function() {
             var $this = $(this);
-            var url = $.trim($('#url').val());
-            var type = $('#request-type').val();
+            var url_obj = $('#url');
+            var url = $.trim(url_obj.val());
+            //var type = $('#request-type').val();
             var apiName = $.trim($('#api-name').val());
             if (url) {
                 if (url.substr(0, 7) !== 'http://' && url.substr(0, 8) !== 'https://') {
                     url = 'http://' + url;
-                    $('#url').val(url);
+                    url_obj.val(url);
                 }
                 $('.tabs li').eq(0).click();
                 // 获取参数
-                var formData = self.getFormParams(self.requestType);
+                var formData = self.getFormParams();
                 $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> 发送中...');
+                var result_obj = $('#result');
+                result_obj.css('background-color', '#efefef');
                 Common.request(url, {'type': self.requestType}, formData, function(res) {
-                    $('#result').html(Common.syntaxHighlight(JSON.stringify(res, undefined, 4)));
+                    result_obj.html(Common.syntaxHighlight(JSON.stringify(res, undefined, 4))).css('background-color', '#fff');
                     $this.attr('disabled', false).html('发送');
                     // 记录历史
                     var date = new Date();
@@ -153,16 +163,22 @@ var App = {
     },
     listenRequestType: function() {
         var $this = this;
-        $('.request-type-in').click(function() {
-            $('.request-type-list').show();
+        $('#request-type').on('change', function() {
+            var key = $(this).val();
+            if (key) {
+                $this.requestType = key;
+            }
         });
-        $('.request-type-list > a').click(function(e) {
-            var key = $(this).attr('data-key');
-            $this.requestType = key;
-            $('#request-type').text(key);
-            $('.request-type-list').hide();
-            e.preventDefault();
-        });
+        //$('.request-type-in').click(function() {
+        //    $('.request-type-list').show();
+        //});
+        //$('.request-type-list > a').click(function(e) {
+        //    var key = $(this).attr('data-key');
+        //    $this.requestType = key;
+        //    $('#request-type').text(key);
+        //    $('.request-type-list').hide();
+        //    e.preventDefault();
+        //});
     },
     listenUrlSelect: function() {
         $('#url').focus(function() {

@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>UnAPIClient</title>
+    <title>YuiAPI</title>
     <link href="style/materialdesignicons.min.css" rel="stylesheet" />
     <link href="style/common.css" rel="stylesheet" />
     <script src="scripts/jquery-1.11.0.min.js" type="text/javascript"></script>
@@ -22,44 +22,55 @@
                 </ul>
             </div>
             <div class="login-action fr">
-                <span>登录享受更丰富的功能</span>
-                <a href="javascript:;">登录</a> 或
-                <a href="javascript:;">注册</a>
+                <a href="javascript:;">Sign in</a> or
+                <a href="javascript:;">Sign up</a>
             </div>
         </div>
         <div class="left-content" id="output-content">
             <div class="tabs-bottom">
                 <ul>
-                    <li>body</li>
+                    <li class="focus">body</li>
                     <li>headers</li>
                     <li>cookies</li>
                 </ul>
                 <i class="mdi mdi-plus-circle fr"></i>
                 <div class="display-inline send-time">
-                    <label>更新时间：</label>
+                    <label>update:</label>
                     <span id="send-time"></span>
                 </div>
             </div>
             <pre id="result" class="result-box">
-                <div>点击“发送”按钮获取响应</div>
+                <div>click the send button for a response</div>
             </pre>
         </div>
         <div class="left-content hide" id="history-content">
-            <table class="history-table">
+            <table class="history-table" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
     </div>
     <div class="content-right">
         <div class="content-box">
             <div class="tab-line">
+                <!--
                 <select id="host-select"></select>
+                -->
                 <div class="api-name-line display-inline">
-                    <input type="text" placeholder="API名称" id="api-name" />
+                    <input type="text" class="input-text" placeholder="Api name" id="api-name" />
                 </div>
             </div>
             <div class="form">
                 <div class="form-line">
                     <div class="request-type-box display-inline vertical-middle">
+                        <!--
                         <div class="request-type-in">
                             <div class="request-type display-inline" id="request-type">GET</div>
                             <i class="mdi mdi-chevron-down"></i>
@@ -68,22 +79,28 @@
                             <a href="javascript:;" data-key="GET">GET</a>
                             <a href="javascript:;" data-key="POST">POST</a>
                         </div>
+                        -->
+                        <select id="request-type">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                        </select>
                     </div>
                     <div class="url-box vertical-middle">
-                        <input type="text" id="url" class="input-text" />
+                        <input type="text" id="url" class="input-text" placeholder="Api url" />
+                        <i class="mdi mdi-format-list-bulleted" title="host history"></i>
                     </div>
                     <div class="display-inline request-button vertical-middle">
-                        <button id="send">发送</button>
+                        <button id="send" class="btn btn-primary">Send</button>
                     </div>
                 </div>
                 <div class="form-params-type">
                     <ul>
                         <li>headers</li>
-                        <li>body</li>
+                        <li class="focus">body</li>
                     </ul>
                 </div>
                 <div class="form-data">
-                    <table class="">
+                    <table class="" cellspacing="0">
                         <thead>
                             <tr>
                                 <td colspan="3">

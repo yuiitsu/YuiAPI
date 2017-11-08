@@ -51,7 +51,7 @@ var Common = {
             url: strUrl,
             type: objParams.type ? objParams.type : "GET",
             data: objData,
-            async: objParams.async != 'false',
+            async: objParams.async !== 'false',
             dataType: "json"
         });
         objJgbAjaxHandler.fail(function(d){

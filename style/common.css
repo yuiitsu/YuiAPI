@@ -1,74 +1,99 @@
 *{padding:0;margin:0;box-sizing: border-box;}
-html,body{font-size:14px;height:100%;font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;}
+html,body{font-size:14px;height:100%;font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,
+Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;}
 a{text-decoration: none;color:#444;}
 ul{list-style: none;}
 
+.align-center{text-align:center;}
 .fl{float:left;}
 .fr{float:right;}
 .display-inline{display:inline-block;}
 .vertical-middle{vertical-align: middle;}
 .vertical-top{vertical-align: top;}
-.input-text{width:100%;height:100%;padding:0 10px;}
+.input-text{width:100%;height:100%;padding:0 10px;border:1px solid #d5d5d5;color:#444;border-radius: 3px;}
 button{width:100%;height:100%;}
 
-.container{height:100%;}
-.content-right{width:100%;height:100%;padding-left:50%;padding-right:20px;}
-.form{width:100%;height:50px;}
+/* radius */
+.radius-small-all{border-radius: 3px;}
+.radius-small-top-left{border-top-left-radius: 3px;}
+.radius-small-top-right{border-top-left-radius: 3px;}
+.radius-small-bottom-left{border-top-left-radius: 3px;}
+.radius-small-bottom-right{border-top-left-radius: 3px;}
 
-.content-left{width:50%;height:100%;background-color:#ccc;position: fixed;left:0;top:0;bottom:0;padding:10px;
+/* button */
+.btn{border:0;cursor:pointer;border-radius: 3px;}
+.btn-primary{background-color:#337ab7;border-color:#2e6da4;color:#fff;}
+.btn-primary:hover{background-color:#2e6da4;}
+
+.container{height:100%;}
+.content-right{width:100%;height:100%;padding-left:50%;}
+.form{width:100%;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;}
+
+.content-left{width:50%;height:100%;background-color:#337ab7;position: fixed;left:0;top:0;bottom:0;padding:10px;
     display: -webkit-flex;-webkit-flex-direction: column;}
 .left-top-line{height:40px;}
-.tabs{height:40px;line-height:40px;border-bottom:1px solid #efefef;}
-.tabs ul{}
-.tabs ul li{float:left;padding:0 20px;cursor:pointer;}
-.tabs ul li.focus{background-color:#fff;}
+.tabs{height:40px;line-height:40px;}
+.tabs ul{padding-left:10px;}
+.tabs ul li{float:left;padding:0 20px;cursor:pointer;color:#fff;}
+.tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;}
 
 .login-action{height:40px;line-height:40px;}
 .login-action span{color:#999;}
-.login-action a{font-weight:bold;}
+.login-action a{font-weight:bold;color:#fff;}
 
-.left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column}
-.tabs-bottom{height:40px;line-height:40px;}
+.left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;
+    overflow:auto;border-radius: 3px;}
+.tabs-bottom{height:30px;line-height:30px;}
 .tabs-bottom ul{}
-.tabs-bottom ul li{float:left;padding:0 20px;}
+.tabs-bottom ul li{float:left;padding:0 20px;cursor:pointer;border-radius: 3px;}
+.tabs-bottom ul li.focus{background-color:#f5f5f5;}
 .send-time{float:right;}
 .result-box{width:100%;border:1px solid #ccc;border-radius: 3px;margin-top:10px;padding:10px;
     font-family:Consolas;overflow-y: auto;-webkit-flex: 1;}
 
-.history-table{width:100%;}
-.history-table tr{cursor:pointer;}
-.history-table tr:hover{background-color:#efefef;}
-.history-table tr td{height:30px;}
-.request-type{font-weight:bold;}
+.history-table{min-width:700px;max-width: 100%;font-size:13px;}
+.history-table th{border-bottom:2px solid #ddd;padding:8px;}
+.history-table tbody tr{cursor:pointer;}
+.history-table tbody tr:hover{background-color:#f5f5f5;}
+.history-table tbody tr td{padding:8px;border-bottom: 1px solid #ddd;}
+.history-del{color:#ccc;}
+.request-type{}
 .request-type-GET{color:#009900;}
 .request-type-POST{color:#ff8c00;}
 
-.content-box{padding:10px;}
+.content-box{height:100%;padding:10px;display: -webkit-flex;
+    -webkit-flex-direction: column;}
 
-.tab-line{height:40px;}
+.tab-line{height:30px;margin-bottom:10px;}
 .host-tab{}
 .host-tab li{float:left;margin-right:10px;}
-#host-select{padding: 5px 10px;}
-.api-name-line input{padding:5px 10px;}
+#host-select{padding: 5px 10px;border-radius: 3px;border-color:#d5d5d5;}
+.api-name-line{width:100%;}
+.api-name-line input{padding:5px 0;border:0;border-bottom:1px solid #d5d5d5;border-radius: inherit;outline: none;}
 
 .form-line{height:40px;display: -webkit-flex;}
-.request-type-box{height:100%;width:100px;border:1px solid #999;position: relative;text-align: center;
+.request-type-box{height:100%;width:100px;position: relative;text-align: center;
     line-height:2.5;cursor:pointer;}
+.request-type-box select{width:100%;height:100%;border-radius: 3px;border-color:#d5d5d5;padding:0 10px;}
 .request-type-in{height:100%;width:100%;}
 .request-type{}
 .request-type-box i{}
 .request-type-list{position: absolute;top:40px;left:-1px;width:100px;border:1px solid #999;background-color:#fff;}
 .request-type-list a{display: block;height:30px;line-height:30px;text-align: center;}
-.url-box{height:100%;line-height:40px;-webkit-flex: 1;margin:0 1px;}
+.url-box{height:100%;line-height:40px;-webkit-flex: 1;margin:0 1px;position: relative;}
+.url-box input{padding-left:30px;}
+.url-box i{position: absolute;left:5px;top:2px;font-size:18px;}
 .request-button{height:100%;width:100px;}
 
-.form-params-type{width:100%;height:40px;line-height:40px;}
+.form-params-type{width:100%;height:30px;line-height:30px;margin-top:10px;}
 .form-params-type ul{}
-.form-params-type ul li{float:left;margin-right:20px;}
-.form-data{width:100%}
-.form-data table{width:100%}
-.form-data table td{border-bottom:1px solid #efefef;padding:10px 5px;}
-.form-data .input-text{padding:5px 10px;}
+.form-params-type ul li{display:inline-block;padding:0 20px;border-top-left-radius: 3px;border-top-right-radius:3px;
+    cursor:pointer;}
+.form-params-type ul li.focus{background-color:#f5f5f5;}
+.form-data{width:100%;-webkit-flex: 1;overflow-y:auto;background-color:#f5f5f5;padding:10px;border-radius: 3px;}
+.form-data table{width:100%;font-size:14px;}
+.form-data table td{border-bottom:1px solid #eaeaea;padding:10px 5px;}
+.form-data .input-text{padding:5px 10px;height:35px;}
 
 .code-string{color:#000066;}
 .code-number{color:#000033;}

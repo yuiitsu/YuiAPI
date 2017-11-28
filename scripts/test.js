@@ -201,6 +201,7 @@ var Test = {
                 _this.setFailedNum(_this.failed);
                 failedItem.show();
             }
+            iconItem.attr('data-result', JSON.stringify(res));
             loadingItem.hide();
         });
     },

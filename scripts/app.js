@@ -101,6 +101,15 @@ var App = {
                 }
             }
             e.stopPropagation();
+        }).on('click', '.test-item', function(e) {
+            var result = {};
+            try {
+                result = JSON.parse($(this).attr('data-result'));
+            } catch (e) {
+            }
+            $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
+            $('.tabs li').eq(0).click();
+            e.stopPropagation();
         }).on('click', 'tr', function() {
             // 选中数据
             var key = $(this).attr('data-key');

@@ -70,29 +70,8 @@ var History = {
      * 构建history列表
      */
     load: function() {
-        var hashData = this.getListData(this.listKey);
-        var historyData = this.getData();
         var hostData = this.getListData(this.hostCacheKey);
-        var _html = [];
-        if (hashData) {
-            var len = hashData.length;
-            for (var i = len - 1; i >=0; i--) {
-                var key = hashData[i];
-                if (historyData.hasOwnProperty(key)) {
-                    var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
-                        '<td class="w-30"><i class="mdi mdi-close history-del"></i></td>' +
-                        '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
-                        historyData[key]['type'] +
-                        '</td>' +
-                        '<td>' + historyData[key]['name'] + '</td>' +
-                        '<td>' + historyData[key]['url'] + '</td>' +
-                        '</tr>';
-                    _html.push(_htmlItem);
-                } else {
-                    console.log('no kye: ' + key);
-                }
-            }
-        }
+        var _html = this.build_ui_list();
         $('#history-content').find('tbody').html(_html.join(""));
         //
         if (hostData) {
@@ -107,6 +86,46 @@ var History = {
             $('#host-select').html(_html.join(""));
         }
     },
+
+    /**
+     * 构建界面LISt
+     * @returns {Array}
+     */
+    build_ui_list: function() {
+        var hashData = this.getListData(this.listKey);
+        var historyData = this.getData();
+        var _html = [];
+        if (hashData) {
+            var len = hashData.length;
+            for (var i = len - 1; i >=0; i--) {
+                var key = hashData[i];
+                if (historyData.hasOwnProperty(key)) {
+                    var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
+                        '<td class="w-30"><i class="mdi mdi-close history-del"></i></td>' +
+                        '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
+                        historyData[key]['type'] +
+                        '</td>' +
+                        '<td>' + historyData[key]['name'] + '</td>' +
+                        '<td>' + historyData[key]['url'] + '</td>' +
+                        '<td class="w-50 align-center"><i class="mdi mdi-numeric-1-box test-pre-add"></i> <i class="mdi mdi-numeric-2-box-multiple-outline test-normal-add"></i></td>' +
+                        '</tr>';
+                    _html.push(_htmlItem);
+                } else {
+                    console.log('no kye: ' + key);
+                }
+            }
+        }
+        return _html;
+    },
+
+    /**
+     * 获取历史list数据
+     * @returns {*|Array}
+     */
+    getHistoryListData: function() {
+        return this.getListData(this.listKey);
+    },
+
     /**
      * 获取字典数据
      * @returns {{}}

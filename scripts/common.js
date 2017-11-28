@@ -4,6 +4,23 @@
 
 var Common = {
 
+    cache: {
+        /**
+         * 获取列表数据
+         * @param key
+         * @returns {Array}
+         */
+        getListData: function(key) {
+            var result = null;
+            try {
+                result =  JSON.parse(localStorage.getItem(key));
+            } catch (e) {
+            }
+
+            return result ? result : [];
+        }
+    },
+
     /**
      * 高亮显示代码
      * @param json

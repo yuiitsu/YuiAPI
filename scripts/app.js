@@ -9,6 +9,8 @@ var App = {
     init: function() {
         // 获取历史记录
         History.load();
+        // 获取测试记录
+        Test.init();
         this.listenEvent();
     },
 
@@ -69,7 +71,38 @@ var App = {
                 }
             }
             e.stopPropagation();
+        }).on('click', '#all-test', function(e) {
+            // 全部加入普通测试组
+            Test.allAdd();
+            e.stopPropagation();
+        }).on('click', '.test-pre-add', function(e) {
+            // 加入前置测试组
+            var key = $(this).parent().parent().attr('data-key');
+            Test.firstAdd(key);
+            e.stopPropagation();
+        }).on('click', '.test-normal-add', function(e) {
+            // 加入普通测试组
+            var key = $(this).parent().parent().attr('data-key');
+            Test.normalAdd(key);
+            e.stopPropagation();
+        }).on('click', '.test-first-list-body .test-del', function(e) {
+            if (confirm('确定要删除该数据吗？')) {
+                var hashKey = $(this).parent().parent().attr('data-key');
+                if (hashKey) {
+                    Test.delFirst(hashKey);
+                }
+            }
+            e.stopPropagation();
+        }).on('click', '.test-normal-list-body .test-del', function(e) {
+            if (confirm('确定要删除该数据吗？')) {
+                var hashKey = $(this).parent().parent().attr('data-key');
+                if (hashKey) {
+                    Test.delNormal(hashKey);
+                }
+            }
+            e.stopPropagation();
         }).on('click', 'tr', function() {
+            // 选中数据
             var key = $(this).attr('data-key');
             // 从缓存中获取数据
             var historyData = History.getData();
@@ -160,6 +193,13 @@ var App = {
         this.listenRequestType();
         // 监听url选中
         this.listenUrlSelect();
+        // 开始测试
+        $('#test-start').click(function() {
+            var $this = $(this);
+            $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Testing...');
+            Test.startTest();
+            $this.attr('disabled', false).html('Start');
+        });
     },
     listenRequestType: function() {
         var $this = this;

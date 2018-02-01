@@ -30,7 +30,7 @@ var Test = {
      */
     firstAdd: function(hashKey) {
         var listData = Common.cache.getListData(this.firstListKey);
-        if (listData.indexOf(hashKey) == -1) {
+        if (listData.indexOf(hashKey) === -1) {
             listData.push(hashKey);
         }
         this.setItem(this.firstListKey, listData);
@@ -43,7 +43,7 @@ var Test = {
      */
     normalAdd: function(hashKey) {
         var listData = Common.cache.getListData(this.normalListKey);
-        if (listData.indexOf(hashKey) == -1) {
+        if (listData.indexOf(hashKey) === -1) {
             listData.push(hashKey);
         }
         this.setItem(this.normalListKey, listData);
@@ -88,9 +88,9 @@ var Test = {
                         '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
                         historyData[key]['type'] +
                         '</td>' +
-                        '<td>' + historyData[key]['name'] + '</td>' +
+                        '<td class="w-200">' + historyData[key]['name'] + '</td>' +
                         '<td>' + historyData[key]['url'] + '</td>' +
-                        '<td class="w-50 align-center"><i class="mdi mdi-numeric-1-box test-pre-add"></i> assert</td>' +
+                        '<td class="w-50 align-center"></td>' +
                         '<td class="w-50 align-center test-item test-item-'+ key +'">' +
                             '<i class="mdi mdi-loading mdi-spin hide"></i>' +
                             '<i class="mdi mdi-check-circle-outline hide"></i>' +
@@ -158,33 +158,69 @@ var Test = {
     /**
      * 开始测试
      */
-    startTest: function() {
-        var key,
-            iconItem;
+    startTest: function(callback) {
+        var self = this;
         this.success = 0;
         this.failed = 0;
         var historyData = History.getData();
-        // 前置组开始
-        var firstListData = Common.cache.getListData(this.firstListKey);
-        for (var i in firstListData) {
-            key = firstListData[i];
-            if (historyData.hasOwnProperty(key)) {
-                iconItem = $('.test-first-list-body').find('.test-item-' + key);
-                this.request(historyData[key], key, iconItem);
-            }
+
+        $('.test-item').find('i').hide();
+
+        var first_list = Common.cache.getListData(this.firstListKey),
+            normal_list = Common.cache.getListData(this.normalListKey),
+            test_list = first_list.concat(normal_list),
+            test_list_len = test_list.length,
+            index = 0;
+
+        // 创建进度条
+        var bar_obj = $('.test-progress-bar');
+        var bar_html = [];
+        for (var i = 0; i < test_list_len; i++) {
+            bar_html.push('<div class="test-progress-bar-item"><div></div></div>')
         }
-        // 正常组开始
-        var normalListData = Common.cache.getListData(this.normalListKey);
-        for (var i in normalListData) {
-            key = normalListData[i];
+        bar_obj.html(bar_html.join(''));
+
+        // 进度条宽度
+        var bar_width = bar_obj.outerWidth();
+        var bar_item_width = bar_width / test_list_len;
+
+        var get_item = function() {
+            test_list_len--;
+            var key = test_list[index];
+            index++;
             if (historyData.hasOwnProperty(key)) {
-                iconItem = $('.test-normal-list-body').find('.test-item-' + key);
-                this.request(historyData[key], key, iconItem);
+                return {'key': key, 'iconItem': $('.test-item-' + key)}
             }
-        }
+
+            return false;
+        };
+
+        var run = function()  {
+            if (test_list_len <= 0) {
+                callback();
+                return;
+            }
+
+            var item = get_item();
+            if (item) {
+                var key = item['key'],
+                    iconItem = item['iconItem'];
+
+                self.request(historyData[key], key, iconItem, function(status) {
+                    var color = status ? '#00ff00' : '#ff0000';
+                    $('.test-progress-bar-item').eq(index - 1).css('background-color', color).animate({'width': bar_item_width});
+                });
+            }
+
+            setTimeout(function() {
+                run();
+            }, 500)
+        };
+
+        run();
     },
 
-    request: function(data, key, iconItem) {
+    request: function(data, key, iconItem, callback) {
         var _this = this;
         var requestType = data['type'];
         var loadingItem = iconItem.find('.mdi-loading');
@@ -196,10 +232,12 @@ var Test = {
                 _this.success++;
                 _this.setSuccessNum(_this.success);
                 successItem.show();
+                callback(true);
             } else {
                 _this.failed++;
                 _this.setFailedNum(_this.failed);
                 failedItem.show();
+                callback(false);
             }
             iconItem.attr('data-result', JSON.stringify(res));
             loadingItem.hide();

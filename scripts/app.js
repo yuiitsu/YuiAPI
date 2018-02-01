@@ -48,6 +48,7 @@ var App = {
             $('.left-content').addClass('hide');
             $('#' + id).removeClass('hide');
         });
+
         //
         var form_data_obj = $('#form-data');
         form_data_obj.on('input', '.form-data-item', function() {
@@ -62,6 +63,7 @@ var App = {
                 $('#form-data').append(_htmlItem);
             }
         });
+
         // history记录项删除
         $('.history-table').on('click', '.history-del', function(e) {
             if (confirm('确定要删除该数据吗？')) {
@@ -160,6 +162,7 @@ var App = {
                 $('#host-select').val(host);
             }
         });
+
         // 选择host
         $('#host-select').change(function() {
             var urlObject = $('#url');
@@ -168,6 +171,7 @@ var App = {
             var host = Common.getHost(url);
             urlObject.val(url.replace(host, value));
         });
+
         // 提交
         $('#send').click(function() {
             var $this = $(this);
@@ -206,8 +210,9 @@ var App = {
         $('#test-start').click(function() {
             var $this = $(this);
             $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Testing...');
-            Test.startTest();
-            $this.attr('disabled', false).html('Start');
+            Test.startTest(function() {
+                $this.attr('disabled', false).html('Start');
+            });
         });
     },
     listenRequestType: function() {

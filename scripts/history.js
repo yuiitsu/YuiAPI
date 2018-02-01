@@ -101,13 +101,13 @@ var History = {
                 var key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
                     var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
-                        '<td class="w-30"><i class="mdi mdi-close history-del"></i></td>' +
+                        '<td class="w-30"><i class="mdi mdi-dots-horizontal history-del font-size-20"></i></td>' +
                         '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
                         historyData[key]['type'] +
                         '</td>' +
                         '<td>' + historyData[key]['name'] + '</td>' +
                         '<td>' + historyData[key]['url'] + '</td>' +
-                        '<td class="w-50 align-center"><i class="mdi mdi-numeric-1-box test-pre-add"></i> <i class="mdi mdi-numeric-2-box-multiple-outline test-normal-add"></i></td>' +
+                        '<td class="w-50 align-center"></td>' +
                         '</tr>';
                     _html.push(_htmlItem);
                 } else {

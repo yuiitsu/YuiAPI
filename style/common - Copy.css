@@ -4,7 +4,6 @@ Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Mi
 a{text-decoration: none;color:#444;}
 ul{list-style: none;}
 
-.font-size-20{font-size:20px;}
 .color-success{color:#009900;}
 .color-failed{color:#ff0000;}
 .align-left{text-align: left;}
@@ -23,7 +22,6 @@ button{width:100%;height:100%;}
 .w-50{width:50px;}
 .w-100{width:100px;}
 .w-150{width:150px;}
-.w-200{width:200px;}
 
 /* radius */
 .radius-small-all{border-radius: 3px;}
@@ -34,14 +32,14 @@ button{width:100%;height:100%;}
 
 /* button */
 .btn{border:0;cursor:pointer;border-radius: 3px;}
-.btn-primary{background-color:#a9fd00;border-color:#2e6da4;border-bottom:2px solid #87ca00;color:#222;}
-.btn-primary:hover{background-color:#AADF45;}
+.btn-primary{background-color:#337ab7;border-color:#2e6da4;color:#fff;}
+.btn-primary:hover{background-color:#2e6da4;}
 
 .container{height:100%;}
 .content-right{width:100%;height:100%;padding-left:50%;}
 .form{width:100%;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;}
 
-.content-left{width:50%;height:100%;background-color:#222;position: fixed;left:0;top:0;bottom:0;padding:10px;
+.content-left{width:50%;height:100%;background-color:#337ab7;position: fixed;left:0;top:0;bottom:0;padding:10px;
     display: -webkit-flex;-webkit-flex-direction: column;}
 .left-top-line{height:40px;}
 .tabs{height:40px;line-height:40px;}
@@ -54,9 +52,7 @@ button{width:100%;height:100%;}
 .login-action a{font-weight:bold;color:#fff;}
 
 .left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;
-    border-radius: 3px;}
-.left-content-top{height:40px;}
-.left-content-main{-webkit-flex: 1;overflow:auto;padding-right:5px;}
+    overflow:auto;border-radius: 3px;}
 .tabs-bottom{height:30px;line-height:30px;}
 .tabs-bottom ul{}
 .tabs-bottom ul li{float:left;padding:0 20px;cursor:pointer;border-radius: 3px;}
@@ -66,23 +62,20 @@ button{width:100%;height:100%;}
     font-family:Consolas;overflow-y: auto;-webkit-flex: 1;}
 
 /* history */
-.history-search-box{display: -webkit-flex;-webkit-flex-direction: row;}
-.history-search-label{width:60px;}
-.history-search-box input{-webkit-flex: 1;}
-.history-table{min-width:600px;width: 100%;font-size:13px;}
-.history-table th{border-bottom:1px solid #ddd;padding:8px;}
+.history-table{min-width:700px;width: 100%;font-size:13px;}
+.history-table th{border-bottom:2px solid #ddd;padding:8px;}
 .history-table tbody tr{cursor:pointer;}
 .history-table tbody tr:hover{background-color:#f5f5f5;}
 .history-table tbody tr td{padding:8px;border-bottom: 1px solid #ddd;}
 .history-table tbody tr td.request-type-GET{background-color:#009900;border-top:1px solid #009900;border-bottom:1px solid #009900;}
 .history-table tbody tr td.request-type-POST{background-color:#ff8c00;border-top:1px solid #ff8c00;border-bottom:1px solid #ff8c00;}
-.history-del{}
+.history-del{color:#ccc;}
 .request-type{color:#fff;}
 .all-test{cursor:pointer;}
 
 /* test */
-.test-count-line{margin-bottom:10px;height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;border-radius: 3px;}
-.test-count-data{height:30px;line-height:30px;font-weight:bold;}
+.test-count-line{height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;border-radius: 3px;margin-bottom:10px;}
+.test-count-data{height:30px;line-height:30px;}
 .test-button{width:80px;height:30px;}
 .test-box{margin-bottom:10px;}
 .test-box h3{font-size:14px;}
@@ -90,10 +83,6 @@ button{width:100%;height:100%;}
 .test-item{font-size:20px;}
 .test-item .mdi-check-circle-outline{color:#009900;}
 .test-item .mdi-close-circle-outline{color:#ff0000;}
-
-.test-progress-bar{width:100%;}
-.test-progress-bar-item{display:inline-block;height:20px;}
-.test-progress-bar-item span{display:inline-block;height:20px;}
 
 .content-box{height:100%;padding:10px;display: -webkit-flex;
     -webkit-flex-direction: column;}
@@ -136,22 +125,3 @@ button{width:100%;height:100%;}
 .code-key{color:#A52A2A;}
 
 .hide{display: none;}
-
-/* 设置滚动条的样式 */
-::-webkit-scrollbar {
-    width:10px;
-}
-/* 滚动槽 */
-::-webkit-scrollbar-track {
-    -webkit-box-shadow:rgba(0,0,0,0.3);
-    border-radius:10px;
-}
-/* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-    border-radius:10px;
-    background:rgba(0,0,0,0.1);
-    -webkit-box-shadow:rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-    background:rgba(0,0,0,0.1);
-}

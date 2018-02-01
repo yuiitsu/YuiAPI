@@ -46,64 +46,73 @@
             </pre>
         </div>
         <div class="left-content hide" id="history-content">
-            <table class="history-table" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th class="w-30"></th>
-                        <th class="w-50">Type</th>
-                        <th class="align-left">Name</th>
-                        <th class="align-left">URL</th>
-                        <th class="align-right">
-                            <span id="all-test" class="all-test fr"><i class="mdi mdi-plus-circle"></i> All test</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="test-count-line left-content-top">
+                <div class="test-count-data history-search-box">
+                    <label class="history-search-label">Search:</label>
+                    <input type="text" class="input-text" placeholder="name or url keywords. press enter" />
+                </div>
+            </div>
+            <div class="left-content-main">
+                <table class="history-table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="w-30"></th>
+                            <th class="w-50">Type</th>
+                            <th class="align-left">Name</th>
+                            <th class="align-left">URL</th>
+                            <th class="align-right">
+                                <span id="all-test" class="all-test fr hide"><i class="mdi mdi-plus-circle"></i> All test</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
         <div class="left-content hide" id="api-content">
             coming soon...
         </div>
         <div class="left-content hide" id="test-content">
-            <div class="test-count-line">
+            <div class="test-count-line left-content-top fl">
                 <div class="test-count-data fl">
-                    test: <span id="test-total-num">0</span>, <span class="color-success">success: <span id="test-success">0</span></span>, <span class="color-failed">failed: <span id="test-failed">0</span></span>
+                    Test API: <span id="test-total-num">0</span>, <span class="color-success">Success: <span id="test-success">0</span></span>, <span class="color-failed">Failed: <span id="test-failed">0</span></span>
                 </div>
                 <div class="display-inline test-button fr">
                     <button class="btn btn-primary" id="test-start">Start</button>
                 </div>
             </div>
-            <div class="test-box test-pre-box">
-                <h3>first list</h3>
-                <table class="history-table test-first-list-table" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="w-30"></th>
-                            <th class="w-50">Type</th>
-                            <th class="w-150 align-left">Name</th>
-                            <th class="align-left">URL</th>
-                            <th class="w-30"></th>
-                            <th class="w-30"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="test-first-list-body"></tbody>
-                </table>
-            </div>
-            <div class="test-box test-normal-box">
-                <h3>normal list</h3>
-                <table class="history-table test-normal-list-table" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="w-30"></th>
-                            <th class="w-50">Type</th>
-                            <th class="w-150 align-left">Name</th>
-                            <th class="align-left">URL</th>
-                            <th class="w-30"></th>
-                            <th class="w-30"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="test-normal-list-body"></tbody>
-                </table>
+            <div class="test-progress-bar"><div></div></div>
+            <div class="left-content-main">
+                <div class="test-box test-pre-box">
+                    <table class="history-table test-first-list-table" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="w-30">#1</th>
+                                <th class="w-50">Type</th>
+                                <th class="w-200 align-left">Name</th>
+                                <th class="align-left">URL</th>
+                                <th class="w-50"></th>
+                                <th class="w-50"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="test-first-list-body"></tbody>
+                    </table>
+                </div>
+                <div class="test-box test-normal-box">
+                    <table class="history-table test-normal-list-table" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="w-30">#2</th>
+                                <th class="w-50">Type</th>
+                                <th class="w-200 align-left">Name</th>
+                                <th class="align-left">URL</th>
+                                <th class="w-50"></th>
+                                <th class="w-50"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="test-normal-list-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -147,6 +156,7 @@
                     <ul>
                         <li>headers</li>
                         <li class="focus">body</li>
+                        <li>assert</li>
                     </ul>
                 </div>
                 <div class="form-data">

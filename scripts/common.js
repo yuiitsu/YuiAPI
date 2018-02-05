@@ -21,6 +21,70 @@ var Common = {
         }
     },
 
+    tips: function(focus, content) {
+        var obj = $('#tips-box');
+        if (obj.length) {
+            obj.html(content).show();
+        } else {
+            var _html = '<div id="tips-box">'+ content +'</div>';
+            $('body').append(_html);
+        }
+
+        var tips_timer = setTimeout(function() {
+            $('#tips-box').hide();
+        }, 3000);
+
+        var focus_offset = focus.offset(),
+            focus_width = focus.outerWidth(),
+            focus_height = focus.outerHeight();
+        $('#tips-box').css({'top': focus_offset.top + focus_height, 'left': focus_offset.left})
+            .off('mouseenter').on('mouseenter', function() {
+                clearTimeout(tips_timer);
+        }).off('mouseleave').on('mouseleave', function() {
+            $(this).hide();
+        });
+    },
+
+    /**
+     * 提示
+     * @param text
+     * @param type
+     */
+    notification: function(text, type) {
+        // 初始化
+        var notification_timer = null;
+        $('#notification-box').remove();
+        clearTimeout(notification_timer);
+        //
+        var bg = type ? type : 'success';
+        var _html = '<div id="notification-box" class="bg-'+ bg +'">'+
+                text +
+            '</div>';
+        $('body').append(_html);
+
+        notification_timer = setTimeout(function() {
+            $('#notification-box').fadeOut();
+        }, 2000);
+    },
+
+    module: function(name, content, action) {
+        var _html = '<div id="module-box">'+
+                '<div class="module-mask"></div>'+
+                '<div class="module-content">'+
+                    '<div class="module-header">'+ name +
+                        '<i class="mdi mdi-close fr" id="module-close"></i>'+
+                    '</div>'+
+                    '<div class="module-main">'+ content +'</div>'+
+                    '<div class="module-actions">'+ action +'</div>'+
+                '</div>'+
+            '</div>';
+        $('body').append(_html);
+
+        $('#module-close').on('click', function() {
+            $('#module-box').remove();
+        });
+    },
+
     /**
      * 高亮显示代码
      * @param json

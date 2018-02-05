@@ -83,10 +83,10 @@ var Test = {
             for (var i in listData) {
                 var key = listData[i];
                 if (historyData.hasOwnProperty(key)) {
-                    var _htmlItem = '<tr data-key="' + key + '" title="'+ historyData[key]['url'] +'">' +
+                    var _htmlItem = '<tr data-key="' + key + '">' +
                         '<td class="w-30"><i class="mdi mdi-close test-del"></i></td>' +
                         '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
-                        historyData[key]['type'] +
+                            '<span>' + historyData[key]['type'][0] + '</span>' +
                         '</td>' +
                         '<td class="w-200">' + historyData[key]['name'] + '</td>' +
                         '<td>' + historyData[key]['url'] + '</td>' +
@@ -156,13 +156,37 @@ var Test = {
     },
 
     /**
+     * 清除数据
+     */
+    clear: function(type) {
+        switch (type) {
+            case "first":
+                localStorage.removeItem(this.firstListKey);
+                this.loadFirstListData();
+                break;
+            case "normal":
+                localStorage.removeItem(this.normalListKey);
+                this.loadNormalListData();
+                break;
+        }
+        Common.notification('clear success');
+        this.init();
+    },
+
+    /**
      * 开始测试
      */
     startTest: function(callback) {
         var self = this;
+        // init
         this.success = 0;
         this.failed = 0;
+        $('#test-success').text(0);
+        $('#test-failed').text(0);
+
         var historyData = History.getData();
+        // assert
+        var assert_data = History.get_assert_data();
 
         $('.test-item').find('i').hide();
 
@@ -209,7 +233,7 @@ var Test = {
                 self.request(historyData[key], key, iconItem, function(status) {
                     var color = status ? '#00ff00' : '#ff0000';
                     $('.test-progress-bar-item').eq(index - 1).css('background-color', color).animate({'width': bar_item_width});
-                });
+                }, assert_data);
             }
 
             setTimeout(function() {
@@ -220,7 +244,15 @@ var Test = {
         run();
     },
 
-    request: function(data, key, iconItem, callback) {
+    /**
+     * 请求数据
+     * @param data
+     * @param key
+     * @param iconItem
+     * @param callback
+     * @param assert_data
+     */
+    request: function(data, key, iconItem, callback, assert_data) {
         var _this = this;
         var requestType = data['type'];
         var loadingItem = iconItem.find('.mdi-loading');
@@ -228,17 +260,45 @@ var Test = {
         var failedItem = iconItem.find('.mdi-close-circle-outline');
         loadingItem.show();
         Common.request(data.url, {'type': requestType, async: 'false'}, data.data, function(res) {
-            if (res && res.hasOwnProperty('code') && res.code === 0) {
-                _this.success++;
-                _this.setSuccessNum(_this.success);
-                successItem.show();
-                callback(true);
+
+            var use_assert_data = '';
+            if (assert_data.hasOwnProperty(key) && assert_data[key]) {
+                use_assert_data = assert_data[key];
             } else {
-                _this.failed++;
-                _this.setFailedNum(_this.failed);
-                failedItem.show();
-                callback(false);
+                use_assert_data = History.get_default_assert();
             }
+
+            if (use_assert_data) {
+                var assert_type = use_assert_data['type'];
+                var assert_content = use_assert_data['content'];
+                if (assert_type === 'Json') {
+                    assert_content = JSON.parse(assert_content);
+
+                    var assert_status = true;
+                    for (var i in assert_content) {
+                        if (!res.hasOwnProperty(i)) {
+                            assert_status = false;
+                        } else {
+                            if (res[i] !== assert_content[i]) {
+                                assert_status = false;
+                            }
+                        }
+                    }
+
+                    if (assert_status) {
+                        _this.success++;
+                        _this.setSuccessNum(_this.success);
+                        successItem.show();
+                        callback(true);
+                    } else {
+                        _this.failed++;
+                        _this.setFailedNum(_this.failed);
+                        failedItem.show();
+                        callback(false);
+                    }
+                }
+            }
+
             iconItem.attr('data-result', JSON.stringify(res));
             loadingItem.hide();
         });

@@ -7,6 +7,8 @@ ul{list-style: none;}
 .font-size-20{font-size:20px;}
 .color-success{color:#009900;}
 .color-failed{color:#ff0000;}
+.bg-success{background-color:#009900;}
+.bg-danger{background-color:#ff0000;}
 .align-left{text-align: left;}
 .align-right{test-align:right;}
 .align-center{text-align:center;}
@@ -49,9 +51,9 @@ button{width:100%;height:100%;}
 .tabs ul li{float:left;padding:0 20px;cursor:pointer;color:#fff;}
 .tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;}
 
-.login-action{height:40px;line-height:40px;}
-.login-action span{color:#999;}
+.login-action{height:40px;line-height:40px;color:#bbb;}
 .login-action a{font-weight:bold;color:#fff;}
+.login-action i{font-weight:bold;color:#fff;font-size:20px;vertical-align: middle;}
 
 .left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;
     border-radius: 3px;}
@@ -69,16 +71,35 @@ button{width:100%;height:100%;}
 .history-search-box{display: -webkit-flex;-webkit-flex-direction: row;}
 .history-search-label{width:60px;}
 .history-search-box input{-webkit-flex: 1;}
+.request-type{}
+.request-type span{display:inline-block;padding:10px;background-color: #000;color:#fff;font-size:12px;border-radius: 3px;}
 .history-table{min-width:600px;width: 100%;font-size:13px;}
 .history-table th{border-bottom:1px solid #ddd;padding:8px;}
 .history-table tbody tr{cursor:pointer;}
 .history-table tbody tr:hover{background-color:#f5f5f5;}
+.history-table tbody tr:hover td.request-type span{
+    transition:All 0.4s ease-in-out;
+    -webkit-transition:All 0.4s ease-in-out;
+    -moz-transition:All 0.4s ease-in-out;
+    -o-transition:All 0.4s ease-in-out;
+}
+.history-table tbody tr:hover td.request-type span{
+    transform:rotate(360deg);
+    -webkit-transform:rotate(360deg);
+    -moz-transform:rotate(360deg);
+    -o-transform:rotate(360deg);
+    -ms-transform:rotate(360deg);}
 .history-table tbody tr td{padding:8px;border-bottom: 1px solid #ddd;}
-.history-table tbody tr td.request-type-GET{background-color:#009900;border-top:1px solid #009900;border-bottom:1px solid #009900;}
-.history-table tbody tr td.request-type-POST{background-color:#ff8c00;border-top:1px solid #ff8c00;border-bottom:1px solid #ff8c00;}
+.history-table tbody tr td.request-type-GET{}
+.history-table tbody tr td.request-type-GET span{background-color:#009900;}
+.history-table tbody tr td.request-type-POST{}
 .history-del{}
-.request-type{color:#fff;}
+.history-tips-list{}
+.history-tips-list li{height:30px;line-height:30px;border-bottom:1px solid #ddd;cursor:pointer;padding: 0 10px;
+    text-align: center;}
+.history-tips-list li:hover{background-color:#efefef;}
 .all-test{cursor:pointer;}
+.search-block{display: inline-block;padding:3px;border-radius: 3px;background-color:#ff0000;color:#fff;}
 
 /* test */
 .test-count-line{margin-bottom:10px;height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;border-radius: 3px;}
@@ -101,7 +122,6 @@ button{width:100%;height:100%;}
 .tab-line{height:30px;margin-bottom:10px;}
 .host-tab{}
 .host-tab li{float:left;margin-right:10px;}
-#host-select{padding: 5px 10px;border-radius: 3px;border-color:#d5d5d5;}
 .api-name-line{width:100%;}
 .api-name-line input{padding:5px 0;border:0;border-bottom:1px solid #d5d5d5;border-radius: inherit;outline: none;}
 
@@ -135,7 +155,27 @@ button{width:100%;height:100%;}
 .code-null{color:magenta;}
 .code-key{color:#A52A2A;}
 
+/* tips */
+#tips-box{border: 1px solid #ddd;background-color:#fff;border-radius: 3px;padding: 10px;position: absolute;left:0;top:0;}
+
+/* module */
+#module-box{position: relative;left:0;top:0;}
+.module-mask{position: fixed;left:0;top:0;width:100%;height:100%;background-color:#000;opacity: 0.5;}
+.module-content{position: fixed;left:50%;top:50%;width:700px;height:600px;margin-left:-350px;margin-top:-300px;
+    background-color:#fff;border: 1px solid #ddd;border-radius: 5px;padding: 10px;display: -webkit-flex;
+    -webkit-flex-direction: column;}
+.module-header{height:40px;line-height:30px;border-bottom:1px solid #ddd;font-size:20px;font-weight:bold;}
+.module-header i{font-size:20px;}
+.module-main{-webkit-flex: 1;overflow-y:auto;word-wrap: break-word;word-break: normal;}
+.module-actions{height:40px;}
+
+/* notification */
+#notification-box {position: fixed;width:300px;height:40px;padding:10px;border-radius: 3px;top:50px;left:50%;
+    margin-left:-150px;color:#fff;text-align: center;}
+
 .hide{display: none;}
+
+.coming-soon{height:50px;line-height:50px;border-bottom:1px solid #ddd;text-align: center;}
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {

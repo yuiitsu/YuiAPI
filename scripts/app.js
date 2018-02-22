@@ -17,64 +17,10 @@ var App = {
     },
 
     /**
-     * 获取表单数据
-     * @returns {{}}
-     */
-    getFormParams: function() {
-        var selectObj = $('.form-select');
-        var keyObj = $('.form-key');
-        var valueObj = $('.form-value');
-        var result = {};
-        var i = 0;
-        selectObj.each(function() {
-            if($(this).is(":checked")) {
-                var key = $.trim(keyObj.eq(i).val());
-                if (key) {
-                    result[key] = $.trim(valueObj.eq(i).val());
-                }
-            }
-            i++;
-        });
-        return result;
-    },
-    /**
      * 监听事件
      */
     listenEvent: function() {
         var self = this;
-        //
-        $('.tabs li').on('click', function() {
-            var id = $(this).attr('data-id');
-            $('.tabs li').removeClass('focus');
-            $(this).addClass('focus');
-            $('.left-content').addClass('hide');
-            $('#' + id).removeClass('hide');
-
-            // 默认断言检查
-            if (id === 'test-content') {
-                var default_assert_data = History.get_default_assert();
-                if ($.isEmptyObject(default_assert_data)) {
-                    $('.form-params-type li').eq(2).click();
-                    Common.notification('please set the default assert first.', 'danger');
-                }
-            }
-        });
-
-        //
-        var form_data_obj = $('#form-data');
-        form_data_obj.on('input', '.form-data-item', function() {
-            var parent = $(this).parent().parent();
-            if (parent.index() + 1 === form_data_obj.find('tr').length) {
-                // 创建新的一行
-                var _htmlItem = '<tr>' +
-                            '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                            '<td><input type="text" class="form-key form-data-item input-text" value="" /> </td>' +
-                            '<td><input type="text" class="form-value form-data-item input-text" value="" /> </td>' +
-                        '</tr>';
-                $('#form-data').append(_htmlItem);
-            }
-        });
-
         // history记录项删除
         $('.history-table').on('click', '.history-del', function(e) {
             if (confirm('Confirm to clear the data')) {
@@ -307,7 +253,7 @@ var App = {
                 }
                 $('.tabs li').eq(1).click();
                 // 获取参数
-                var formData = self.getFormParams();
+                var formData = Common.getFormParams();
                 $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
                 var result_obj = $('#result');
                 result_obj.css('background-color', '#efefef');

@@ -86,6 +86,28 @@ var Common = {
     },
 
     /**
+     * 获取表单数据
+     * @returns {{}}
+     */
+    getFormParams: function() {
+        var selectObj = $('.form-select');
+        var keyObj = $('.form-key');
+        var valueObj = $('.form-value');
+        var result = {};
+        var i = 0;
+        selectObj.each(function() {
+            if($(this).is(":checked")) {
+                var key = $.trim(keyObj.eq(i).val());
+                if (key) {
+                    result[key] = $.trim(valueObj.eq(i).val());
+                }
+            }
+            i++;
+        });
+        return result;
+    },
+
+    /**
      * 高亮显示代码
      * @param json
      * @returns {string|XML}

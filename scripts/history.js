@@ -137,12 +137,13 @@ var History = {
             for (var i = len - 1; i >=0; i--) {
                 var key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
+                    var request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
                     var _htmlItem = '<tr data-key="' + key + '">' +
                         '<td class="w-30 history-item-action" data-key="' + key + '">' +
                             '<i class="mdi mdi-dots-horizontal font-size-20"></i>' +
                         '</td>' +
                         '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
-                            '<span>' + historyData[key]['type'][0] + '</span>' +
+                            '<span>' + request_type_icon + '</span>' +
                         '</td>' +
                         '<td>' + historyData[key]['name'] + '</td>' +
                         '<td>' + historyData[key]['url'] + '</td>';

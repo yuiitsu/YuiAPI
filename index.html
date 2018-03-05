@@ -89,7 +89,7 @@
                     <button class="btn btn-primary" id="test-start">Start</button>
                 </div>
             </div>
-            <div class="test-progress-bar"></div>
+            <div class="test-progress-bar" id="test-progress-bar"></div>
             <div class="left-content-main">
                 <div class="test-box test-pre-box">
                     <table class="history-table test-first-list-table" cellspacing="0">
@@ -216,9 +216,13 @@
                         <thead>
                             <tr>
                                 <td>
+                                    <!--
                                     <label><input type="radio" name="form-data-assert-type" value="String" /> String</label>
+                                    -->
                                     <label><input type="radio" name="form-data-assert-type" checked="checked" value="Json" /> Json</label>
+                                    <!--
                                     <label><input type="radio" name="form-data-assert-type" value="Xml" /> Xml</label>
+                                    -->
                                 </td>
                             </tr>
                         </thead>
@@ -227,9 +231,6 @@
                                 <td>
                                     <textarea style="padding:10px;width:100%;height:500px;" id="form-data-assert"></textarea>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style="height:60px;"><button class="btn btn-primary" id="save-default-assert">Save default</button></td>
                             </tr>
                         </tbody>
                     </table>

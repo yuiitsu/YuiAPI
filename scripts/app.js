@@ -90,7 +90,6 @@ var App = {
             // 从缓存中获取数据
             var historyData = History.getData();
             if (historyData[key]) {
-                console.log(historyData[key]);
                 var url = historyData[key]['url'];
                 var requestType = historyData[key]['type'];
                 var form_data_type = historyData[key]['data_type'];
@@ -145,9 +144,6 @@ var App = {
                     });
                     $('#form-data-raw').find('textarea').val(data);
                 }
-                // host
-                //var host = Common.getHost(url);
-                //$('#host-select').val(host);
 
                 // assert
                 var assert_data = History.get_assert_data();
@@ -213,32 +209,67 @@ var App = {
             e.stopPropagation();
         }).on('click', '.setting-list li', function(e) {
             var name = $(this).text();
-            if (name === 'Export') {
-                var history_list = History.getHistoryListData();
-                var history_data = History.getData();
-                var host_list = History.get_host_list();
-                var data = {
-                    history_list: history_list,
-                    history_data: history_data,
-                    host_list: host_list
-                };
-                Common.module(name, JSON.stringify(data), '<button class="btn btn-primary" id="export-copy">Copy</button>');
+            switch (name) {
+                case "Export":
+                    var history_list = History.getHistoryListData();
+                    var history_data = History.getData();
+                    var host_list = History.get_host_list();
+                    var data = {
+                        history_list: history_list,
+                        history_data: history_data,
+                        host_list: host_list
+                    };
+                    Common.module(name, JSON.stringify(data), '<button class="btn btn-primary" id="export-copy">Copy</button>');
 
-                $('#export-copy').off('click').on('click', function() {
-                    $('.module-main').clone();
-                });
+                    $('#export-copy').off('click').on('click', function() {
+                        $('.module-main').clone();
+                    });
+                    break;
+                case "Import":
+                    Common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
+                    break;
+                case "default assertion":
+                    var default_assert_data = History.get_default_assert();
+                    var assert_type = default_assert_data['type'];
+                    var assert_content = default_assert_data['content'] ? default_assert_data['content'] : '';
+                    if (assert_type) {
+                        $('input[name=default-assertion-type]').attr('checked', false).each(function() {
+                            var value = $(this).val();
+                            if (value === assert_type) {
+                                $(this).prop('checked', 'checked');
+                            }
+                        });
+                    }
+
+                    var content_html = '<p style="height:30px;line-height:30px;">' +
+                        '<label>' +
+                            '<input type="radio" name="default-assertion-type" checked="checked" value="Json" /> Json' +
+                        '</label>' +
+                        '</p>' +
+                        '<textarea style="width:100%;height:468px;" id="default-assertion-content">'+ assert_content +'</textarea>';
+
+                    Common.module(
+                        name,
+                        content_html,
+                        '<button class="btn btn-primary" id="save-default-assert">Save</button>'
+                    );
+                    break;
             }
 
-            if (name === 'Import') {
-                Common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
-            }
             e.stopPropagation();
-        //}).on('click', '#save-default-assert', function(e) {
-        //    var assert_content = $.trim($('#default-assert-content').val());
-        //    if (assert_content) {
-        //
-        //    }
-        //    e.stopPropagation();
+        }).on('click', '#save-default-assert', function() {
+            var assert_type = $('input[name=default-assertion-type]:checked').val();
+            var assert_content = $.trim($('#default-assertion-content').val());
+            var assert_data = '';
+            if (assert_type && assert_content) {
+                assert_data = {
+                    type: assert_type,
+                    content: assert_content
+                };
+            }
+
+            History.save_default_assert(assert_data);
+            Common.notification('save success');
         });
 
         // 选择host
@@ -305,10 +336,10 @@ var App = {
                     var assert_type = $('input[name=form-data-assert-type]:checked').val();
                     var assert_content = $.trim($('#form-data-assert').val());
                     var assertion_data = '';
-                    if (assert_type && assert_content) {
+                    if (assert_type) {
                         assertion_data = {
                             type: assert_type,
-                            content: assert_content
+                            content: assert_content ? assert_content : ''
                         };
                     }
                     History.add({
@@ -320,7 +351,7 @@ var App = {
                         result: res,
                         time: use_time,
                         status: jqXHR.status,
-                        assertion: assertion_data
+                        assertion_data: assertion_data
                     });
                 });
             }
@@ -348,6 +379,7 @@ var App = {
             var content = '<ul class="history-tips-list setting-list">'+
                     '<li>Export</li>'+
                     '<li>Import</li>'+
+                    '<li>default assertion</li>'+
                 '</ul>';
             Common.tips($(this), content);
         });
@@ -401,22 +433,6 @@ var App = {
                 $('#form-data').html(_html.join(""));
             }
             $('.form-params-type li').eq(1).click();
-        });
-
-        // default assert
-        $('#save-default-assert').on('click', function() {
-            var assert_type = $('input[name=form-data-assert-type][checked]').val();
-            var assert_content = $.trim($('#form-data-assert').val());
-            var assert_data = '';
-            if (assert_type && assert_content) {
-                assert_data = {
-                    type: assert_type,
-                    content: assert_content
-                };
-            }
-
-            History.save_default_assert(assert_data);
-            Common.notification('save success');
         });
 
         // test clear

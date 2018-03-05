@@ -34,8 +34,11 @@ var Event = {
             if (id === 'test-content') {
                 var default_assert_data = History.get_default_assert();
                 if ($.isEmptyObject(default_assert_data)) {
-                    $('.form-params-type li').eq(2).click();
-                    Common.notification('please set the default assert first.', 'danger');
+                    Common.module(
+                        name,
+                        '<p style="height:30px;line-height:30px;"><label><input type="radio" name="default-assertion-type" checked="checked" value="Json" /> Json</label></p><textarea style="width:100%;height:468px;" id="default-assertion-content"></textarea>',
+                        '<button class="btn btn-primary" id="save-default-assert">Save</button>'
+                    );
                 }
             }
         });

@@ -205,7 +205,9 @@ var Test = {
         bar_obj.html(bar_html.join(''));
 
         // 进度条宽度
-        var bar_width = bar_obj.outerWidth();
+        //console.log(parseFloat(window.getComputedStyle(document.getElementById("test-progress-bar"))['width']));
+        //var bar_width = bar_obj.width();
+        var bar_width = parseFloat(window.getComputedStyle(document.getElementById("test-progress-bar"))['width']);
         var bar_item_width = bar_width / test_list_len;
 
         var get_item = function() {
@@ -264,39 +266,57 @@ var Test = {
             var use_assert_data = '';
             if (assert_data.hasOwnProperty(key) && assert_data[key]) {
                 use_assert_data = assert_data[key];
-            } else {
+            }
+
+            if (!use_assert_data['content']) {
                 use_assert_data = History.get_default_assert();
             }
 
-            if (use_assert_data) {
+            // history update
+            var history_params = data;
+            history_params['result'] = res;
+            History.add(history_params);
+
+            var assert_status = true;
+            if (!$.isEmptyObject(use_assert_data)) {
+            //if (use_assert_data) {
                 var assert_type = use_assert_data['type'];
                 var assert_content = use_assert_data['content'];
                 if (assert_type === 'Json') {
-                    assert_content = JSON.parse(assert_content);
+                    try {
+                        assert_content = JSON.parse(assert_content);
+                    } catch (e) {
+                        assert_content = '';
+                    }
 
-                    var assert_status = true;
-                    for (var i in assert_content) {
-                        if (!res.hasOwnProperty(i)) {
-                            assert_status = false;
-                        } else {
-                            if (res[i] !== assert_content[i]) {
+                    if (assert_content) {
+                        for (var i in assert_content) {
+                            if (!res.hasOwnProperty(i)) {
                                 assert_status = false;
+                            } else {
+                                if (res[i] !== assert_content[i]) {
+                                    assert_status = false;
+                                }
                             }
                         }
-                    }
-
-                    if (assert_status) {
-                        _this.success++;
-                        _this.setSuccessNum(_this.success);
-                        successItem.show();
-                        callback(true);
                     } else {
-                        _this.failed++;
-                        _this.setFailedNum(_this.failed);
-                        failedItem.show();
-                        callback(false);
+                        assert_status = false;
                     }
                 }
+            } else {
+                assert_status = false;
+            }
+
+            if (assert_status) {
+                _this.success++;
+                _this.setSuccessNum(_this.success);
+                successItem.show();
+                callback(true);
+            } else {
+                _this.failed++;
+                _this.setFailedNum(_this.failed);
+                failedItem.show();
+                callback(false);
             }
 
             iconItem.attr('data-result', JSON.stringify(res));

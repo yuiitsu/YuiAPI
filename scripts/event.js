@@ -13,8 +13,10 @@ var Event = {
         this.content_tab_change();
         // 表单输入自动增加行，body部分
         this.form_data_body_input();
-        // 发送请求
-        this.send();
+        // 响应类型数据切换
+        this.response_type_change();
+        //
+        this.form_data_type_change();
     },
 
     /**
@@ -61,10 +63,35 @@ var Event = {
     },
 
     /**
-     * 发送请求
+     * 响应类型数据切换
      */
-    send: function() {
+    response_type_change: function() {
+        $('.response-type li').on('click', function() {
+            var id = $(this).attr('data-id');
+            $('.response-type li').removeClass('focus');
+            $(this).addClass('focus');
+            $('.result-box').addClass('hide');
+            $('#' + id).removeClass('hide');
+        });
+    },
 
+    /**
+     * form data type
+     */
+    form_data_type_change: function() {
+        $('input[name=form-data-type]').on('click', function() {
+            var data_type = $(this).val();
+            if (data_type === 'form-data') {
+                $('.form-data-title').show();
+            } else {
+                $('.form-data-title').hide();
+            }
+            $('.form-data-type').hide().each(function() {
+                if (data_type === $(this).attr('data-type')) {
+                    $(this).show();
+                }
+            })
+        });
     }
 };
 

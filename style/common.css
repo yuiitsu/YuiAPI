@@ -4,13 +4,18 @@ Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Mi
 a{text-decoration: none;color:#444;}
 ul{list-style: none;}
 
+/* font size */
 .font-size-20{font-size:20px;}
+
+/* font weight */
+.font-bold{font-weight: bold;}
+
 .color-success{color:#009900;}
 .color-failed{color:#ff0000;}
 .bg-success{background-color:#009900;}
 .bg-danger{background-color:#ff0000;}
 .align-left{text-align: left;}
-.align-right{test-align:right;}
+.align-right{text-align:right;}
 .align-center{text-align:center;}
 .fl{float:left;}
 .fr{float:right;}

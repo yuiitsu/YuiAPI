@@ -11,29 +11,24 @@ var History = {
     assert_default_key: 'assert_default_data',
     /**
      * 添加数据
-     * @param url
-     * @param requestType
-     * @param apiName
-     * @param data
-     * @param result
-     * @param time
-     * @param assert_data
+     * @param params
+     *      params['url']
+     *      params['type']
+     *      params['name']
+     *      params['data']
+     *      params['result']
+     *      params['time']
+     *      params['status']
+     *      params['assertion_data']
      */
-    add: function(url, requestType, apiName, data, result, time, assert_data) {
+    add: function(params) {
         // 获取host
-        this.host = Common.getHost(url);
-        var dataHashKey = Common.md5(url);
+        this.host = Common.getHost(params['url']);
+        var dataHashKey = Common.md5(params['url']);
         //
         var historyData = this.getData();
-        historyData[dataHashKey] = {
-            host: this.host,
-            type: requestType,
-            url: url,
-            name: apiName,
-            data: data,
-            result: result,
-            time: time
-        };
+        historyData[dataHashKey] = params;
+        historyData[dataHashKey]['host'] = this.host;
         this.setItem(this.dataKey, historyData);
         //
         var historyHashData = this.getListData(this.listKey);
@@ -52,10 +47,12 @@ var History = {
             this.setItem(this.hostCacheKey, hostData);
         }
 
-        // assert
-        var assert_result = this.get_obj_data(this.assert_key);
-        assert_result[dataHashKey] = assert_data;
-        this.setItem(this.assert_key, assert_result);
+        // assertion
+        if (params['assertion_data']) {
+            var assert_result = this.get_obj_data(this.assert_key);
+            assert_result[dataHashKey] = params['assertion_data'];
+            this.setItem(this.assert_key, assert_result);
+        }
 
         //
         this.load();

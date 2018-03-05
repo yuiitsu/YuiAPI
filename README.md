@@ -10,7 +10,8 @@
 4. 调整全局断言的设置方式
 5. 修正断言的检查方式
 6. 增加response的headers输出
-7. 增加response的cookies输出
+7. 调整api请求时间为消耗时间
+8. 增加结果的http状态显示
 
 ### v0.0.2
 

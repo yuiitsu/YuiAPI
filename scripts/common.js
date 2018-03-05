@@ -90,27 +90,39 @@ var Common = {
      * @returns {{}}
      */
     getFormParams: function() {
-        var selectObj = $('.form-select');
-        var keyObj = $('.form-key');
-        var valueObj = $('.form-value');
-        var result = {};
-        var i = 0;
-        selectObj.each(function() {
-            if($(this).is(":checked")) {
-                var key = $.trim(keyObj.eq(i).val());
-                if (key) {
-                    result[key] = $.trim(valueObj.eq(i).val());
-                }
+        return {
+            get_data: function(parent_obj) {
+                var result = {},
+                    i = 0,
+                    select_obj = parent_obj.find('.form-select'),
+                    key_obj = parent_obj.find('.form-key'),
+                    value_obj = parent_obj.find('.form-value');
+
+                select_obj.each(function() {
+                    if($(this).is(":checked")) {
+                        var key = $.trim(key_obj.eq(i).val());
+                        if (key) {
+                            result[key] = $.trim(value_obj.eq(i).val());
+                        }
+                    }
+                    i++;
+                });
+
+                return result;
+            },
+            header: function() {
+                return this.get_data($('#form-data-headers'));
+            },
+            form: function() {
+                return this.get_data($('#form-data'));
             }
-            i++;
-        });
-        return result;
+        };
     },
 
     /**
      * 高亮显示代码
      * @param json
-     * @returns {string|XML}
+     * @returns {string}
      */
     syntaxHighlight: function(json) {
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -150,21 +162,23 @@ var Common = {
      * @param callBack 回调函数
      */
     request: function(strUrl, objParams, objData, callBack){
-        var objJgbAjaxHandler = $.ajax({
+        var options = {
             url: strUrl,
             type: objParams.type ? objParams.type : "GET",
             data: objData,
             async: objParams.async !== 'false',
-            dataType: "json"
-        });
-        objJgbAjaxHandler.fail(function(d){
+            dataType: "json",
+            headers: objParams['headers']
+        };
+        var objJgbAjaxHandler = $.ajax(options);
+        objJgbAjaxHandler.fail(function(jqXHR, text_status, d){
             if($.isFunction(callBack)){
-                callBack(d);
+                callBack(d, jqXHR);
             }
         });
-        objJgbAjaxHandler.done(function(d){
+        objJgbAjaxHandler.done(function(d, text_status, jqXHR){
             if($.isFunction(callBack)){
-                callBack(d);
+                callBack(d, jqXHR);
             }
         });
     },

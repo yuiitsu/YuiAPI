@@ -90,44 +90,60 @@ var App = {
             // 从缓存中获取数据
             var historyData = History.getData();
             if (historyData[key]) {
+                console.log(historyData[key]);
                 var url = historyData[key]['url'];
                 var requestType = historyData[key]['type'];
+                var form_data_type = historyData[key]['data_type'];
                 var data = historyData[key]['data'];
                 var result = historyData[key]['result'];
                 var apiName = historyData[key]['name'];
                 var time = historyData[key]['time'];
+                var status = historyData[key]['status'];
                 $('#request-type').val(requestType);
                 self.requestType = requestType;
                 $('#url').val(url);
                 $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
                 $('#api-name').val(apiName);
                 $('#send-time').html(time);
+                $('#response-status').html(status);
                 $('.tabs li').eq(1).click();
                 // 显示参数
-                var _html = [];
-                for (var i in data) {
-                    if (data.hasOwnProperty(i)) {
-                        var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
-                        var value = data[i].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
-                        var _htmlItem = '<tr>' +
-                            '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                            '<td>' +
-                            '<input type="text" class="form-key form-data-item input-text" value="' + item_key + '" />' +
-                            '</td>' +
-                            '<td>' +
-                            '<input type="text" class="form-value form-data-item input-text" value="' + value + '" />' +
-                            '</td>' +
-                            '</tr>';
-                        _html.push(_htmlItem);
+                if (!form_data_type || form_data_type === 'form-data') {
+                    var data_type = 'form-data';
+                    var _html = [];
+                    for (var i in data) {
+                        if (data.hasOwnProperty(i)) {
+                            var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
+                            var value = data[i].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
+                            var _htmlItem = '<tr>' +
+                                '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
+                                '<td>' +
+                                '<input type="text" class="form-key form-data-item input-text" value="' + item_key + '" data-type="' + data_type + '" />' +
+                                '</td>' +
+                                '<td>' +
+                                '<input type="text" class="form-value form-data-item input-text" value="' + value + '" data-type="' + data_type + '" />' +
+                                '</td>' +
+                                '</tr>';
+                            _html.push(_htmlItem);
+                        }
+                    }
+                    _html.push('<tr>' +
+                        '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
+                        '<td><input type="text" class="form-key form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
+                        '<td><input type="text" class="form-value form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
+                        '</tr>');
+                    if (_html.length > 0) {
+                        $('#form-data').html(_html.join(""));
                     }
                 }
-                _html.push('<tr>' +
-                            '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                            '<td><input type="text" class="form-key form-data-item input-text" value="" /> </td>' +
-                            '<td><input type="text" class="form-value form-data-item input-text" value="" /> </td>' +
-                        '</tr>');
-                if (_html.length > 0) {
-                    $('#form-data').html(_html.join(""));
+
+                if (form_data_type === 'raw') {
+                    $('input[name=form-data-type]').each(function() {
+                        if ($(this).val() === 'raw') {
+                            $(this).click();
+                        }
+                    });
+                    $('#form-data-raw').find('textarea').val(data);
                 }
                 // host
                 //var host = Common.getHost(url);
@@ -235,7 +251,7 @@ var App = {
                     content.push('<li style="text-align:left;">'+ host_list[i] +'</li>');
                 }
             }
-            content.push('</ul>')
+            content.push('</ul>');
             Common.tips($(this), content.join(''));
         });
 
@@ -246,6 +262,7 @@ var App = {
             var url = $.trim(url_obj.val());
             //var type = $('#request-type').val();
             var apiName = $.trim($('#api-name').val());
+            var form_data_type = $('input[name=form-data-type]:checked').val();
             if (url) {
                 if (url.substr(0, 7) !== 'http://' && url.substr(0, 8) !== 'https://') {
                     url = 'http://' + url;
@@ -253,28 +270,58 @@ var App = {
                 }
                 $('.tabs li').eq(1).click();
                 // 获取参数
-                var formData = Common.getFormParams();
+                var formData = '',
+                    header_data = Common.getFormParams().header();
+
+                switch (form_data_type) {
+                    case "form-data":
+                        formData = Common.getFormParams().form();
+                        break;
+                    case "raw":
+                        formData = $.trim($('#form-data-raw').find('textarea').val());
+                }
+
                 $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
                 var result_obj = $('#result');
                 result_obj.css('background-color', '#efefef');
-                Common.request(url, {'type': self.requestType}, formData, function(res) {
-                    result_obj.html(Common.syntaxHighlight(JSON.stringify(res, undefined, 4))).css('background-color', '#fff');
+                var start_timestamp=new Date().getTime();
+                Common.request(url, {
+                    type: self.requestType,
+                    headers: header_data
+                }, formData, function(res, jqXHR) {
+                    // headers
+                    $('#response-headers').html(jqXHR.getAllResponseHeaders());
+                    // response
+                    var result = jqXHR.status === 200 ? Common.syntaxHighlight(JSON.stringify(res, undefined, 4)) : res;
+                    result_obj.html(result).css('background-color', '#fff');
                     $this.attr('disabled', false).html('Send');
-                    // 记录历史
-                    var date = new Date();
-                    var sendTime = date.toLocaleString();
-                    $('#send-time').html(sendTime);
+                    // 时间
+                    var end_timestamp=new Date().getTime();
+                    var use_time = end_timestamp - start_timestamp;
+                    $('#send-time').html(use_time);
+                    // 状态
+                    $('#response-status').text(jqXHR.status);
                     // assert
-                    var assert_type = $('input[name=form-data-assert-type][checked]').val();
+                    var assert_type = $('input[name=form-data-assert-type]:checked').val();
                     var assert_content = $.trim($('#form-data-assert').val());
-                    var assert_data = '';
+                    var assertion_data = '';
                     if (assert_type && assert_content) {
-                        assert_data = {
+                        assertion_data = {
                             type: assert_type,
                             content: assert_content
                         };
                     }
-                    History.add(url, self.requestType, apiName, formData, res, sendTime, assert_data);
+                    History.add({
+                        url: url,
+                        type: self.requestType,
+                        name: apiName,
+                        data: formData,
+                        data_type: form_data_type,
+                        result: res,
+                        time: use_time,
+                        status: jqXHR.status,
+                        assertion: assertion_data
+                    });
                 });
             }
         });
@@ -310,8 +357,8 @@ var App = {
             $('.form-params-type li').removeClass('focus');
             $(this).addClass('focus');
             var index = $(this).index();
-            $('.form-data').find('table').addClass('hide');
-            $('.form-data').find('table').eq(index).removeClass('hide');
+            $('.form-data').find('table').addClass('hide').eq(index).removeClass('hide');
+            //$('.form-data').find('table').eq(index).removeClass('hide');
         });
 
         // format
@@ -388,16 +435,6 @@ var App = {
                 $this.requestType = key;
             }
         });
-        //$('.request-type-in').click(function() {
-        //    $('.request-type-list').show();
-        //});
-        //$('.request-type-list > a').click(function(e) {
-        //    var key = $(this).attr('data-key');
-        //    $this.requestType = key;
-        //    $('#request-type').text(key);
-        //    $('.request-type-list').hide();
-        //    e.preventDefault();
-        //});
     },
     listenUrlSelect: function() {
         $('#url').focus(function() {

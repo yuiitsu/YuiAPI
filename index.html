@@ -55,18 +55,28 @@
         </div>
         <div class="left-content hide" id="output-content">
             <div class="tabs-bottom">
-                <ul>
-                    <li class="focus">body</li>
-                    <li>headers</li>
-                    <li>cookies</li>
+                <ul class="response-type">
+                    <li class="focus" data-id="result">body</li>
+                    <li data-id="response-headers">headers</li>
+                    <!--
+                    <li data-id="response-cookies">cookies</li>
+                    -->
                 </ul>
+                <!--
                 <i class="mdi mdi-plus-circle fr"></i>
+                -->
                 <div class="display-inline send-time">
-                    <label>update:</label>
-                    <span id="send-time"></span>
+                    <label>status:</label>
+                    <span id="response-status" class="color-success font-bold">none</span>
+                    <label>time:</label>
+                    <span id="send-time" class="font-bold"></span> ms
                 </div>
             </div>
             <pre id="result" class="result-box">click the send button for a response</pre>
+            <pre id="response-headers" class="result-box hide">click the send button for a response</pre>
+            <!--
+            <pre id="response-cookies" class="result-box hide">click the send button for a response</pre>
+            -->
         </div>
         <div class="left-content hide" id="test-content">
             <div class="test-count-line left-content-top fl">
@@ -146,7 +156,7 @@
                     <ul>
                         <li>headers</li>
                         <li class="focus">body</li>
-                        <li>assert</li>
+                        <li>assertion</li>
                         <li>format</li>
                     </ul>
                 </div>
@@ -176,21 +186,28 @@
                                     <!--
                                     <label><input type="radio" name="form-data-type" /> form-data</label>
                                     -->
-                                    <label><input type="radio" name="form-data-type" checked="checked" /> x-www-form-urlencoded</label>
-                                    <label><input type="radio" name="form-data-type" /> raw</label>
+                                    <label><input type="radio" name="form-data-type" checked="checked" value="form-data" /> x-www-form-urlencoded</label>
+                                    <label><input type="radio" name="form-data-type" value="raw" /> raw</label>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="form-data-title">
                                 <td></td>
                                 <td>Key</td>
                                 <td>Value</td>
                             </tr>
                         </thead>
-                        <tbody id="form-data" class="form-data-input">
+                        <tbody id="form-data" class="form-data-input form-data-type" data-type="form-data">
                             <tr>
                                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" /> </td>
                                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" /> </td>
+                            </tr>
+                        </tbody>
+                        <tbody id="form-data-raw" class="form-data-input form-data-type hide" data-type="raw">
+                            <tr>
+                                <td colspan="3">
+                                    <textarea style="padding:10px;width:100%;height:500px;"></textarea>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

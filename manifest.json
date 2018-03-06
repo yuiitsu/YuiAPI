@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "YuiAPI",
-    "version": "0.0.2",
-    "description":"HTTP api test client, Auto test, API document",
+    "version": "0.0.3",
+    "description":"RESTClient, Auto test, API document",
     "background": {
         "scripts": [
             "scripts/background.js"

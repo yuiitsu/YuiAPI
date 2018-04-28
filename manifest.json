@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "YuiAPI",
+    "name": "YuiAPI RESTClient Test Document",
     "version": "0.0.3",
     "description":"RESTClient, Auto test, API document",
     "background": {
@@ -9,7 +9,7 @@
         ]
     },
     "browser_action": {
-        "default_title": "YuiAPI",
+        "default_title": "YuiAPI RESTClient Test Document",
         "default_icon": "images/logo48.png"
     },
     "permissions": [

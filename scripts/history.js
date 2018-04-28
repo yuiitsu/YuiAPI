@@ -104,9 +104,13 @@ var History = {
      * 构建history列表
      */
     load: function() {
-        var _html = this.build_ui_list(null);
-        $('#history-content').find('tbody').html(_html.join(""));
-        $('#history-count').html(_html.length);
+        // host列表
+        this.build_host_ui_list();
+        //$('#history-host').append(host_list_html.join(""));
+        //
+        this.build_ui_list(null);
+        //$('#history-content').find('tbody').html(_html.join(""));
+        //$('#history-count').html(_html.length);
         //
         //if (hostData) {
         //    _html = [];
@@ -122,10 +126,32 @@ var History = {
     },
 
     /**
+     * 构建host list界面
+     * @param replace
+     */
+    build_host_ui_list: function(replace) {
+        var host_list = this.get_host_list();
+        var len = host_list.length,
+            _html = [];
+        for (var i = 0; i < len; i++) {
+            var _html_item = '<li data-host="'+ host_list[i] +'">' +
+                    '<span>'+ host_list[i] +'</span>' +
+                    '<i class="mdi mdi-close"></i>' +
+                '</li>';
+            _html.push(_html_item);
+        }
+        if (replace) {
+            $('#history-host').html(_html.join(""));
+        } else {
+            $('#history-host').append(_html.join(""));
+        }
+    },
+
+    /**
      * 构建界面LISt
      * @returns {Array}
      */
-    build_ui_list: function(data) {
+    build_ui_list: function(data, host) {
         var hashData = this.getListData(this.listKey);
         var historyData = data ? data : this.getData();
         var _html = [];
@@ -134,7 +160,11 @@ var History = {
             for (var i = len - 1; i >=0; i--) {
                 var key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
+                    if (host && historyData[key]['host'] !== host) {
+                        continue;
+                    }
                     var request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
+                    //var url = historyData[key]['url'].replace(historyData[key]['host'], '');
                     var _htmlItem = '<tr data-key="' + key + '">' +
                         '<td class="w-30 history-item-action" data-key="' + key + '">' +
                             '<i class="mdi mdi-dots-horizontal font-size-20"></i>' +
@@ -150,7 +180,10 @@ var History = {
                 }
             }
         }
-        return _html;
+
+        $('#history-content').find('tbody').html(_html.join(""));
+        $('#history-count').html(_html.length);
+        //return _html;
     },
 
     /**
@@ -230,7 +263,6 @@ var History = {
         return result ? result : {};
     },
 
-
     /**
      * 删除数据
      * @param key
@@ -255,6 +287,23 @@ var History = {
         //
         this.load();
     },
+
+    /**
+     * 删除host
+     * @param host
+     */
+    del_host: function(host) {
+        var host_list = this.get_host_list();
+        for (var i in host_list) {
+            if (host_list[i] === host) {
+                host_list.splice(i, 1);
+            }
+        }
+        this.setItem(this.hostCacheKey, host_list);
+        //
+        //this.build_host_ui_list('replace');
+    },
+
     /**
      * 清除较早数据
      */
@@ -321,9 +370,9 @@ var History = {
                 }
             }
 
-            var _html = this.build_ui_list(result_data);
-            $('#history-content').find('tbody').html(_html.join(""));
-            $('#history-count').html(_html.length);
+            this.build_ui_list(result_data);
+            //$('#history-content').find('tbody').html(_html.join(""));
+            //$('#history-count').html(_html.length);
         }
     }
 };

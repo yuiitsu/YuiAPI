@@ -64,7 +64,7 @@ textarea{padding:10px;}
 .left-content{background-color:#fff;padding:10px;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;
     border-radius: 3px;}
 .left-content-top{height:40px;}
-.left-content-main{-webkit-flex: 1;overflow:auto;padding-right:5px;}
+.left-content-main{-webkit-flex: 1;overflow:auto;padding-right:5px;display: -webkit-flex;-webkit-flex-direction: row;}
 .tabs-bottom{height:30px;line-height:30px;}
 .tabs-bottom ul{}
 .tabs-bottom ul li{float:left;padding:0 20px;cursor:pointer;border-radius: 3px;}
@@ -78,7 +78,24 @@ textarea{padding:10px;}
 .history-search-label{width:60px;}
 .history-search-box input{-webkit-flex: 1;}
 .request-type{}
-.request-type span{display:inline-block;padding:10px;background-color: #000;color:#fff;font-size:12px;border-radius: 3px;}
+.request-type span{display:inline-block;padding:10px;background-color: #000;color:#fff;font-size:12px;
+    border-radius: 3px;}
+.history-host{width:200px;overflow: auto;background-color:#000;}
+.history-host ul{color:#fff;padding:10px;}
+.history-host ul li{word-break:break-all;cursor: pointer;
+    border-radius: 3px;margin-bottom:5px;background-color:#222;display: -webkit-flex;-webkit-flex-direction: row;}
+.history-host ul li.focus span{background-color:#444;color:#fff;}
+.history-host ul li:hover span{background-color:#555;color:#fff;}
+.history-host ul li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#ccc;
+    border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
+.history-host ul li i{display: inline-block;width:20px;text-align:center;background-color:#333;color:#333;
+    border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
+.history-host ul li i:hover{background-color:#ff0000;color:#fff;}
+.history-host::-webkit-scrollbar {width: 1px;}
+.history-host::-webkit-scrollbar-track{}
+.history-host::-webkit-scrollbar-thumb{border-radius: 1px;background: #222;}
+.history-list-box{-webkit-flex: 1;overflow: auto;}
+.history-list-box::-webkit-scrollbar {width: 10px;height:10px;}
 .history-table{min-width:600px;width: 100%;font-size:13px;}
 .history-table th{border-bottom:1px solid #ddd;padding:8px;}
 .history-table tbody tr{cursor:pointer;}

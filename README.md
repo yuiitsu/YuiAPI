@@ -2,6 +2,11 @@
 一个chrome扩展，API测试客户端，API文档，自动化测试
 
 ## Update logs
+### v0.0.4
+
+1.增加host归类及查询api list
+2.增加host的删除
+
 ### v0.0.3
 
 1. 增加PUT/DELETE请求类型

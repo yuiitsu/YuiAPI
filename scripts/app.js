@@ -219,14 +219,17 @@ var App = {
                         history_data: history_data,
                         host_list: host_list
                     };
-                    Common.module(name, JSON.stringify(data), '<button class="btn btn-primary" id="export-copy">Copy</button>');
+                    var _html = '<h2>coming soon...</h2>';
+                    Common.module(name, _html, '<button class="btn btn-primary" id="export-copy">Copy</button>');
 
                     $('#export-copy').off('click').on('click', function() {
                         $('.module-main').clone();
                     });
                     break;
                 case "Import":
-                    Common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
+                    var _html = '<h2>coming soon...</h2>';
+                    //Common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
+                    Common.module(name, _html, '<button class="btn btn-primary">Import</button>');
                     break;
                 case "default assertion":
                     var default_assert_data = History.get_default_assert();

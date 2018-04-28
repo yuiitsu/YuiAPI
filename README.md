@@ -4,8 +4,8 @@
 ## Update logs
 ### v0.0.4
 
-1.增加host归类及查询api list
-2.增加host的删除
+1. 增加host归类及查询api list
+2. 增加host的删除
 
 ### v0.0.3
 

@@ -17,6 +17,8 @@ var Event = {
         this.response_type_change();
         //
         this.form_data_type_change();
+        // 选择host检索history
+        this.select_host_to_search();
     },
 
     /**
@@ -35,7 +37,7 @@ var Event = {
                 var default_assert_data = History.get_default_assert();
                 if ($.isEmptyObject(default_assert_data)) {
                     Common.module(
-                        name,
+                        'default assertion',
                         '<p style="height:30px;line-height:30px;"><label><input type="radio" name="default-assertion-type" checked="checked" value="Json" /> Json</label></p><textarea style="width:100%;height:468px;" id="default-assertion-content"></textarea>',
                         '<button class="btn btn-primary" id="save-default-assert">Save</button>'
                     );
@@ -94,6 +96,29 @@ var Event = {
                     $(this).show();
                 }
             })
+        });
+    },
+
+    /**
+     * 选择host检索history
+     */
+    select_host_to_search: function() {
+        $('#history-host').on('click', 'li span', function(e) {
+            var host = $(this).parent().attr('data-host');
+            host = host ? host : '';
+            $('#history-host > li').removeClass('focus');
+            $(this).parent().addClass('focus');
+            History.build_ui_list(null, host);
+            e.stopPropagation();
+        }).on('click', 'li i', function(e) {
+            var host = $(this).parent().attr('data-host');
+            if (host) {
+                if (confirm('Confirm to delete the host')) {
+                    History.del_host(host);
+                    $(this).parent().remove();
+                }
+            }
+            e.stopPropagation();
         });
     }
 };

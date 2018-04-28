@@ -30,28 +30,41 @@
         </div>
         <!-- History start -->
         <div class="left-content" id="history-content">
+            <!-- History search start -->
             <div class="test-count-line left-content-top">
                 <div class="test-count-data history-search-box">
                     <label class="history-search-label">Search:</label>
                     <input type="text" class="input-text" id="history-search" placeholder="name or url keywords. press enter" />
                 </div>
             </div>
+            <!-- History search end -->
             <div class="left-content-main">
-                <table class="history-table" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th class="w-30" style="cursor: pointer">
-                                <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
-                            </th>
-                            <th class="w-50">Type</th>
-                            <th class="align-left">Name</th>
-                            <th class="align-left">URL
-                                <span class="fr">count: <span id="history-count">0</span></span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <!-- History host start -->
+                <div class="history-host radius-small-all">
+                    <ul id="history-host" class="radius-small-all">
+                        <li class="focus"><span class="radius-small-all">All</span></li>
+                    </ul>
+                </div>
+                <!-- History host end -->
+                <!-- History list-box start -->
+                <div class="history-list-box">
+                    <table class="history-table" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="w-30" style="cursor: pointer">
+                                    <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
+                                </th>
+                                <th class="w-50">Type</th>
+                                <th class="align-left">Name</th>
+                                <th class="align-left">URL
+                                    <span class="fr">count: <span id="history-count">0</span></span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- History list-box end -->
             </div>
         </div>
         <!-- History end -->

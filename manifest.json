@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "YuiAPI RESTClient Test Document",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description":"RESTClient, Auto test, API document",
     "background": {
         "scripts": [

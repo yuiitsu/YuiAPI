@@ -19,6 +19,8 @@ var Event = {
         this.form_data_type_change();
         // 选择host检索history
         this.select_host_to_search();
+        // history侧边栏开关
+        this.history_switch();
     },
 
     /**
@@ -119,6 +121,26 @@ var Event = {
                 }
             }
             e.stopPropagation();
+        });
+    },
+
+    /**
+     * history侧边栏开关
+     */
+    history_switch: function() {
+        $('#history-switch-button').on('click', function() {
+            var target = $('#history-sidebar');
+            if (target.css('display') === 'flex') {
+                target.hide();
+                $(this).attr('title', 'Open the sidebar').find('i').addClass('mdi-chevron-right');
+            } else {
+                target.show();
+                $(this).attr('title', 'Hide the sidebar').find('i').removeClass('mdi-chevron-right hover');
+            }
+        }).on('mouseover', function() {
+            $(this).find('i').addClass('hover');
+        }).on('mouseout', function() {
+            $(this).find('i').removeClass('hover');
         });
     }
 };

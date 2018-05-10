@@ -2,6 +2,14 @@
 一个chrome扩展，API测试客户端，API文档，自动化测试
 
 ## Update logs
+### v0.0.5
+
+1. 增加分组
+2. 增加分组内API连续请求
+3. 增加请求参数为上一个请求的响应结果数据
+4. 调整UI
+5. History sidebar增加隐藏功能
+
 ### v0.0.4
 
 1. 增加host归类及查询api list

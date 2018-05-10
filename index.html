@@ -15,11 +15,14 @@
 <div class="container">
     <div class="content-left">
         <div class="left-top-line">
+            <div class="logo display-inline">
+                <img src="images/logo48.png" alt="logo" />
+            </div>
             <div class="tabs display-inline">
                 <ul>
                     <li class="focus" data-id="history-content">History</li>
                     <li data-id="output-content">Output</li>
-                    <li data-id="test-content">Auto Test</li>
+                    <li data-id="test-content">Test</li>
                     <li data-id="api-content">API Document</li>
                 </ul>
             </div>
@@ -40,10 +43,19 @@
             <!-- History search end -->
             <div class="left-content-main">
                 <!-- History host start -->
-                <div class="history-host radius-small-all">
-                    <ul id="history-host" class="radius-small-all">
-                        <li class="focus"><span class="radius-small-all">All</span></li>
+                <div class="history-group-box" id="history-sidebar">
+                    <ul class="history-group-tab">
+                        <li class="focus">Host</li>
+                        <li>Group</li>
                     </ul>
+                    <div class="history-host radius-small-all">
+                        <ul id="history-host" class="radius-small-all">
+                            <li class="focus"><span class="radius-small-all">All</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="history-switch" id="history-switch-button" title="Hide the sidebar">
+                    <i class="mdi mdi-chevron-left vertical-middle"></i>
                 </div>
                 <!-- History host end -->
                 <!-- History list-box start -->
@@ -55,7 +67,7 @@
                                     <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                                 </th>
                                 <th class="w-50">Type</th>
-                                <th class="align-left">Name</th>
+                                <th class="align-left history-list-name">Name</th>
                                 <th class="align-left">URL
                                     <span class="fr">count: <span id="history-count">0</span></span>
                                 </th>

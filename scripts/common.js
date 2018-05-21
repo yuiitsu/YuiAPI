@@ -91,30 +91,61 @@ var Common = {
      */
     getFormParams: function() {
         return {
-            get_data: function(parent_obj) {
-                var result = {},
+            /**
+             * 从表单中获取参数与值
+             * @param parent_obj 父对象
+             * @param is_form_data 类型是否为form-data
+             * @returns {{data, history_data}}
+             */
+            get_data: function(parent_obj, is_form_data) {
+                let form_data = is_form_data ? new FormData() : {},
+                    history_data = {},
                     i = 0,
                     select_obj = parent_obj.find('.form-select'),
                     key_obj = parent_obj.find('.form-key'),
-                    value_obj = parent_obj.find('.form-value');
+                    value_type_obj = parent_obj.find('.form-value-data-type'),
+                    value_obj = parent_obj.find('.form-value'),
+                    description_obj = parent_obj.find('.form-description');
 
-                select_obj.each(function() {
-                    if($(this).is(":checked")) {
-                        var key = $.trim(key_obj.eq(i).val());
+                select_obj.each(function () {
+                    if ($(this).is(":checked")) {
+                        let key = $.trim(key_obj.eq(i).val());
                         if (key) {
-                            result[key] = $.trim(value_obj.eq(i).val());
+                            let value = $.trim(value_obj.eq(i).val()),
+                                value_type = 'text';
+                            if (is_form_data) {
+                                if (value_type_obj.eq(i).val() === 'file') {
+                                    form_data.append(key, value_obj.eq(i)[0].files[0]);
+                                    value_type = 'file';
+                                } else {
+                                    form_data.append(key, value);
+                                }
+                            } else {
+                                form_data[key] = value;
+                            }
+                            history_data[key] = {
+                                value: value,
+                                value_type: value_type,
+                                description: $.trim(description_obj.eq(i).val())
+                            };
                         }
                     }
                     i++;
                 });
 
-                return result;
+                return {
+                    data: form_data,
+                    history_data: history_data
+                };
             },
             header: function() {
                 return this.get_data($('#form-data-headers'));
             },
             form: function() {
                 return this.get_data($('#form-data'));
+            },
+            form_data: function() {
+                return this.get_data($('#form-data-true'), true);
             }
         };
     },
@@ -162,21 +193,30 @@ var Common = {
      * @param callBack 回调函数
      */
     request: function(strUrl, objParams, objData, callBack){
-        var options = {
+        let options = {
             url: strUrl,
             type: objParams.type ? objParams.type : "GET",
             data: objData,
             async: objParams.async !== 'false',
-            dataType: "json",
-            headers: objParams['headers']
+            dataType: objParams.data_type ? objParams.data_type : "json",
+            headers: objParams['headers'],
+            processData: objParams.processData === undefined ? true : objParams.processData
         };
-        var objJgbAjaxHandler = $.ajax(options);
+
+        if (objParams.hasOwnProperty('contentType')) {
+            options['contentType'] = objParams.contentType;
+        }
+
+        let objJgbAjaxHandler = $.ajax(options);
         objJgbAjaxHandler.fail(function(jqXHR, text_status, d){
             if($.isFunction(callBack)){
-                callBack(d, jqXHR);
+                callBack(jqXHR.responseText, jqXHR);
             }
         });
         objJgbAjaxHandler.done(function(d, text_status, jqXHR){
+            console.log(d);
+            console.log(text_status);
+            console.log(jqXHR);
             if($.isFunction(callBack)){
                 callBack(d, jqXHR);
             }

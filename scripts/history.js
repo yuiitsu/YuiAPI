@@ -130,11 +130,12 @@ var History = {
      * @param replace
      */
     build_host_ui_list: function(replace) {
-        var host_list = this.get_host_list();
-        var len = host_list.length,
+        let host_list = this.get_host_list(),
+            len = host_list.length,
             _html = [];
-        for (var i = 0; i < len; i++) {
-            var _html_item = '<li data-host="'+ host_list[i] +'">' +
+
+        for (let i = 0; i < len; i++) {
+            let _html_item = '<li data-host="'+ host_list[i] +'">' +
                     '<span>'+ host_list[i] +'</span>' +
                     '<i class="mdi mdi-close"></i>' +
                 '</li>';
@@ -148,24 +149,24 @@ var History = {
     },
 
     /**
-     * 构建界面LISt
+     * 构建界面List
      * @returns {Array}
      */
     build_ui_list: function(data, host) {
-        var hashData = this.getListData(this.listKey);
-        var historyData = data ? data : this.getData();
-        var _html = [];
+        let hashData = this.getListData(this.listKey),
+            historyData = data ? data : this.getData(),
+            _html = [];
+
         if (hashData) {
-            var len = hashData.length;
-            for (var i = len - 1; i >=0; i--) {
-                var key = hashData[i];
+            let len = hashData.length;
+            for (let i = len - 1; i >=0; i--) {
+                let key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
                     if (host && historyData[key]['host'] !== host) {
                         continue;
                     }
-                    var request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
-                    //var url = historyData[key]['url'].replace(historyData[key]['host'], '');
-                    var _htmlItem = '<tr data-key="' + key + '">' +
+                    let request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
+                    let _htmlItem = '<tr data-key="' + key + '">' +
                         '<td class="w-30 history-item-action" data-key="' + key + '">' +
                             '<i class="mdi mdi-dots-horizontal font-size-20"></i>' +
                         '</td>' +
@@ -180,9 +181,25 @@ var History = {
                 }
             }
         }
-
         $('#history-content').find('tbody').html(_html.join(""));
-        $('#history-count').html(_html.length);
+
+        // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
+        let history_count = _html.length;
+        if (!host) {
+            $('#history-count-all').text(history_count);
+        } else {
+            $('#history-host').find('li').each(function() {
+                let data_host = $(this).attr('data-host');
+                if (host === data_host) {
+                    let target = $(this).find('em.history-count');
+                    if (target.length === 0) {
+                        $(this).find('span').append(' <em class="history-count">('+ history_count +')</em>');
+                    } else {
+                        target.text('(' + history_count + ')');
+                    }
+                }
+            });
+        }
         //return _html;
     },
 

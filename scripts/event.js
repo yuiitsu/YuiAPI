@@ -3,7 +3,7 @@
  * Created by onlyfu on 2018/02/16.
  */
 
-var Event = {
+let Event = {
 
     /**
      * init
@@ -52,18 +52,35 @@ var Event = {
      * 表单输入自动增加行，body部分
      */
     form_data_body_input: function() {
-        var form_data_obj = $('.form-data');
+        let form_data_obj = $('.form-data');
         form_data_obj.on('input', '.form-data-item', function() {
-            var data_type = $(this).attr('data-type');
-            var target_obj = $('#' + data_type);
-            var parent = $(this).parent().parent();
+            let data_type = $(this).attr('data-type');
+            let target_obj = $('#' + data_type);
+            let parent = $(this).parent().parent();
             if (parent.index() + 1 === target_obj.find('tr').length) {
                 // 创建新的一行
-                var _htmlItem = '<tr>' +
-                            '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                            '<td><input type="text" class="form-key form-data-item input-text" value="" data-type="'+ data_type +'" /> </td>' +
-                            '<td><input type="text" class="form-value form-data-item input-text" value="" data-type="'+ data_type +'" /> </td>' +
+                let _htmlItem = '<tr>' +
+                        '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
+                        '<td><input type="text" class="form-key form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
+                        '<td class="display-flex-row">{form-data-type}<input type="text" class="form-value form-data-item input-text display-flex-auto" value="" data-type="' + data_type + '" /> </td>' +
+                        '<td><input type="text" class="form-description form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
                         '</tr>';
+
+                // 根据类型不同，替换目标对象
+                let _html_form_data_type = '';
+                switch (data_type)  {
+                    case "form-data-true":
+                        _html_form_data_type = '' +
+                            '<select class="w-50 radius-small-all border-normal form-value-data-type">' +
+                                '<option value="text">Text</option>' +
+                                '<option value="file">File</option>' +
+                            '</select>';
+                        break;
+                    default:
+                        break;
+                }
+                _htmlItem = _htmlItem.replace("{form-data-type}", _html_form_data_type);
+
                 target_obj.append(_htmlItem);
             }
         });
@@ -87,12 +104,19 @@ var Event = {
      */
     form_data_type_change: function() {
         $('input[name=form-data-type]').on('click', function() {
-            var data_type = $(this).val();
-            if (data_type === 'form-data') {
+            let data_type = $(this).val();
+            if (data_type === 'form-data' || data_type === 'form-data-true') {
                 $('.form-data-title').show();
             } else {
                 $('.form-data-title').hide();
             }
+
+            if (data_type === 'raw') {
+                $('#raw-content-type').show();
+            } else {
+                $('#raw-content-type').hide();
+            }
+
             $('.form-data-type').hide().each(function() {
                 if (data_type === $(this).attr('data-type')) {
                     $(this).show();

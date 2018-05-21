@@ -2,7 +2,6 @@
  * 请求表单的事件监听
  * Created by Yuiitsu on 2018/05/21.
  */
-
 let event_form = {
     /**
      * 执行事件监听
@@ -25,7 +24,6 @@ let event_form = {
                     break;
                 case "file":
                     $(this).parent().find('input').attr('type', 'file').attr('name', 'file');
-                    //$('#form-data-form').attr('enctype', 'multipart/form-data');
                     break;
                 default:
                     alert('type error.');

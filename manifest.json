@@ -1,8 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "YuiAPI RESTClient Test Document",
+    "name": "YuiAPI REST Client,Test,Document",
     "version": "0.0.5",
-    "description":"RESTClient, Auto test, API document",
+    "description":"REST Client, Test, API document",
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "background": {
         "scripts": [
             "scripts/background.js"

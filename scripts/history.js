@@ -106,55 +106,26 @@ var History = {
     load: function() {
         // host列表
         this.build_host_ui_list();
-        //$('#history-host').append(host_list_html.join(""));
-        //
         this.build_ui_list(null);
-        //$('#history-content').find('tbody').html(_html.join(""));
-        //$('#history-count').html(_html.length);
-        //
-        //if (hostData) {
-        //    _html = [];
-        //    for (var i in hostData) {
-        //        var select = '';
-        //        if (this.host === hostData[i]) {
-        //            select = 'selected="selected"';
-        //        }
-        //        _html.push('<option value="'+ hostData[i] +'" '+ select +'>'+ hostData[i] +'</option>');
-        //    }
-        //    $('#host-select').html(_html.join(""));
-        //}
     },
 
     /**
      * 构建host list界面
-     * @param replace
      */
-    build_host_ui_list: function(replace) {
-        let host_list = this.get_host_list(),
-            len = host_list.length,
-            _html = [];
-
-        for (let i = 0; i < len; i++) {
-            let _html_item = '<li data-host="'+ host_list[i] +'">' +
-                    '<span>'+ host_list[i] +'</span>' +
-                    '<i class="mdi mdi-close"></i>' +
-                '</li>';
-            _html.push(_html_item);
-        }
-        if (replace) {
-            $('#history-host').html(_html.join(""));
-        } else {
-            $('#history-host').append(_html.join(""));
-        }
+    build_host_ui_list: function() {
+        let host_list = this.get_host_list();
+        View.display('history', 'sidebar', host_list, '#history-sidebar');
     },
 
     /**
      * 构建界面List
-     * @returns {Array}
+     * @param data 数据，没有值使用所有数据
+     * @param host 指定host数据
      */
     build_ui_list: function(data, host) {
         let hashData = this.getListData(this.listKey),
             historyData = data ? data : this.getData(),
+            list = [],
             _html = [];
 
         if (hashData) {
@@ -165,26 +136,15 @@ var History = {
                     if (host && historyData[key]['host'] !== host) {
                         continue;
                     }
-                    let request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
-                    let _htmlItem = '<tr data-key="' + key + '">' +
-                        '<td class="w-30 history-item-action" data-key="' + key + '">' +
-                            '<i class="mdi mdi-dots-horizontal font-size-20"></i>' +
-                        '</td>' +
-                        '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
-                            '<span>' + request_type_icon + '</span>' +
-                        '</td>' +
-                        '<td>' + historyData[key]['name'] + '</td>' +
-                        '<td>' + historyData[key]['url'] + '</td>';
-                    _html.push(_htmlItem);
-                } else {
-                    console.log('no kye: ' + key);
+                    historyData[key]['key'] = key;
+                    list.push(historyData[key]);
                 }
             }
         }
-        $('#history-content').find('tbody').html(_html.join(""));
+        View.display('history', 'main_list', list, '#history-list-box');
 
         // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
-        let history_count = _html.length;
+        let history_count = list.length;
         if (!host) {
             $('#history-count-all').text(history_count);
         } else {
@@ -200,7 +160,6 @@ var History = {
                 }
             });
         }
-        //return _html;
     },
 
     /**

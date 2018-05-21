@@ -65,10 +65,11 @@ textarea{padding:10px;}
     display: -webkit-flex;-webkit-flex-direction: column;}
 .left-top-line{height:40px;}
 .logo{height:40px;line-height:40px;color:#fff;vertical-align: top;font-size:18px;font-weight:700;}
-.logo img{height:30px;}
+.logo img{height:30px;float:left;margin-right:10px;}
+.logo a{color:#fff;}
 .tabs{height:40px;line-height:40px;}
 .tabs ul{padding-left:10px;}
-.tabs ul li{float:left;padding:0 20px;cursor:pointer;color:#fff;}
+.tabs ul li{float:left;padding:0 15px;cursor:pointer;color:#fff;}
 .tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;}
 
 .login-action{height:40px;line-height:40px;color:#bbb;}

@@ -17,10 +17,6 @@ let Event = {
         this.response_type_change();
         //
         this.form_data_type_change();
-        // 选择host检索history
-        this.select_host_to_search();
-        // history侧边栏开关
-        this.history_switch();
     },
 
     /**
@@ -124,49 +120,6 @@ let Event = {
             })
         });
     },
-
-    /**
-     * 选择host检索history
-     */
-    select_host_to_search: function() {
-        $('#history-host').on('click', 'li span', function(e) {
-            var host = $(this).parent().attr('data-host');
-            host = host ? host : '';
-            $('#history-host > li').removeClass('focus');
-            $(this).parent().addClass('focus');
-            History.build_ui_list(null, host);
-            e.stopPropagation();
-        }).on('click', 'li i', function(e) {
-            var host = $(this).parent().attr('data-host');
-            if (host) {
-                if (confirm('Confirm to delete the host')) {
-                    History.del_host(host);
-                    $(this).parent().remove();
-                }
-            }
-            e.stopPropagation();
-        });
-    },
-
-    /**
-     * history侧边栏开关
-     */
-    history_switch: function() {
-        $('#history-switch-button').on('click', function() {
-            var target = $('#history-sidebar');
-            if (target.css('display') === 'flex') {
-                target.hide();
-                $(this).attr('title', 'Open the sidebar').find('i').addClass('mdi-chevron-right');
-            } else {
-                target.show();
-                $(this).attr('title', 'Hide the sidebar').find('i').removeClass('mdi-chevron-right hover');
-            }
-        }).on('mouseover', function() {
-            $(this).find('i').addClass('hover');
-        }).on('mouseout', function() {
-            $(this).find('i').removeClass('hover');
-        });
-    }
 };
 
 $(function() {

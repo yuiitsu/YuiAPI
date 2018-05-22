@@ -2,6 +2,17 @@
 一个chrome扩展，API测试客户端，API文档，自动化测试
 
 ## Update logs
+### v0.0.5
+
+1. 调整UI
+2. 增加form-data的数据请求
+3. 增加上传文件
+4. 增加response headers的记录
+5. 请求参数增加description
+6. 修正当选择history记录数据时，无法正确切换表单的问题
+7. 修正当http status不为200时，无法正确显示response内容的问题
+8. 修正一些其它问题
+
 ### v0.0.4
 
 1. 增加host归类及查询api list

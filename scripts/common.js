@@ -214,9 +214,6 @@ var Common = {
             }
         });
         objJgbAjaxHandler.done(function(d, text_status, jqXHR){
-            console.log(d);
-            console.log(text_status);
-            console.log(jqXHR);
             if($.isFunction(callBack)){
                 callBack(d, jqXHR);
             }

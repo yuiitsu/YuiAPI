@@ -13,6 +13,10 @@ let event_history = {
         this.history_switch();
         // 列表操作
         this.list_control();
+        // 列表tips窗口
+        this.tips_control();
+        // 搜索
+        this.search();
     },
 
     /**
@@ -102,7 +106,7 @@ let event_history = {
             e.stopPropagation();
         }).on('click', '.test-normal-list-body .test-del', function(e) {
             if (confirm('Confirm to clear the data')) {
-                var hashKey = $(this).parent().parent().attr('data-key');
+                let hashKey = $(this).parent().parent().attr('data-key');
                 if (hashKey) {
                     Test.delNormal(hashKey);
                 }
@@ -110,21 +114,23 @@ let event_history = {
             e.stopPropagation();
         }).on('click', '.test-normal-list-body .test-del', function(e) {
             if (confirm('Confirm to clear the data')) {
-                var hashKey = $(this).parent().parent().attr('data-key');
+                let hashKey = $(this).parent().parent().attr('data-key');
                 if (hashKey) {
                     Test.delNormal(hashKey);
                 }
             }
             e.stopPropagation();
+
         }).on('click', '.test-item', function(e) {
-            var result = {};
+            let result = {};
             try {
                 result = JSON.parse($(this).attr('data-result'));
             } catch (e) {
             }
             $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
-            $('.tabs li').eq(1).click();
+            $('.tabs li').eq(1).trigger('click');
             e.stopPropagation();
+
         }).on('click', 'tr', function() {
             // 选中数据
             let key = $(this).attr('data-key');
@@ -141,7 +147,7 @@ let event_history = {
                 let time = historyData[key]['time'];
                 let status = historyData[key]['status'];
                 $('#request-type').val(requestType);
-                self.requestType = requestType;
+                App.requestType = requestType;
                 $('#url').val(url);
                 $('#response-headers').html(headers ? headers : '');
                 $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
@@ -149,97 +155,29 @@ let event_history = {
                 $('#send-time').html(time);
                 $('#response-status').html(status);
                 $('.tabs li').eq(1).trigger('click');
+
                 // 显示参数
                 $('input[name=form-data-type]').each(function() {
                     if ($(this).val() === form_data_type) {
                         $(this).trigger('click');
                     }
                 });
-                if (!form_data_type || form_data_type === 'form-data' || form_data_type === 'form-data-true') {
-                    let data_type = 'form-data',
-                        _html = [],
-                        _html_form_value_data_type = '';
 
-                    for (let i in data) {
-                        if (data.hasOwnProperty(i)) {
-                            let item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;'),
-                                value = '',
-                                value_type = 'text',
-                                description = '';
-                            if (typeof data[i] === 'object') {
-                                value = data[i]['value'];
-                                value_type = data[i]['value_type'];
-                                description = data[i]['description'];
-                            } else {
-                                value = data[i];
-                            }
-                            value = value.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;');
-                            let _htmlItem = '<tr>' +
-                                '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                                '<td>' +
-                                '<input type="text" class="form-key form-data-item input-text" value="' + item_key + '" data-type="' + data_type + '" />' +
-                                '</td>' +
-                                '<td class="display-flex-row">{form-value-data-type}' +
-                                '<input type="{form-value-input-type}" class="form-value form-data-item input-text display-flex-auto" value="' + value + '" data-type="' + data_type + '" />' +
-                                '</td>' +
-                                '<td>' +
-                                '<input type="text" class="form-description form-data-item input-text" value="'+ description +'" data-type="' + data_type + '" />' +
-                                '</td>' +
-                                '</tr>';
-
-                            switch (form_data_type) {
-                                case "form-data-true":
-                                    _html_form_value_data_type = '' +
-                                        '<select class="w-50 radius-small-all border-normal form-value-data-type">' +
-                                            '<option value="text">Text</option>' +
-                                            '<option value="file" {form-value-data-type-file}>File</option>' +
-                                        '</select>';
-
-                                    switch (value_type) {
-                                        case "file":
-                                            _html_form_value_data_type = _html_form_value_data_type.replace('{form-value-data-type-file}', 'selected="selected"');
-                                            _htmlItem = _htmlItem.replace('{form-value-input-type}', 'file');
-                                            break;
-                                        default:
-                                            _html_form_value_data_type = _html_form_value_data_type.replace('{form-value-data-type-file}', '');
-                                            _htmlItem = _htmlItem.replace('{form-value-input-type}', 'text');
-                                            break;
-                                    }
-                                    break;
-                            }
-
-                            _htmlItem = _htmlItem.replace('{form-value-data-type}', _html_form_value_data_type);
-                            _html.push(_htmlItem);
-                        }
-                    }
-
-                    let new_line = '<tr>' +
-                        '<td><input type="checkbox" class="form-select" checked="checked" /> </td>' +
-                        '<td><input type="text" class="form-key form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
-                        '<td class="display-flex-row">{form-value-data-type}<input type="text" class="form-value form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
-                        '<td><input type="text" class="form-description form-data-item input-text" value="" data-type="' + data_type + '" /> </td>' +
-                        '</tr>';
-
-
-                    if (_html.length > 0) {
-                        switch (form_data_type) {
-                            case "form-data":
-                                _html.push(new_line);
-                                $('#form-data').html(_html.join(""));
-                                break;
-                            case "form-data-true":
-                                new_line = new_line.replace('{form-value-data-type}',
-                                    _html_form_value_data_type.replace('{form-value-data-type-file}', ''));
-                                _html.push(new_line);
-                                $('#form-data-true').html(_html.join(""));
-                                break;
-                        }
-                    }
-                    $('#form-data-raw').find('textarea').val('');
-                }
-
-                if (form_data_type === 'raw') {
-                    $('#form-data-raw').find('textarea').val(data);
+                switch (form_data_type) {
+                    case "form-data":
+                        View.display('form', 'urlencoded_line', data, '#form-data');
+                        View.display('form', 'form_data_line', [], '#form-data-true');
+                        break;
+                    case "form-data-true":
+                        View.display('form', 'urlencoded_line', [], '#form-data');
+                        View.display('form', 'form_data_line', data, '#form-data-true');
+                        break;
+                    case "raw":
+                        $('#form-data-raw').find('textarea').val(data);
+                        break;
+                    default:
+                        console.log('form-data-type error');
+                        break;
                 }
 
                 // assert
@@ -250,18 +188,68 @@ let event_history = {
                     assert_content = assert_data[key]['content'];
                     if (assert_type) {
                         $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
-                            var value = $(this).val();
+                            let value = $(this).val();
                             if (value === assert_type) {
                                 $(this).prop('checked', 'checked');
                             }
                         });
-                        //$('#form-data-assert').text(assert_content);
-                        //$('input[name=form-data-assert-type]').each()
                     }
                 }
 
                 $('#form-data-assert').text(assert_content);
             }
+        });
+    },
+
+    /**
+     * 列表提示窗口控制
+     */
+    tips_control: function() {
+        $('body').on('click', '.history-tips-add-list li', function(e) {
+            // 单个
+            let key = $(this).parent().attr('data-key'),
+                type = $(this).attr('data-type');
+
+            switch (type) {
+                case 'delete':
+                    if (confirm('Confirm to clear the data')) {
+                        if (key) {
+                            History.del(key);
+                        }
+                    }
+                    break;
+                case 'Test.firstAdd':
+                    Test.firstAdd(key);
+                    Common.notification('Add to #1 success');
+                    break;
+                case 'Test.normalAdd':
+                    Test.normalAdd(key);
+                    Common.notification('Add to #2 success');
+                    break;
+            }
+            e.stopPropagation();
+
+        }).on('click', '.history-tips-all-list li', function(e) {
+            // 所有
+            let type = $(this).attr('data-type');
+            switch (type) {
+                case 'Test.allAdd':
+                    Test.allAdd();
+                    Common.notification('Add to #2 success');
+                    break;
+                case 'clear':
+                    break;
+            }
+            e.stopPropagation();
+        })
+    },
+
+    /**
+     * 搜索
+     */
+    search: function() {
+        $('#history-search').on('keydown', function(e) {
+            History.search($(this), e);
         });
     }
 };

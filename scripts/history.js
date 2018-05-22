@@ -284,15 +284,15 @@ var History = {
      * 清除较早数据
      */
     clearPre: function() {
-        var list = this.getListData(this.listKey);
+        let list = this.getListData(this.listKey);
         if (list.length <= 5) {
             // 全部清除
             this.clearAll();
         } else {
             // 清除最早5条
-            var data = this.getData();
-            for (var i = 0; i < 5; i++) {
-                var key = list[i];
+            let data = this.getData();
+            for (let i = 0; i < 5; i++) {
+                let key = list[i];
                 delete data[key];
             }
             list.splice(0, 5);
@@ -315,26 +315,29 @@ var History = {
      */
     search: function(_obj, e) {
         if (e.keyCode === 13) {
-            var search_key = $.trim(_obj.val());
+            let search_key = $.trim(_obj.val());
 
             if (search_key) {
-                var search_key_list = search_key.split(' ');
-                var result_data = {};
-                var history_list = this.getData();
+                let search_key_list = search_key.split(' '),
+                    result_data = {},
+                    history_list = this.getData();
+
                 if (history_list) {
-                    for (var i in history_list) {
-                        var name = history_list[i]['name'];
-                        var url = history_list[i]['url'];
-                        for (var j in search_key_list) {
-                            var key = search_key_list[j];
-                            var is_searched = false;
+                    for (let i in history_list) {
+                        let name = history_list[i]['name'],
+                            url = history_list[i]['url'];
+
+                        for (let j in search_key_list) {
+                            let key = search_key_list[j],
+                                is_searched = false;
+
                             if (name.indexOf(key) !== -1) {
-                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>')
+                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
                                 is_searched = true;
                             }
 
                             if (url.indexOf(key) !== -1) {
-                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>')
+                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
                                 is_searched = true;
                             }
 
@@ -347,8 +350,6 @@ var History = {
             }
 
             this.build_ui_list(result_data);
-            //$('#history-content').find('tbody').html(_html.join(""));
-            //$('#history-count').html(_html.length);
         }
     }
 };

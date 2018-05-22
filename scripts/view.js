@@ -14,6 +14,17 @@ const View = {
         this.eval_view_func(model, name);
         $(target).html(this[model + "." + name].init(data));
     },
+
+    /**
+     * 获取模板内容
+     * @param model
+     * @param name
+     * @param data
+     */
+    get_view: function(model, name, data) {
+        this.eval_view_func(model, name);
+        return this[model + '.' + name].init(data);
+    },
     /**
      * 继承
      * @param name

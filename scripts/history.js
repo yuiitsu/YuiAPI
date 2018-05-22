@@ -2,7 +2,7 @@
  * Created by onlyfu on 2017/9/6.
  */
 
-var History = {
+let History = {
     host: '',
     listKey: 'history_list',
     dataKey: 'history_data',
@@ -24,22 +24,22 @@ var History = {
     add: function(params) {
         // 获取host
         this.host = Common.getHost(params['url']);
-        var dataHashKey = Common.md5(params['url']);
+        let dataHashKey = Common.md5(params['url']);
         //
-        var historyData = this.getData();
+        let historyData = this.getData();
         historyData[dataHashKey] = params;
         historyData[dataHashKey]['host'] = this.host;
         this.setItem(this.dataKey, historyData);
         //
-        var historyHashData = this.getListData(this.listKey);
-        var index = historyHashData.indexOf(dataHashKey);
+        let historyHashData = this.getListData(this.listKey);
+        let index = historyHashData.indexOf(dataHashKey);
         if (index !== -1) {
             historyHashData.splice(index, 1);
         }
         historyHashData.push(dataHashKey);
         this.setItem(this.listKey, historyHashData);
         //
-        var hostData = this.getListData(this.hostCacheKey);
+        let hostData = this.getListData(this.hostCacheKey);
         if (hostData.indexOf(this.host) === -1) {
             hostData.push(this.host);
         }
@@ -49,7 +49,7 @@ var History = {
 
         // assertion
         if (params['assertion_data']) {
-            var assert_result = this.get_obj_data(this.assert_key);
+            let assert_result = this.get_obj_data(this.assert_key);
             assert_result[dataHashKey] = params['assertion_data'];
             this.setItem(this.assert_key, assert_result);
         }
@@ -66,14 +66,17 @@ var History = {
         this.setItem(this.assert_default_key, data);
     },
 
+    /**
+     *
+     */
     set_default_assert: function() {
-        var default_assert_data = this.get_default_assert();
+        let default_assert_data = this.get_default_assert();
         if (!$.isEmptyObject(default_assert_data)) {
-            var assert_type = default_assert_data['type'];
-            var assert_content = default_assert_data['content'];
+            let assert_type = default_assert_data['type'],
+                assert_content = default_assert_data['content'];
             if (assert_type) {
                 $('input[name=form-data-assert-type]').attr('checked', false).each(function () {
-                    var value = $(this).val();
+                    let value = $(this).val();
                     if (value === assert_type) {
                         $(this).prop('checked', 'checked');
                         $(this).attr('checked', true);
@@ -200,7 +203,7 @@ var History = {
      * @returns {{}}
      */
     getData: function() {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(this.dataKey));
         } catch (e) {
@@ -215,7 +218,7 @@ var History = {
      * @returns {Array}
      */
     getListData: function(key) {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
         } catch (e) {
@@ -230,7 +233,7 @@ var History = {
      * @returns {{}}
      */
     get_obj_data: function(key) {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
         } catch (e) {
@@ -245,16 +248,16 @@ var History = {
      */
     del: function(key) {
         //var historyDataTmp = {};
-        var historyData = this.getData();
-        for (var i in historyData) {
+        let historyData = this.getData();
+        for (let i in historyData) {
             if (i === key) {
                 delete historyData[i];
             }
         }
         this.setItem(this.dataKey, historyData);
         //
-        var hashData = this.getListData(this.listKey);
-        for (var i in hashData) {
+        let hashData = this.getListData(this.listKey);
+        for (let i in hashData) {
             if (hashData[i] === key) {
                 hashData.splice(i, 1);
             }
@@ -269,8 +272,8 @@ var History = {
      * @param host
      */
     del_host: function(host) {
-        var host_list = this.get_host_list();
-        for (var i in host_list) {
+        let host_list = this.get_host_list();
+        for (let i in host_list) {
             if (host_list[i] === host) {
                 host_list.splice(i, 1);
             }

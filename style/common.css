@@ -57,20 +57,21 @@ textarea{padding:10px;}
 .btn-primary{background-color:#a9fd00;border-color:#2e6da4;border-bottom:2px solid #87ca00;color:#222;}
 .btn-primary:hover{background-color:#AADF45;}
 
-.container{height:100%;}
-.content-right{width:100%;height:100%;padding-left:50%;}
+.container{height:100%;background-color:#222;background:url("../images/background/bg.jpg") no-repeat center top;}
+.content-right{width:100%;height:100%;padding: 10px 10px 10px 50%;
+    display: -webkit-flex;-webkit-flex-direction: column;}
 .form{width:100%;-webkit-flex: 1;display: -webkit-flex;-webkit-flex-direction: column;}
 
-.content-left{width:50%;height:100%;background-color:#222;position: fixed;left:0;top:0;bottom:0;padding:10px;
+.content-left{width:50%;height:100%;position: fixed;left:0;top:0;bottom:0;padding:10px;
     display: -webkit-flex;-webkit-flex-direction: column;}
 .left-top-line{height:40px;}
 .logo{height:40px;line-height:40px;color:#fff;vertical-align: top;font-size:18px;font-weight:700;}
 .logo img{height:30px;float:left;margin-right:10px;}
-.logo a{color:#fff;}
+.logo a{color:#fff;text-shadow: 2px 2px 2px #000;}
 .tabs{height:40px;line-height:40px;}
 .tabs ul{padding-left:10px;}
-.tabs ul li{float:left;padding:0 15px;cursor:pointer;color:#fff;}
-.tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;}
+.tabs ul li{float:left;padding:0 15px;cursor:pointer;color:#fff;text-shadow: 2px 2px 2px #000;}
+.tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;text-shadow: none;}
 
 .login-action{height:40px;line-height:40px;color:#bbb;}
 .login-action a{font-weight:bold;color:#fff;}
@@ -176,7 +177,7 @@ textarea{padding:10px;}
 .test-progress-bar-item span{display:inline-block;height:20px;}
 
 .content-box{height:100%;padding:10px;display: -webkit-flex;
-    -webkit-flex-direction: column;}
+    -webkit-flex-direction: column;background-color:#fff;border-radius: 3px;flex: 1;}
 
 .tab-line{height:30px;margin-bottom:10px;}
 .host-tab{}
@@ -209,6 +210,7 @@ textarea{padding:10px;}
 .form-data .input-text{padding:5px 10px;height:35px;}
 .form-data select{color:#444;}
 .form-value-data-type{margin-right:1px;}
+.form-request-data-type{margin-right:10px;}
 
 .code-string{color:#000066;}
 .code-number{color:#000033;}
@@ -237,6 +239,13 @@ textarea{padding:10px;}
 .hide{display: none;}
 
 .coming-soon{height:50px;line-height:50px;border-bottom:1px solid #ddd;text-align: center;}
+
+/* version */
+.version-update-logs{padding: 10px;}
+.version-update-logs h2{height:50px;line-height:50px;}
+.version-update-logs h3{margin-top:30px;}
+.version-update-logs ul{padding:10px;font-size:16px;line-height:1.6}
+.version-update-logs ul li{}
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {

@@ -23,7 +23,7 @@ let event_history = {
      * 选择host检索history
      */
     select_host_to_search: function() {
-        $('#history-host').on('click', 'li span', function(e) {
+        $('#history-sidebar').on('click', 'li span', function(e) {
             let host = $(this).parent().attr('data-host');
             host = host ? host : '';
             $('#history-host').find('li').removeClass('focus');

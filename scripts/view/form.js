@@ -13,9 +13,9 @@ View.extend('form', function() {
                 <thead>
                     <tr>
                         <td colspan="4">
-                            <label><input type="radio" name="form-data-type" value="form-data-true" /> form-data</label>
-                            <label><input type="radio" name="form-data-type" checked="checked" value="form-data" /> x-www-form-urlencoded</label>
-                            <label><input type="radio" name="form-data-type" value="raw" /> raw</label>
+                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="form-data-true" /> form-data</label>
+                            <label class="form-request-data-type"><input type="radio" name="form-data-type" checked="checked" value="form-data" /> x-www-form-urlencoded</label>
+                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="raw" /> raw</label>
                             <select id="raw-content-type" class="hide">
                                 <option value="text/plain">Text(text/plain)</option>
                                 <option value="application/json">JSON(application/json)</option>
@@ -55,7 +55,7 @@ View.extend('form', function() {
         return `
             {{ for var i in data }}
             {{ var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
-            {{ var value_type = typeof data[i] === 'object' ? data[i]['value_type'] : 'text' }}
+            {{ var value_type = typeof data[i] === 'object' ? data[i]['value_type'] : 'Text' }}
             {{ var value_type_list = ['Text', 'File'] }}
             {{ var value = typeof data[i] === 'object' ? data[i]['value'] : data[i] }}
             {{ var description = typeof data[i] === 'object' ? data[i]['description'] : '' }}
@@ -65,7 +65,7 @@ View.extend('form', function() {
                 <td class="display-flex-row">
                     <select class="w-50 radius-small-all border-normal form-value-data-type">
                         {{ for var j in value_type_list }}
-                        {{ var is_selected = value_type === value_type_list[j].toLowerCase() ? 'selected=selected' : '' }}
+                        {{ var is_selected = value_type.toLowerCase() === value_type_list[j].toLowerCase() ? 'selected=selected' : '' }}
                         <option value="{{ value_type_list[j] }}" {{ is_selected }}>{{ value_type_list[j] }}</option>
                         {{ end }}
                     </select>
@@ -79,8 +79,8 @@ View.extend('form', function() {
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-true" /> </td>
                 <td class="display-flex-row">
                     <select class="w-50 radius-small-all border-normal form-value-data-type">
-                        <option value="text">Text</option>
-                        <option value="file">File</option>
+                        <option value="Text">Text</option>
+                        <option value="File">File</option>
                     </select>
                     <input type="text" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" />
                 </td>

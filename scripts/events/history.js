@@ -147,7 +147,6 @@ let event_history = {
                 let time = historyData[key]['time'];
                 let status = historyData[key]['status'];
                 $('#request-type').val(requestType);
-                App.requestType = requestType;
                 $('#url').val(url);
                 $('#response-headers').html(headers ? headers : '');
                 $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
@@ -155,6 +154,7 @@ let event_history = {
                 $('#send-time').html(time);
                 $('#response-status').html(status);
                 $('.tabs li').eq(1).trigger('click');
+                App.requestType = requestType;
 
                 // 显示参数
                 $('input[name=form-data-type]').each(function() {
@@ -163,17 +163,20 @@ let event_history = {
                     }
                 });
 
+                let raw_obj = $('#form-data-raw').find('textarea');
                 switch (form_data_type) {
                     case "form-data":
                         View.display('form', 'urlencoded_line', data, '#form-data');
                         View.display('form', 'form_data_line', [], '#form-data-true');
+                        raw_obj.val('');
                         break;
                     case "form-data-true":
                         View.display('form', 'urlencoded_line', [], '#form-data');
                         View.display('form', 'form_data_line', data, '#form-data-true');
+                        raw_obj.val('');
                         break;
                     case "raw":
-                        $('#form-data-raw').find('textarea').val(data);
+                        raw_obj.val(data);
                         break;
                     default:
                         console.log('form-data-type error');

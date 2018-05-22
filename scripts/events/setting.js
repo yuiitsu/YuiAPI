@@ -27,7 +27,8 @@ let event_setting = {
      */
     item_click: function() {
         $('body').on('click', '.setting-list li', function(e) {
-            let name = $(this).text(), _html = '';
+            let name = $(this).text(),
+                _html = '';
             switch (name) {
                 case "Export":
                     let history_list = History.getHistoryListData(),
@@ -37,8 +38,8 @@ let event_setting = {
                             history_list: history_list,
                             history_data: history_data,
                             host_list: host_list
-                        },
-                        _html = '<h2>coming soon...</h2>';
+                        };
+                    _html = '<h2>coming soon...</h2>';
                     Common.module(name, _html, '<button class="btn btn-primary" id="export-copy">Copy</button>');
 
                     $('#export-copy').off('click').on('click', function() {

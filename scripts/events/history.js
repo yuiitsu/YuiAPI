@@ -23,7 +23,7 @@ let event_history = {
      * 选择host检索history
      */
     select_host_to_search: function() {
-        $('#history-sidebar').on('click', 'li span', function(e) {
+        $('#history-content').on('click', '#history-sidebar li span', function(e) {
             let host = $(this).parent().attr('data-host');
             host = host ? host : '';
             $('#history-host').find('li').removeClass('focus');
@@ -46,7 +46,7 @@ let event_history = {
      * history侧边栏开关
      */
     history_switch: function() {
-        $('#history-switch-button').on('click', function() {
+        $('#history-content').on('click', '#history-switch-button', function() {
             let target = $('#history-sidebar');
             if (target.css('display') === 'flex') {
                 target.hide();
@@ -55,9 +55,9 @@ let event_history = {
                 target.show();
                 $(this).attr('title', 'Hide the sidebar').find('i').removeClass('mdi-chevron-right hover');
             }
-        }).on('mouseover', function() {
+        }).on('mouseover', '#history-switch-button', function() {
             $(this).find('i').addClass('hover');
-        }).on('mouseout', function() {
+        }).on('mouseout', '#history-switch-button', function() {
             $(this).find('i').removeClass('hover');
         });
     },
@@ -67,7 +67,7 @@ let event_history = {
      */
     list_control: function() {
         // history记录项删除
-        $('#history-list-box').on('click', '.history-del', function(e) {
+        $('#history-content').on('click', '.history-del', function(e) {
             if (confirm('Confirm to clear the data')) {
                 let hashKey = $(this).parent().parent().attr('data-key');
                 if (hashKey) {
@@ -131,7 +131,7 @@ let event_history = {
             $('.tabs li').eq(1).trigger('click');
             e.stopPropagation();
 
-        }).on('click', 'tr', function() {
+        }).on('click', '#history-list-box tr', function() {
             // 选中数据
             let key = $(this).attr('data-key');
             // 从缓存中获取数据

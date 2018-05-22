@@ -35,6 +35,8 @@ textarea{padding:10px;}
 /* width */
 .w-30{width:30px;}
 .w-50{width:50px;}
+.w-60{width:60px;}
+.w-70{width:70px;}
 .w-100{width:100px;}
 .w-150{width:150px;}
 .w-200{width:200px;}
@@ -160,6 +162,10 @@ textarea{padding:10px;}
 .history-tips-list li:hover{background-color:#efefef;}
 .all-test{cursor:pointer;}
 .search-block{display: inline-block;padding:3px;border-radius: 3px;background-color:#ff0000;color:#fff;}
+.history-empty{width:100%;text-align:center;color:#666;position: relative;}
+.history-empty-box{position: absolute;top:50%;left:50%;transform: translate(-50%, -120%)}
+.history-empty h2{font-size:60px;margin-bottom:10px;}
+.history-empty p{}
 
 /* test */
 .test-count-line{margin-bottom:10px;height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;border-radius: 3px;}
@@ -179,11 +185,11 @@ textarea{padding:10px;}
 .content-box{height:100%;padding:10px;display: -webkit-flex;
     -webkit-flex-direction: column;background-color:#fff;border-radius: 3px;flex: 1;}
 
-.tab-line{height:30px;margin-bottom:10px;}
+.tab-line{margin-bottom:10px;height:40px;}
 .host-tab{}
 .host-tab li{float:left;margin-right:10px;}
-.api-name-line{width:100%;}
-.api-name-line input{padding:5px 0;border:0;border-bottom:1px solid #d5d5d5;border-radius: inherit;outline: none;}
+.api-name-line{width:100%;border-bottom:1px solid #d5d5d5;height:40px;}
+.api-name-line input{padding:5px 0;border:0;border-radius: inherit;outline: none;}
 
 .form-line{height:40px;display: -webkit-flex;}
 .request-type-box{height:100%;width:100px;position: relative;text-align: center;
@@ -245,7 +251,7 @@ textarea{padding:10px;}
 .version-update-logs h2{height:50px;line-height:50px;}
 .version-update-logs h3{margin-top:30px;}
 .version-update-logs ul{padding:10px;font-size:16px;line-height:1.6}
-.version-update-logs ul li{}
+.version-update-logs ul li{border-bottom: 1px dotted #ccc;}
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {

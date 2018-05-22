@@ -108,28 +108,36 @@ let History = {
      */
     load: function() {
         // host列表
-        this.build_host_ui_list();
-        this.build_ui_list(null);
+        let host_list = this.get_host_list();
+        let history_list = this.get_history_list(null, null);
+        let data = {
+            host_list: host_list,
+            history_list: history_list
+        };
+        View.display('history', 'main', data, '#history-content');
+        // 显示历史记录数
+        this.show_history_count(history_list);
     },
 
     /**
      * 构建host list界面
      */
-    build_host_ui_list: function() {
-        let host_list = this.get_host_list();
-        View.display('history', 'sidebar', host_list, '#history-sidebar');
-    },
+    //build_host_ui_list: function() {
+    //    let host_list = this.get_host_list();
+    //    //return this.get_host_list();
+    //    View.display('history', 'sidebar', host_list, '#history-sidebar');
+    //},
 
     /**
-     * 构建界面List
-     * @param data 数据，没有值使用所有数据
-     * @param host 指定host数据
+     * 获取历史记录数，可根据host筛选
+     * @param data
+     * @param host
+     * @returns {Array}
      */
-    build_ui_list: function(data, host) {
+    get_history_list: function(data, host) {
         let hashData = this.getListData(this.listKey),
             historyData = data ? data : this.getData(),
-            list = [],
-            _html = [];
+            list = [];
 
         if (hashData) {
             let len = hashData.length;
@@ -144,8 +152,28 @@ let History = {
                 }
             }
         }
+        return list;
+    },
+
+    /**
+     * 构建界面List
+     * @param data 数据，没有值使用所有数据
+     * @param host 指定host数据
+     */
+    build_ui_list: function(data, host) {
+        let list = this.get_history_list(data, host);
         View.display('history', 'main_list', list, '#history-list-box');
 
+        // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
+        this.show_history_count(list, host);
+    },
+
+    /**
+     * 显示历史记录数量
+     * @param list
+     * @param host
+     */
+    show_history_count: function(list, host) {
         // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
         let history_count = list.length;
         if (!host) {
@@ -318,11 +346,11 @@ let History = {
      */
     search: function(_obj, e) {
         if (e.keyCode === 13) {
-            let search_key = $.trim(_obj.val());
+            let search_key = $.trim(_obj.val()),
+                result_data = {};
 
             if (search_key) {
                 let search_key_list = search_key.split(' '),
-                    result_data = {},
                     history_list = this.getData();
 
                 if (history_list) {

@@ -4,6 +4,41 @@
  */
 View.extend('history', function() {
     /**
+     * 主界面
+     */
+    this.main = function() {
+        return `
+            <!-- History search start -->
+            <div class="test-count-line left-content-top">
+                <div class="test-count-data history-search-box">
+                    <label class="history-search-label">Search:</label>
+                    <input type="text" class="input-text" id="history-search" placeholder="name or url keywords. press enter" />
+                </div>
+            </div>
+            <!-- History search end -->
+            <div class="left-content-main">
+                {{ if (data['host_list'] && data['host_list'].length > 0) || (data['history_list'] && data['history_list'].length > 0) }}
+                <!-- History host start -->
+                <div class="history-group-box" id="history-sidebar">{{ View.get_view('history', 'sidebar', data['host_list']) }}</div>
+                <div class="history-switch" id="history-switch-button" title="Hide the sidebar">
+                    <i class="mdi mdi-chevron-left vertical-middle"></i>
+                </div>
+                <!-- History host end -->
+                <!-- History list-box start -->
+                <div class="history-list-box" id="history-list-box">{{ View.get_view('history', 'main_list', data['history_list']) }}</div>
+                <!-- History list-box end -->
+                {{ else }}
+                <div class="history-empty">
+                    <div class="history-empty-box">
+                        <h2><i class="mdi mdi-numeric-0-box-multiple-outline"></i></h2>
+                        <p>Nothing in you history box. Requests that you send will be saved here.</p>
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+        `;
+    };
+    /**
      * 侧边栏
      * @returns {string}
      */

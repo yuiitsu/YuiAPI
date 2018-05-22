@@ -21,6 +21,10 @@ let event_form = {
         this.change_params_type();
         // 格式化请求参数
         this.format_request_params();
+        // 表单输入自动增加行，body部分
+        this.form_data_body_input();
+        //  form data type change
+        this.form_data_type_change();
     },
 
     /**
@@ -215,6 +219,62 @@ let event_form = {
 
             View.display('form', 'urlencoded_line', data, '#form-data');
             $('.form-params-type li').eq(1).trigger('click');
+        });
+    },
+
+    /**
+     * 表单输入自动增加行，body部分
+     */
+    form_data_body_input: function() {
+        let form_data_obj = $('.form-data');
+        form_data_obj.on('input', '.form-data-item', function() {
+            let data_type = $(this).attr('data-type');
+            let target_obj = $('#' + data_type);
+            let parent = $(this).parent().parent();
+            if (parent.index() + 1 === target_obj.find('tr').length) {
+                // 创建新的一行
+                let _htmlItem = '';
+
+                // 根据类型不同，替换目标对象
+                switch (data_type)  {
+                    case "form-data-true":
+                        _htmlItem = View.get_view('form', 'form_data_line', {});
+                        break;
+                    case "form-data":
+                        _htmlItem = View.get_view('form', 'urlencoded_line', {});
+                        break;
+                    default:
+                        break;
+                }
+
+                target_obj.append(_htmlItem);
+            }
+        });
+    },
+
+    /**
+     * form data type
+     */
+    form_data_type_change: function() {
+        $('input[name=form-data-type]').on('click', function() {
+            let data_type = $(this).val();
+            if (data_type === 'form-data' || data_type === 'form-data-true') {
+                $('.form-data-title').show();
+            } else {
+                $('.form-data-title').hide();
+            }
+
+            if (data_type === 'raw') {
+                $('#raw-content-type').show();
+            } else {
+                $('#raw-content-type').hide();
+            }
+
+            $('.form-data-type').hide().each(function() {
+                if (data_type === $(this).attr('data-type')) {
+                    $(this).show();
+                }
+            })
         });
     }
 };

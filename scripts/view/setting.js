@@ -46,7 +46,7 @@ View.extend('setting', function() {
                     <li>{{ no }}. {{ data['list'][i] }}</li>       
                     {{ end }}
                 </ul>
-                <h3 class="align-right">Thank you for choosing YuiAPI</h3>
+                <h3 class="align-right"><em>Thank you for choosing YuiAPI</em></h3>
                 <p class="align-right"><em>Yuiitsu</em></p>
             </div>
         `;

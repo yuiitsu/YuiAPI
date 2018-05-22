@@ -40,7 +40,7 @@ View.extend('form', function() {
                 <tbody id="form-data-raw" class="form-data-input form-data-type hide" data-type="raw">
                     <tr>
                         <td colspan="3">
-                            <textarea style="padding:10px;width:100%;height:500px;"></textarea>
+                            <textarea style="padding:10px;width:100%;height:300px;"></textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -63,7 +63,7 @@ View.extend('form', function() {
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-true" value="{{ item_key }}" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-50 radius-small-all border-normal form-value-data-type">
+                    <select class="w-60 radius-small-all border-normal form-value-data-type">
                         {{ for var j in value_type_list }}
                         {{ var is_selected = value_type.toLowerCase() === value_type_list[j].toLowerCase() ? 'selected=selected' : '' }}
                         <option value="{{ value_type_list[j] }}" {{ is_selected }}>{{ value_type_list[j] }}</option>
@@ -78,7 +78,7 @@ View.extend('form', function() {
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-true" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-50 radius-small-all border-normal form-value-data-type">
+                    <select class="w-60 radius-small-all border-normal form-value-data-type">
                         <option value="Text">Text</option>
                         <option value="File">File</option>
                     </select>

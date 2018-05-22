@@ -11,13 +11,13 @@ let version = {
      */
     update_logs: {
         'v0.0.5': [
-            'Adjust UI',
-            'Add form-data request',
-            'Add upload file function',
-            'Add the record of the response headers',
-            'Add the description to request arguments',
-            'fixed an issues where the form could not be changed when selecting the history record',
-            'fixed an issues where the response could not be show when the http status was not 200',
+            'Adjusted UI',
+            'Added form-data request',
+            'Added upload file function',
+            'Added the record of the response headers',
+            'Added the description to request arguments',
+            'fixed an issue that the form could not be changed when selecting the history record',
+            'fixed an issue that the response could not display when the http status was not 200',
         ]
     },
 

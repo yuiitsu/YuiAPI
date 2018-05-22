@@ -31,7 +31,7 @@ View.extend('history', function() {
                 <div class="history-empty">
                     <div class="history-empty-box">
                         <h2><i class="mdi mdi-numeric-0-box-multiple-outline"></i></h2>
-                        <p>Nothing in you history box. Requests that you send will be saved here.</p>
+                        <p>Nothing in your history box. Requests that you send will be saved here.</p>
                     </div>
                 </div>
                 {{ end }}

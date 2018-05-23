@@ -2,6 +2,8 @@
 一个chrome扩展，API测试客户端，API文档，自动化测试
 
 ## Update logs
+### v0.1.0
+
 ### v0.0.5
 
 1. 调整UI

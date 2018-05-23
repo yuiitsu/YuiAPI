@@ -58,6 +58,7 @@ View.extend('form', function() {
             {{ var value_type = typeof data[i] === 'object' ? data[i]['value_type'] : 'Text' }}
             {{ var value_type_list = ['Text', 'File'] }}
             {{ var value = typeof data[i] === 'object' ? data[i]['value'] : data[i] }}
+            {{ var value_format = value.replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             {{ var description = typeof data[i] === 'object' ? data[i]['description'] : '' }}
             <tr>
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
@@ -69,7 +70,7 @@ View.extend('form', function() {
                         <option value="{{ value_type_list[j] }}" {{ is_selected }}>{{ value_type_list[j] }}</option>
                         {{ end }}
                     </select>
-                    <input type="{{ value_type }}" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" value="{{ value }}" />
+                    <input type="{{ value_type }}" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" value="{{ value_format }}" />
                 </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-true" value="{{ description }}" /> </td>
             </tr>
@@ -98,11 +99,12 @@ View.extend('form', function() {
             {{ for var i in data }}
             {{ var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
             {{ var value = typeof data[i] === 'object' ? data[i]['value'] : data[i] }}
+            {{ var value_format = value.replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             {{ var description = typeof data[i] === 'object' ? data[i]['description'] : '' }}
             <tr>
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" value="{{ item_key }}" /> </td>
-                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" value="{{ value }}" /> </td>
+                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" value="{{ value_format }}" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" value="{{ description }}" /> </td>
             </tr>
             {{ end }}

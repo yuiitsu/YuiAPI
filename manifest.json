@@ -2,11 +2,12 @@
     "manifest_version": 2,
     "name": "YuiAPI - A REST Client, Api Test and document",
     "short_name": "YuiAPI",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "description":"REST Client, Api Test and document",
     "homepage_url": "https://www.yuiapi.com",
     "author":"Yuiitsu",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "default_locale": "en",
     "background": {
         "scripts": [
             "scripts/background.js"

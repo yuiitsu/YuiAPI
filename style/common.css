@@ -89,7 +89,7 @@ textarea{padding:10px;}
 .tabs-bottom ul li.focus{background-color:#f5f5f5;}
 .send-time{float:right;}
 .result-box{width:100%;border:1px solid #ccc;border-radius: 3px;margin-top:10px;padding:10px;
-    font-family:Consolas, serif;overflow-y: auto;-webkit-flex: 1;}
+    font-family:Consolas, PingFangSC-Regular, "Microsoft YaHei", sans-serif;overflow-y: auto;-webkit-flex: 1;}
 
 /* history */
 .history-search-box{display: -webkit-flex;-webkit-flex-direction: row;}
@@ -106,18 +106,18 @@ textarea{padding:10px;}
 /* history group */
 .history-group-tab{height:30px;padding: 0 10px;}
 .history-group-tab li{float:left;color:#222;height:30px;line-height:30px;padding:0 20px;cursor:pointer;}
-.history-group-tab li.focus{background-color:#000;color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;}
+.history-group-tab li.focus{background-color:#f1f1f1;color:#444;border-top-left-radius: 3px;border-top-right-radius: 3px;}
 
 /* history host */
-.history-host{width:200px;overflow: auto;background-color:#000;flex: 1;padding:10px;}
+.history-host{width:200px;overflow: auto;background-color:#fafafa;flex: 1;padding:10px;border:1px solid #f1f1f1;}
 .history-host ul{color:#fff;}
 .history-host ul li{word-break:break-all;cursor: pointer;
-    border-radius: 3px;margin-bottom:5px;background-color:#222;display: -webkit-flex;-webkit-flex-direction: row;}
-.history-host ul li.focus span{background-color:#444;color:#fff;}
-.history-host ul li:hover span{background-color:#555;color:#fff;}
-.history-host ul li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#ccc;
+    border-radius: 3px;margin-bottom:5px;background-color:#f1f1f1;display: -webkit-flex;-webkit-flex-direction: row;}
+.history-host ul li.focus span{background-color:#fff;color:#000;}
+.history-host ul li:hover span{background-color:#fff;color:#000;}
+.history-host ul li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#444;
     border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
-.history-host ul li i{display: inline-block;width:20px;text-align:center;background-color:#333;color:#333;
+.history-host ul li i{display: inline-block;width:0;text-align:center;background-color:#fafafa;color:#fafafa;
     border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
 .history-host ul li i:hover{background-color:#ff0000;color:#fff;}
 .history-host::-webkit-scrollbar {width: 1px;display: none;}
@@ -127,9 +127,9 @@ textarea{padding:10px;}
 
 /* history-switch */
 .history-switch{width:20px;height:auto;position: relative;cursor:pointer;}
-.history-switch i{position: absolute;top:50%;transform: translateY(-50%);background-color:#000;color:#fff;
+.history-switch i{position: absolute;top:50%;transform: translateY(-50%);background-color:#f1f1f1;color:#444;
     display: inline-block;padding:10px 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
-.history-switch i.hover{background-color:#666;}
+.history-switch i.hover{background-color:#f5f5f5;}
 
 /* history-list */
 .history-list-box{-webkit-flex: 1;overflow: auto;}
@@ -191,7 +191,7 @@ textarea{padding:10px;}
 .api-name-line{width:100%;border-bottom:1px solid #d5d5d5;height:40px;}
 .api-name-line input{padding:5px 0;border:0;border-radius: inherit;outline: none;}
 
-.form-line{height:40px;display: -webkit-flex;}
+.form-line{height:35px;display: -webkit-flex;}
 .request-type-box{height:100%;width:100px;position: relative;text-align: center;
     line-height:2.5;cursor:pointer;}
 .request-type-box select{width:100%;height:100%;border-radius: 3px;border-color:#d5d5d5;padding:0 10px;}
@@ -213,7 +213,7 @@ textarea{padding:10px;}
 .form-data{width:100%;-webkit-flex: 1;overflow-y:auto;background-color:#f5f5f5;padding:10px;border-radius: 3px;}
 .form-data table{width:100%;font-size:14px;}
 .form-data table td{border-bottom:1px solid #eaeaea;padding:10px 5px;}
-.form-data .input-text{padding:5px 10px;height:35px;}
+.form-data .input-text{padding:5px 10px;height:30px;}
 .form-data select{color:#444;}
 .form-value-data-type{margin-right:1px;}
 .form-request-data-type{margin-right:10px;}

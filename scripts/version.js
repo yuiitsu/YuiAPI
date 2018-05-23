@@ -4,12 +4,15 @@
  */
 let version = {
 
-    current_version: 'v0.0.5',
+    current_version: 'v0.1.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.1.0': [
+            'fixed an issue that the json data display error in arguments'
+        ],
         'v0.0.5': [
             'Adjusted UI',
             'Added form-data request',

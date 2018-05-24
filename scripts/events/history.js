@@ -11,6 +11,8 @@ let event_history = {
         this.select_host_to_search();
         // history侧边栏开关
         this.history_switch();
+        // 分组tab切换
+        this.group_tab();
         // 列表操作
         this.list_control();
         // 列表tips窗口
@@ -137,23 +139,26 @@ let event_history = {
             // 从缓存中获取数据
             let historyData = History.getData();
             if (historyData[key]) {
-                let url = historyData[key]['url'];
-                let requestType = historyData[key]['type'];
-                let form_data_type = historyData[key]['data_type'];
-                let headers = historyData[key]['headers'];
-                let data = historyData[key]['data'];
-                let result = historyData[key]['result'];
-                let apiName = historyData[key]['name'];
-                let time = historyData[key]['time'];
-                let status = historyData[key]['status'];
+                let url = historyData[key]['url'],
+                    requestType = historyData[key]['type'],
+                    form_data_type = historyData[key]['data_type'],
+                    headers = historyData[key]['headers'],
+                    data = historyData[key]['data'],
+                    response_content_type = historyData[key]['response_content_type'],
+                    result = historyData[key]['result'],
+                    apiName = historyData[key]['name'],
+                    time = historyData[key]['time'],
+                    status = historyData[key]['status'];
+
                 $('#request-type').val(requestType);
                 $('#url').val(url);
                 $('#response-headers').html(headers ? headers : '');
-                $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
                 $('#api-name').val(apiName);
                 $('#send-time').html(time);
                 $('#response-status').html(status);
                 $('.tabs li').eq(1).trigger('click');
+
+                Common.display_response(result, response_content_type);
                 App.requestType = requestType;
 
                 // 显示参数
@@ -253,6 +258,17 @@ let event_history = {
     search: function() {
         $('#history-search').on('keydown', function(e) {
             History.search($(this), e);
+        });
+    },
+
+    /**
+     * 分组tab切换
+     */
+    group_tab: function() {
+        $('#history-content').on('click', '.history-group-tab li', function(e) {
+            let index = $(this).index();
+            $('#history-content').find('#history-sidebar').find('.history-group-tab li').removeClass('focus').eq(index).addClass('focus');
+            $('#history-content').find('#history-sidebar').find('.history-host').addClass('hide').eq(index).removeClass('hide');
         });
     }
 };

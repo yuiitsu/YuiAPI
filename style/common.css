@@ -108,7 +108,8 @@ textarea{padding:10px;}
 /* history group */
 .history-group-tab{height:30px;padding: 0 10px;background-color:#f1f1f1;border-top-left-radius: 3px;
     border-top-right-radius: 3px;}
-.history-group-tab li{float:left;color:#222;height:30px;line-height:30px;padding:0 20px;cursor:pointer;}
+.history-group-tab li{float:left;color:#222;height:30px;line-height:30px;padding:0 20px;cursor:pointer;
+    border-top-left-radius: 3px;border-top-right-radius: 3px;}
 .history-group-tab li.focus{background-color:#fafafa;color:#444;}
 
 /* history host */

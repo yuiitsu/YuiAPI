@@ -4,12 +4,17 @@
  */
 let version = {
 
-    current_version: 'v0.1.0',
+    current_version: 'v0.1.1',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.1.1': [
+            'Adjusted UI',
+            'Added display when the response content_type is img',
+            'Added display when the response content_type is xml',
+        ],
         'v0.1.0': [
             'fixed an issue that the json data display error in arguments'
         ],

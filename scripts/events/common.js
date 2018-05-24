@@ -47,7 +47,19 @@ let event_common = {
             $('.response-type li').removeClass('focus');
             $(this).addClass('focus');
             $('.result-box').addClass('hide');
-            $('#' + id).removeClass('hide');
+
+            switch (id) {
+                case "result":
+                    $('.response-body').each(function() {
+                        if ($(this).html()) {
+                            $(this).removeClass('hide');
+                        }
+                    });
+                    break;
+                case "response-headers":
+                    $('#' + id).removeClass('hide');
+                    break;
+            }
         });
     }
 };

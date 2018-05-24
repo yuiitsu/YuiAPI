@@ -52,7 +52,6 @@ let event_form = {
      * 发送请求
      */
     send: function() {
-        let self = this;
         // 提交
         $('#send').on('click', function() {
             let $this = $(this),
@@ -99,24 +98,9 @@ let event_form = {
                     $('#response-headers').html(headers);
 
                     // response
-                    let result = res;
+                    let response_content_type = jqXHR.getResponseHeader('content-type');
                     // check response content-type
-                    self._check_response_content_type(jqXHR.getResponseHeader('content-type'), function(type) {
-                        console.log('check response content type');
-                        switch (type) {
-                            case "img":
-                                result = '<img src="'+ result +'" />';
-                                break;
-                            case "json":
-                                if (jqXHR.responseJSON) {
-                                    res = jqXHR.responseJSON;
-                                    result = Common.syntaxHighlight(JSON.stringify(res, undefined, 4));
-                                }
-                                break;
-                        }
-                    });
-                    console.log(jqXHR.getResponseHeader('content-type'));
-                    result_obj.html(result).css('background-color', '#fff');
+                    Common.display_response(res, response_content_type);
                     $this.attr('disabled', false).html('Send');
 
                     // 时间
@@ -144,6 +128,7 @@ let event_form = {
                         headers: headers,
                         data: formData['history_data'],
                         data_type: form_data_type,
+                        response_content_type: response_content_type,
                         result: res,
                         time: use_time,
                         status: jqXHR.status,
@@ -292,14 +277,6 @@ let event_form = {
                 }
             })
         });
-    },
-
-    _check_response_content_type: function(content_type, callback) {
-        if (content_type.indexOf('application/json') !== -1) {
-            callback('json');
-        } else if (content_type.indexOf('image') !== -1) {
-            callback('img');
-        }
     }
 };
 

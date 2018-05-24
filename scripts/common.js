@@ -173,6 +173,67 @@ let Common = {
     },
 
     /**
+     * 显示响应结果
+     * @param result
+     * @param response_content_type
+     */
+    display_response: function(result, response_content_type) {
+        let target = $('#result'),
+            target_textarea = $('#result-textarea');
+
+        Common.get_response_content_type(response_content_type, function(type) {
+            switch (type) {
+                case "img":
+                    result = '<img src="'+ result +'" />';
+                    target.html(result).css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "json":
+                    target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                        .css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "xml":
+                    target.text('').addClass('hide');
+                    target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
+                    break;
+            }
+            // 将显示数据类型重置为第一个tab
+            $('.response-type').find('li').eq(0).trigger('click');
+        });
+    },
+
+    /**
+     * 检查response的content_type类型
+     * @param content_type
+     * @param callback
+     * @private
+     */
+    get_response_content_type: function(content_type, callback) {
+        if (content_type) {
+            if (content_type.indexOf('application/json') !== -1) {
+                callback('json');
+            } else if (content_type.indexOf('image') !== -1) {
+                callback('img');
+            } else if (content_type.indexOf('text/xml') !== -1) {
+                callback('xml');
+            }
+        } else {
+            callback('json');
+        }
+    },
+
+    /**
+     * 高亮显示xml
+     * @param xml
+     * @returns {string | *}
+     */
+    syntaxHighlight_xml: function(xml) {
+        xml = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return xml;
+    },
+
+    /**
      * 高亮显示代码
      * @param json
      * @returns {string}

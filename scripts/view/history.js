@@ -59,6 +59,9 @@ View.extend('history', function() {
                     {{ end }}
                 </ul>
             </div>
+            <div class="history-host hide">
+                group       
+            </div>
         `;
     };
 

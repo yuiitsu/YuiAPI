@@ -48,7 +48,11 @@ let event_form = {
         });
     },
 
+    /**
+     * 发送请求
+     */
     send: function() {
+        let self = this;
         // 提交
         $('#send').on('click', function() {
             let $this = $(this),
@@ -96,10 +100,22 @@ let event_form = {
 
                     // response
                     let result = res;
-                    if (jqXHR.responseJSON) {
-                        res = jqXHR.responseJSON;
-                        result = Common.syntaxHighlight(JSON.stringify(res, undefined, 4));
-                    }
+                    // check response content-type
+                    self._check_response_content_type(jqXHR.getResponseHeader('content-type'), function(type) {
+                        console.log('check response content type');
+                        switch (type) {
+                            case "img":
+                                result = '<img src="'+ result +'" />';
+                                break;
+                            case "json":
+                                if (jqXHR.responseJSON) {
+                                    res = jqXHR.responseJSON;
+                                    result = Common.syntaxHighlight(JSON.stringify(res, undefined, 4));
+                                }
+                                break;
+                        }
+                    });
+                    console.log(jqXHR.getResponseHeader('content-type'));
                     result_obj.html(result).css('background-color', '#fff');
                     $this.attr('disabled', false).html('Send');
 
@@ -276,6 +292,14 @@ let event_form = {
                 }
             })
         });
+    },
+
+    _check_response_content_type: function(content_type, callback) {
+        if (content_type.indexOf('application/json') !== -1) {
+            callback('json');
+        } else if (content_type.indexOf('image') !== -1) {
+            callback('img');
+        }
     }
 };
 

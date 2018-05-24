@@ -73,7 +73,8 @@ textarea{padding:10px;}
 .tabs{height:40px;line-height:40px;}
 .tabs ul{padding-left:10px;}
 .tabs ul li{float:left;padding:0 15px;cursor:pointer;color:#fff;text-shadow: 2px 2px 2px #000;}
-.tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;text-shadow: none;}
+.tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;
+    text-shadow: none;}
 
 .login-action{height:40px;line-height:40px;color:#bbb;}
 .login-action a{font-weight:bold;color:#fff;}
@@ -101,20 +102,23 @@ textarea{padding:10px;}
 
 /* history group box */
 .history-group-box{width:200px;overflow: auto;
-    display: -webkit-flex;-webkit-flex-direction: column;}
+    display: -webkit-flex;-webkit-flex-direction: column;border:1px solid #f1f1f1;background-color:#fafafa;
+    border-radius: 3px;}
 
 /* history group */
-.history-group-tab{height:30px;padding: 0 10px;}
+.history-group-tab{height:30px;padding: 0 10px;background-color:#f1f1f1;border-top-left-radius: 3px;
+    border-top-right-radius: 3px;}
 .history-group-tab li{float:left;color:#222;height:30px;line-height:30px;padding:0 20px;cursor:pointer;}
-.history-group-tab li.focus{background-color:#f1f1f1;color:#444;border-top-left-radius: 3px;border-top-right-radius: 3px;}
+.history-group-tab li.focus{background-color:#fafafa;color:#444;}
 
 /* history host */
-.history-host{width:200px;overflow: auto;background-color:#fafafa;flex: 1;padding:10px;border:1px solid #f1f1f1;}
+.history-host{width:100%;overflow: auto;flex: 1;padding:10px;}
 .history-host ul{color:#fff;}
 .history-host ul li{word-break:break-all;cursor: pointer;
-    border-radius: 3px;margin-bottom:5px;background-color:#f1f1f1;display: -webkit-flex;-webkit-flex-direction: row;}
-.history-host ul li.focus span{background-color:#fff;color:#000;}
-.history-host ul li:hover span{background-color:#fff;color:#000;}
+    border-radius: 3px;margin-bottom:5px;display: -webkit-flex;-webkit-flex-direction: row;
+    border-bottom: 1px solid #f1f1f1;}
+.history-host ul li.focus span{background-color:#f1f1f1;color:#000;}
+.history-host ul li:hover span{background-color:#f1f1f1;color:#000;}
 .history-host ul li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#444;
     border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
 .history-host ul li i{display: inline-block;width:0;text-align:center;background-color:#fafafa;color:#fafafa;
@@ -139,21 +143,13 @@ textarea{padding:10px;}
 .history-table th.history-list-name{min-width: 150px;word-wrap: break-word;}
 .history-table tbody tr{cursor:pointer;}
 .history-table tbody tr:hover{background-color:#f5f5f5;}
-.history-table tbody tr:hover td.request-type span{
-    transition:All 0.4s ease-in-out;
-    -webkit-transition:All 0.4s ease-in-out;
-    -moz-transition:All 0.4s ease-in-out;
-    -o-transition:All 0.4s ease-in-out;
-}
-.history-table tbody tr:hover td.request-type span{
-    transform:rotate(360deg);
-    -webkit-transform:rotate(360deg);
-    -moz-transform:rotate(360deg);
-    -o-transform:rotate(360deg);
-    -ms-transform:rotate(360deg);}
-.history-table tbody tr td{padding:8px;border-bottom: 1px solid #ddd;}
+.history-table tbody tr:hover td.request-type span{transition:All 0.4s ease-in-out;}
+.history-table tbody tr:hover td.request-type span{transform:rotate(360deg);}
+.history-table tbody tr td{padding:8px;border-bottom: 1px solid #f1f1f1;}
 .history-table tbody tr td.request-type-GET{}
 .history-table tbody tr td.request-type-GET span{background-color:#009900;}
+.history-table tbody tr td.request-type-PUT span{background-color:#CC6600;}
+.history-table tbody tr td.request-type-DELETE span{background-color:#990000;}
 .history-table tbody tr td.request-type-POST{}
 .history-del{}
 .history-tips-list{}
@@ -168,7 +164,8 @@ textarea{padding:10px;}
 .history-empty p{}
 
 /* test */
-.test-count-line{margin-bottom:10px;height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;border-radius: 3px;}
+.test-count-line{margin-bottom:10px;height:40px;line-height:40px;background-color:#f5f5f5;padding:5px 10px;
+    border-radius: 3px;}
 .test-count-data{height:30px;line-height:30px;font-weight:bold;}
 .test-button{width:80px;height:30px;}
 .test-box{margin-bottom:10px;}
@@ -191,7 +188,7 @@ textarea{padding:10px;}
 .api-name-line{width:100%;border-bottom:1px solid #d5d5d5;height:40px;}
 .api-name-line input{padding:5px 0;border:0;border-radius: inherit;outline: none;}
 
-.form-line{height:35px;display: -webkit-flex;}
+.form-line{height:40px;display: -webkit-flex;}
 .request-type-box{height:100%;width:100px;position: relative;text-align: center;
     line-height:2.5;cursor:pointer;}
 .request-type-box select{width:100%;height:100%;border-radius: 3px;border-color:#d5d5d5;padding:0 10px;}
@@ -213,7 +210,7 @@ textarea{padding:10px;}
 .form-data{width:100%;-webkit-flex: 1;overflow-y:auto;background-color:#f5f5f5;padding:10px;border-radius: 3px;}
 .form-data table{width:100%;font-size:14px;}
 .form-data table td{border-bottom:1px solid #eaeaea;padding:10px 5px;}
-.form-data .input-text{padding:5px 10px;height:30px;}
+.form-data .input-text{padding:5px 10px;height:35px;}
 .form-data select{color:#444;}
 .form-value-data-type{margin-right:1px;}
 .form-request-data-type{margin-right:10px;}
@@ -225,7 +222,8 @@ textarea{padding:10px;}
 .code-key{color:#A52A2A;}
 
 /* tips */
-#tips-box{border: 1px solid #ddd;background-color:#fff;border-radius: 3px;padding: 10px;position: absolute;left:0;top:0;}
+#tips-box{border: 1px solid #ddd;background-color:#fff;border-radius: 3px;padding: 10px;position: absolute;
+    left:0;top:0;}
 
 /* module */
 #module-box{position: relative;left:0;top:0;}
@@ -254,20 +252,9 @@ textarea{padding:10px;}
 .version-update-logs ul li{border-bottom: 1px dotted #ccc;}
 
 /* 设置滚动条的样式 */
-::-webkit-scrollbar {
-    width:10px;
-}
+::-webkit-scrollbar {width:10px;}
 /* 滚动槽 */
-::-webkit-scrollbar-track {
-    -webkit-box-shadow:rgba(0,0,0,0.3);
-    border-radius:10px;
-}
+::-webkit-scrollbar-track {-webkit-box-shadow:rgba(0,0,0,0.3);border-radius:10px;}
 /* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-    border-radius:10px;
-    background:rgba(0,0,0,0.1);
-    -webkit-box-shadow:rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-    background:rgba(0,0,0,0.1);
-}
+::-webkit-scrollbar-thumb {border-radius:10px;background:rgba(0,0,0,0.1);-webkit-box-shadow:rgba(0,0,0,0.5);}
+::-webkit-scrollbar-thumb:window-inactive {background:rgba(0,0,0,0.1);}

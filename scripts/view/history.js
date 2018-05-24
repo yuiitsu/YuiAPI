@@ -46,9 +46,7 @@ View.extend('history', function() {
         return `
             <ul class="history-group-tab">
                 <li class="focus">Host</li>
-                <!--
                 <li>Group</li>
-                -->
             </ul>
             <div class="history-host radius-small-all">
                 <ul id="history-host" class="radius-small-all">

@@ -6,27 +6,33 @@
 let App = {
     requestType: 'GET',
     host: '',
-    init: function() {
+    run: function() {
         // 获取历史记录
         History.load();
         // 获取测试记录
         Test.init();
         // 默认断言
         History.set_default_assert();
-        // 表单
-        this.form.init();
+
+        for (let i in this) {
+            if (this[i].hasOwnProperty('init')) {
+                this[i]['init']();
+                console.log('[Module] %s init.', i);
+            }
+        }
     },
 
     /**
-     * 表单
+     * 继承
+     * @param name
+     * @param func
      */
-    form: {
-        init: function() {
-            View.display('form', 'form', {}, '#form-data-form');
-        }
+    extend: function(name, func) {
+        func.prototype = View;
+        this[name] = new func();
     }
 };
 
 $(function() {
-    App.init();
+    App.run();
 });

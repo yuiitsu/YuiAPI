@@ -1,7 +1,6 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-
 let History = {
     host: '',
     listKey: 'history_list',

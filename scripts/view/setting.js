@@ -50,5 +50,5 @@ View.extend('setting', function() {
                 <p class="align-right"><em>Yuiitsu</em></p>
             </div>
         `;
-    }
+    };
 });

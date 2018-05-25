@@ -43,6 +43,7 @@ textarea{padding:10px;}
 
 /* height */
 .h-10{height:10px;}
+.h-30{height:30px;}
 
 /* radius */
 .radius-small-all{border-radius: 3px;}
@@ -114,21 +115,33 @@ textarea{padding:10px;}
 
 /* history host */
 .history-host{width:100%;overflow: auto;flex: 1;padding:10px;}
-.history-host ul{color:#fff;}
-.history-host ul li{word-break:break-all;cursor: pointer;
+.history-host ul.history-host-list{color:#fff;}
+.history-host ul.history-host-list li{word-break:break-all;cursor: pointer;
     border-radius: 3px;margin-bottom:5px;display: -webkit-flex;-webkit-flex-direction: row;
     border-bottom: 1px solid #f1f1f1;}
-.history-host ul li.focus span{background-color:#f1f1f1;color:#000;}
-.history-host ul li:hover span{background-color:#f1f1f1;color:#000;}
-.history-host ul li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#444;
+.history-host ul.history-host-list li.focus span{background-color:#f1f1f1;color:#000;}
+.history-host ul.history-host-list li:hover span{background-color:#f1f1f1;color:#000;}
+.history-host ul.history-host-list li span{display: inline-block;padding: 10px;-webkit-flex: 1;color:#444;
     border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
-.history-host ul li i{display: inline-block;width:0;text-align:center;background-color:#fafafa;color:#fafafa;
+.history-host ul.history-host-list li i{display: inline-block;width:0;text-align:center;background-color:#fafafa;color:#fafafa;
     border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
-.history-host ul li i:hover{background-color:#ff0000;color:#fff;}
+.history-host ul.history-host-list li i:hover{background-color:#ff0000;color:#fff;}
 .history-host::-webkit-scrollbar {width: 1px;display: none;}
 .history-host::-webkit-scrollbar-track{}
 .history-host::-webkit-scrollbar-thumb{border-radius: 1px;background: #222;}
 .history-count{white-space:nowrap;}
+
+/* history group list */
+.history-group-list{}
+.history-group-list ul{}
+.history-group-list ul li{color:#000;padding:5px;border-bottom:1px solid #f1f1f1;cursor: pointer;}
+.history-group-list ul li.focus{background-color:#f1f1f1;color:#000;}
+.history-group-list ul li:hover{background-color:#f1f1f1;color:#000;}
+.history-group-action{height:40px;border-bottom: 1px solid #eee;padding-bottom:10px;}
+.history-group-empty{padding-top:30px;text-align:center;color:#666;}
+.history-group-form{}
+.history-group-form label{height:30px;line-height:30px;}
+.history-group-form div{margin-bottom:10px;}
 
 /* history-switch */
 .history-switch{width:20px;height:auto;position: relative;cursor:pointer;}
@@ -186,8 +199,10 @@ textarea{padding:10px;}
 .tab-line{margin-bottom:10px;height:40px;}
 .host-tab{}
 .host-tab li{float:left;margin-right:10px;}
-.api-name-line{width:100%;border-bottom:1px solid #d5d5d5;height:40px;}
-.api-name-line input{padding:5px 0;border:0;border-radius: inherit;outline: none;}
+.api-name-line{width:100%;border-bottom:1px solid #d5d5d5;height:40px;display: flex;flex-direction: row;}
+.api-name-line input{padding:5px 0;border:0;border-radius: inherit;outline: none;flex: 1;width:auto;}
+.form-group-selector{width:100px;height:40px;}
+.form-group-selector select{height:39px;border:0;width:100%;}
 
 .form-line{height:40px;display: -webkit-flex;}
 .request-type-box{height:100%;width:100px;position: relative;text-align: center;
@@ -230,11 +245,10 @@ textarea{padding:10px;}
 #module-box{position: relative;left:0;top:0;}
 .module-mask{position: fixed;left:0;top:0;width:100%;height:100%;background-color:#000;opacity: 0.5;}
 .module-content{position: fixed;left:50%;top:50%;width:700px;height:600px;margin-left:-350px;margin-top:-300px;
-    background-color:#fff;border: 1px solid #ddd;border-radius: 5px;padding: 10px;display: -webkit-flex;
-    -webkit-flex-direction: column;}
+    background-color:#fff;border: 1px solid #ddd;border-radius: 5px;padding: 10px;}
 .module-header{height:40px;line-height:30px;border-bottom:1px solid #ddd;font-size:20px;font-weight:bold;}
 .module-header i{font-size:20px;}
-.module-main{-webkit-flex: 1;overflow-y:auto;word-wrap: break-word;word-break: normal;}
+.module-main{word-wrap: break-word;word-break: normal;}
 .module-actions{height:40px;}
 
 /* notification */

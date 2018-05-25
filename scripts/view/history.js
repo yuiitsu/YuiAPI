@@ -49,7 +49,7 @@ View.extend('history', function() {
                 <li>Group</li>
             </ul>
             <div class="history-host radius-small-all">
-                <ul id="history-host" class="radius-small-all">
+                <ul id="history-host" class="radius-small-all history-host-list">
                     <li class="focus"><span class="radius-small-all">All (<em id="history-count-all">...</em>)</span></li>
                     {{ for var i in data }}
                     <li data-host="{{ data[i] }}">
@@ -59,9 +59,8 @@ View.extend('history', function() {
                     {{ end }}
                 </ul>
             </div>
-            <div class="history-host hide">
-                group       
-            </div>
+            <!-- history group -->
+            <div class="history-host history-group-list hide" id="history-group"></div>
         `;
     };
 

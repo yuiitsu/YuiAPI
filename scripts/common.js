@@ -17,6 +17,15 @@ let Common = {
             }
 
             return result ? result : [];
+        },
+
+        /**
+         * 保存数据
+         * @param key
+         * @param value
+         */
+        save: function(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
         }
     },
 
@@ -101,6 +110,13 @@ let Common = {
                 '</div>'+
             '</div>';
         $('body').append(_html);
+
+        // 检查高度
+        let target = $('.module-main');
+        let target_height = target.outerHeight();
+        let conent_height = target_height + 90 > 600 ? '600px' : target_height + 100;
+        $('.module-content').css('height', conent_height);
+        target.css('height', target_height);
 
         $('.module-close').off('click').on('click', function() {
             $('#module-box').remove();
@@ -263,9 +279,9 @@ let Common = {
      * @returns {string}
      */
     getHost: function(url) {
-        var parselUrl = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
-        var urlResult = parselUrl.exec(url);
-        return urlResult[1] + ':' + urlResult[2] + urlResult[3] + (urlResult[4] ? ':' + urlResult[4] : '');
+        let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+        let result = parse_Url.exec(url);
+        return result[1] + ':' + result[2] + result[3] + (result[4] ? ':' + result[4] : '');
     },
 
     /**
@@ -308,7 +324,7 @@ let Common = {
      * @param type 类型
      */
     clientSize: function(type) {
-        var result = [];
+        let result = [];
         result['scrollTop'] = window.self.document.documentElement.scrollTop ?
             window.self.document.documentElement.scrollTop : window.self.document.body.scrollTop;
         result['scrollHeight'] = window.self.document.documentElement.scrollHeight ?

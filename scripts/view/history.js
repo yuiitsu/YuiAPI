@@ -54,7 +54,7 @@ View.extend('history', function() {
                 </ul>
             </div>
             <!-- history group -->
-            <div class="history-host history-group-list hide" id="history-group"></div>
+            <div class="history-host history-group-list hide" id="history-group">{{ View.get_view('group', 'list', {}) }}</div>
         `;
     };
 

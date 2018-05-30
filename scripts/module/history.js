@@ -56,8 +56,12 @@ let History = {
         }
 
         // 刷新host和history list
-        this.refresh_history_list();
-        this.refresh_host_list();
+        if($('#history-list-box').length > 0) {
+            this.refresh_history_list();
+            this.refresh_host_list();
+        } else {
+            this.init_interface();
+        }
 
         // 加入分组
         if (params['group_id']) {

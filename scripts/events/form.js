@@ -100,7 +100,7 @@ Event.extend('form', function() {
                                 content: assert_content ? assert_content : ''
                             };
                         }
-
+                        App.form.selected_group_id = group_id;
                         // 写入History
                         History.add({
                             url: url,

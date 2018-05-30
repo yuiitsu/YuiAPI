@@ -14,7 +14,7 @@ Event.extend('group', function() {
          * 打开新增/编辑表单
          */
         open_form: function() {
-            $('#history-group').on('click', '#history-group-new', function(e) {
+            $('#history-content').on('click', '#history-group-new', function(e) {
                 Common.module('New Group', View.get_view('group', 'form', ''), '');
             });
         },
@@ -23,7 +23,7 @@ Event.extend('group', function() {
          * 元素对象菜单显示
          */
         item_hover: function() {
-            $('#history-group').on('mouseover', '#history-group-ul li', function(e) {
+            $('#history-content').on('mouseover', '#history-group-ul li', function(e) {
                 let group_id = $(this).attr('data-group-id');
                 if (group_id) {
                     Common.tips.show($(this), '<span class="history-group-del" data-group-id="'+ group_id +'">delete</span>', {position: 'right'});
@@ -35,13 +35,11 @@ Event.extend('group', function() {
          * 点击
          */
         item_click: function() {
-            $('#history-group').on('click', '#history-group-ul li', function(e) {
-                $('#history-group-ul li').removeClass('focus');
+            $('#history-content').on('click', '#history-group-ul li', function(e) {
+                $('#history-group-ul').find('li').removeClass('focus');
                 let group_id = $(this).attr('data-group-id');
-                if (group_id) {
-                    App.group.load_history(group_id);
-                    $(this).addClass('focus');
-                }
+                App.group.load_history(group_id);
+                $(this).addClass('focus');
             });
         },
 

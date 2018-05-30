@@ -11,6 +11,7 @@ View.extend('group', function() {
             </div>
             {{ if data && data.length > 0 }}
             <ul id="history-group-ul">
+                <li data-group-id="">All</li>           
                 {{ for var i in data }}
                 {{ var history_count = data[i]['history_count'] ? data[i]['history_count'] : 0 }}
                 <li data-group-id="{{ data[i]['group_id'] }}">{{ data[i]['name'] }} <em>({{ history_count }})</em></li>           
@@ -42,8 +43,9 @@ View.extend('group', function() {
         return `
             <select class="history-group-selector">
                 <option value="">select group</option>
-                {{ for var i in data }}
-                <option value="{{ data[i]['group_id'] }}">{{ data[i]['name'] }}</option>
+                {{ for var i in data['list'] }}
+                {{ var selected = data['list'][i]['group_id'].toString() === data['selected_group_id'] ? 'selected="selected"' : '' }}
+                <option value="{{ data['list'][i]['group_id'] }}" {{ selected }}>{{ data['list'][i]['name'] }}</option>
                 {{ end }}
             </select>
         `;

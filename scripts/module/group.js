@@ -118,25 +118,28 @@ App.extend('group', function() {
      * @param group_id
      */
     this.load_history = function(group_id) {
-        let history_keys = [-1];
-        if (this.group_history[group_id]) {
-            history_keys = this.group_history[group_id];
-        } else {
-            for (let i in this.group_list) {
-                if (this.group_list[i]['group_id'].toString() === group_id) {
-                    this.group_list[i]['history_count'] = 0;
+        let history_keys = null;
+        if (group_id) {
+            history_keys = [-1];
+            if (this.group_history[group_id]) {
+                history_keys = this.group_history[group_id];
+            } else {
+                for (let i in this.group_list) {
+                    if (this.group_list[i]['group_id'].toString() === group_id) {
+                        this.group_list[i]['history_count'] = 0;
+                    }
                 }
             }
+            Common.cache.save(this.list_key, this.group_list);
         }
-        Common.cache.save(this.list_key, this.group_list);
         History.refresh_history_list(null, null, history_keys);
     };
 
     /**
      * 获取分组下拉选择数据
      */
-    this.get_select_view = function() {
-        return View.get_view('group', 'select', this.group_list);
+    this.get_select_view = function(selected_group_id) {
+        return View.get_view('group', 'select', {'list': this.group_list, 'selected_group_id': selected_group_id});
     };
 
     /**
@@ -146,6 +149,17 @@ App.extend('group', function() {
         // 分组列表
         View.display('group', 'list', self.group_list, '#history-group');
         // 表单下拉列表
-        View.display('group', 'select', self.group_list, '#group-selector');
+        self.display_selector(App.form.selected_group_id);
+    };
+
+    /**
+     * 渲染下拉菜单
+     * @param selected_group_id
+     */
+    this.display_selector = function(selected_group_id) {
+        View.display('group', 'select', {
+            'list': self.group_list,
+            'selected_group_id': selected_group_id
+        }, '#group-selector');
     };
 });

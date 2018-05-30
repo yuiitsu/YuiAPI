@@ -135,6 +135,7 @@ Event.extend('history', function() {
                         result = historyData[key]['result'],
                         apiName = historyData[key]['name'],
                         time = historyData[key]['time'],
+                        group_id = historyData[key]['group_id'],
                         status = historyData[key]['status'];
 
                     $('#request-type').val(requestType);
@@ -192,6 +193,9 @@ Event.extend('history', function() {
                     }
 
                     $('#form-data-assert').text(assert_content);
+
+                    // group_id下拉菜单
+                    App.group.display_selector(group_id);
                 }
             });
         },

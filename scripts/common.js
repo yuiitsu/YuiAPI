@@ -1,63 +1,125 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-
-var Common = {
+let Common = {
 
     cache: {
         /**
          * 获取列表数据
          * @param key
+         * @param default_return
          * @returns {Array}
          */
-        getListData: function(key) {
-            var result = null;
+        getListData: function(key, default_return) {
+            let result = null;
             try {
                 result =  JSON.parse(localStorage.getItem(key));
             } catch (e) {
             }
 
-            return result ? result : [];
+            return result ? result : default_return ? default_return : [];
+        },
+
+        /**
+         * 保存数据
+         * @param key
+         * @param value
+         */
+        save: function(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
         }
-    },
-
-    tips: function(focus, content) {
-        var obj = $('#tips-box');
-        if (obj.length) {
-            obj.html(content).show();
-        } else {
-            var _html = '<div id="tips-box">'+ content +'</div>';
-            $('body').append(_html);
-        }
-
-        var tips_timer = setTimeout(function() {
-            $('#tips-box').hide();
-        }, 3000);
-
-        var focus_offset = focus.offset(),
-            focus_width = focus.outerWidth(),
-            focus_height = focus.outerHeight();
-        $('#tips-box').css({'top': focus_offset.top + focus_height, 'left': focus_offset.left})
-            .off('mouseenter').on('mouseenter', function() {
-                clearTimeout(tips_timer);
-        }).off('mouseleave').on('mouseleave', function() {
-            $(this).hide();
-        });
     },
 
     /**
      * 提示
+     * @param focus
+     * @param content
+     * @param options
+     */
+    tips: {
+        timer: null,
+        show: function(focus, content, options) {
+            let _this = this;
+            let opt = options || {};
+            let obj = $('#tips-box');
+            if (obj.length) {
+                obj.html(content).show();
+            } else {
+                let _html = '<div id="tips-box">'+ content +'</div>';
+                $('body').append(_html);
+                obj = $('#tips-box');
+            }
+
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+
+            focus.off('mouseleave').on('mouseleave', function() {
+                _this.timer = setTimeout(function() {
+                    $('#tips-box').hide();
+                }, 3000);
+            });
+
+            let focus_offset = focus.offset(),
+                focus_width = focus.outerWidth(),
+                focus_height = focus.outerHeight(),
+                focus_top = focus_offset.top,
+                focus_left = focus_offset.left,
+                target_width = obj.outerWidth(),
+                target_height = obj.outerHeight(),
+                client_width = Common.clientSize('clientWidth'),
+                client_height = Common.clientSize('clientHeight');
+
+            switch (opt.position) {
+                case "left":
+                    focus_left = focus_left - target_width <= 0 ? focus_left + focus_width : focus_left - target_width;
+
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    break;
+                case "right":
+                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width;
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    break;
+                default:
+                    if (focus_left + target_width > client_width) {
+                        focus_left = focus_left - target_width + focus_width;
+                        focus_top = focus_top + focus_height;
+                    }
+
+                    // 检查位置和调试，如果超出屏幕，向上显示
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    focus_top = focus_top + focus_height;
+                    break;
+            }
+
+            obj.css({'top': focus_top, 'left': focus_left})
+                .off('mouseenter').on('mouseenter', function() {
+                    clearTimeout(_this.timer);
+            }).off('mouseleave').on('mouseleave', function() {
+                $(this).hide();
+            });
+        }
+    },
+
+    /**
+     * 通知
      * @param text
      * @param type
      */
     notification: function(text, type) {
         // 初始化
-        var notification_timer = null;
+        let notification_timer = null;
         $('#notification-box').remove();
         clearTimeout(notification_timer);
         //
-        var bg = type ? type : 'success';
-        var _html = '<div id="notification-box" class="bg-'+ bg +'">'+
+        let bg = type ? type : 'success';
+        let _html = '<div id="notification-box" class="bg-'+ bg +'">'+
                 text +
             '</div>';
         $('body').append(_html);
@@ -68,11 +130,11 @@ var Common = {
     },
 
     module: function(name, content, action) {
-        var _html = '<div id="module-box">'+
+        let _html = '<div id="module-box">'+
                 '<div class="module-mask"></div>'+
                 '<div class="module-content">'+
                     '<div class="module-header">'+ name +
-                        '<i class="mdi mdi-close fr" id="module-close"></i>'+
+                        '<i class="mdi mdi-close fr module-close"></i>'+
                     '</div>'+
                     '<div class="module-main">'+ content +'</div>'+
                     '<div class="module-actions">'+ action +'</div>'+
@@ -80,7 +142,14 @@ var Common = {
             '</div>';
         $('body').append(_html);
 
-        $('#module-close').on('click', function() {
+        // 检查高度
+        let target = $('.module-main');
+        let target_height = target.outerHeight();
+        let conent_height = target_height + 90 > 600 ? '600px' : target_height + 100;
+        $('.module-content').css('height', conent_height);
+        target.css('height', target_height);
+
+        $('.module-close').off('click').on('click', function() {
             $('#module-box').remove();
         });
     },
@@ -91,32 +160,130 @@ var Common = {
      */
     getFormParams: function() {
         return {
-            get_data: function(parent_obj) {
-                var result = {},
+            /**
+             * 从表单中获取参数与值
+             * @param parent_obj 父对象
+             * @param is_form_data 类型是否为form-data
+             * @returns {{data, history_data}}
+             */
+            get_data: function(parent_obj, is_form_data) {
+                let form_data = is_form_data ? new FormData() : {},
+                    history_data = {},
                     i = 0,
                     select_obj = parent_obj.find('.form-select'),
                     key_obj = parent_obj.find('.form-key'),
-                    value_obj = parent_obj.find('.form-value');
+                    value_type_obj = parent_obj.find('.form-value-data-type'),
+                    value_obj = parent_obj.find('.form-value'),
+                    description_obj = parent_obj.find('.form-description');
 
-                select_obj.each(function() {
-                    if($(this).is(":checked")) {
-                        var key = $.trim(key_obj.eq(i).val());
+                select_obj.each(function () {
+                    if ($(this).is(":checked")) {
+                        let key = $.trim(key_obj.eq(i).val());
                         if (key) {
-                            result[key] = $.trim(value_obj.eq(i).val());
+                            let value = $.trim(value_obj.eq(i).val()),
+                                value_type = 'Text';
+                            if (is_form_data) {
+                                if (value_type_obj.eq(i).val() === 'File') {
+                                    form_data.append(key, value_obj.eq(i)[0].files[0]);
+                                    value_type = 'File';
+                                } else {
+                                    form_data.append(key, value);
+                                }
+                            } else {
+                                form_data[key] = value;
+                            }
+                            history_data[key] = {
+                                value: value,
+                                value_type: value_type,
+                                description: $.trim(description_obj.eq(i).val())
+                            };
                         }
                     }
                     i++;
                 });
 
-                return result;
+                return {
+                    data: form_data,
+                    history_data: history_data
+                };
             },
             header: function() {
                 return this.get_data($('#form-data-headers'));
             },
             form: function() {
                 return this.get_data($('#form-data'));
+            },
+            form_data: function() {
+                return this.get_data($('#form-data-true'), true);
             }
         };
+    },
+
+    /**
+     * 显示响应结果
+     * @param result
+     * @param response_content_type
+     * @param jqXHR
+     */
+    display_response: function(result, response_content_type, jqXHR) {
+        let target = $('#result'),
+            target_textarea = $('#result-textarea');
+
+        Common.get_response_content_type(response_content_type, function(type) {
+            switch (type) {
+                case "img":
+                    result = '<img src="'+ result +'" />';
+                    target.html(result).css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "json":
+                    if (jqXHR && jqXHR.status !== 200) {
+                        result = jqXHR.responseJSON;
+                    }
+                    target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                        .css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "xml":
+                    target.text('').addClass('hide');
+                    target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
+                    break;
+            }
+            // 将显示数据类型重置为第一个tab
+            $('.response-type').find('li').eq(0).trigger('click');
+        });
+
+        return result;
+    },
+
+    /**
+     * 检查response的content_type类型
+     * @param content_type
+     * @param callback
+     * @private
+     */
+    get_response_content_type: function(content_type, callback) {
+        if (content_type) {
+            if (content_type.indexOf('application/json') !== -1) {
+                callback('json');
+            } else if (content_type.indexOf('image') !== -1) {
+                callback('img');
+            } else if (content_type.indexOf('text/xml') !== -1) {
+                callback('xml');
+            }
+        } else {
+            callback('json');
+        }
+    },
+
+    /**
+     * 高亮显示xml
+     * @param xml
+     * @returns {string | *}
+     */
+    syntaxHighlight_xml: function(xml) {
+        xml = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return xml;
     },
 
     /**
@@ -149,9 +316,9 @@ var Common = {
      * @returns {string}
      */
     getHost: function(url) {
-        var parselUrl = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
-        var urlResult = parselUrl.exec(url);
-        return urlResult[1] + ':' + urlResult[2] + urlResult[3] + (urlResult[4] ? ':' + urlResult[4] : '');
+        let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+        let result = parse_Url.exec(url);
+        return result[1] + ':' + result[2] + result[3] + (result[4] ? ':' + result[4] : '');
     },
 
     /**
@@ -162,18 +329,24 @@ var Common = {
      * @param callBack 回调函数
      */
     request: function(strUrl, objParams, objData, callBack){
-        var options = {
+        let options = {
             url: strUrl,
             type: objParams.type ? objParams.type : "GET",
             data: objData,
             async: objParams.async !== 'false',
-            dataType: "json",
-            headers: objParams['headers']
+            dataType: objParams.data_type ? objParams.data_type : "json",
+            headers: objParams['headers'],
+            processData: objParams.processData === undefined ? true : objParams.processData
         };
-        var objJgbAjaxHandler = $.ajax(options);
+
+        if (objParams.hasOwnProperty('contentType')) {
+            options['contentType'] = objParams.contentType;
+        }
+
+        let objJgbAjaxHandler = $.ajax(options);
         objJgbAjaxHandler.fail(function(jqXHR, text_status, d){
             if($.isFunction(callBack)){
-                callBack(d, jqXHR);
+                callBack(jqXHR.responseText, jqXHR);
             }
         });
         objJgbAjaxHandler.done(function(d, text_status, jqXHR){
@@ -188,7 +361,7 @@ var Common = {
      * @param type 类型
      */
     clientSize: function(type) {
-        var result = [];
+        let result = [];
         result['scrollTop'] = window.self.document.documentElement.scrollTop ?
             window.self.document.documentElement.scrollTop : window.self.document.body.scrollTop;
         result['scrollHeight'] = window.self.document.documentElement.scrollHeight ?

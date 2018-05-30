@@ -1,14 +1,15 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-
-var History = {
+let History = {
     host: '',
     listKey: 'history_list',
     dataKey: 'history_data',
     hostCacheKey: 'host_list',
     assert_key: 'assert_data',
     assert_default_key: 'assert_default_data',
+    selected_host: '',
+    search_key: '',
     /**
      * 添加数据
      * @param params
@@ -24,22 +25,22 @@ var History = {
     add: function(params) {
         // 获取host
         this.host = Common.getHost(params['url']);
-        var dataHashKey = Common.md5(params['url']);
+        let dataHashKey = Common.md5(params['url']);
         //
-        var historyData = this.getData();
+        let historyData = this.getData();
         historyData[dataHashKey] = params;
         historyData[dataHashKey]['host'] = this.host;
         this.setItem(this.dataKey, historyData);
         //
-        var historyHashData = this.getListData(this.listKey);
-        var index = historyHashData.indexOf(dataHashKey);
+        let historyHashData = this.getListData(this.listKey);
+        let index = historyHashData.indexOf(dataHashKey);
         if (index !== -1) {
             historyHashData.splice(index, 1);
         }
         historyHashData.push(dataHashKey);
         this.setItem(this.listKey, historyHashData);
         //
-        var hostData = this.getListData(this.hostCacheKey);
+        let hostData = this.getListData(this.hostCacheKey);
         if (hostData.indexOf(this.host) === -1) {
             hostData.push(this.host);
         }
@@ -49,13 +50,23 @@ var History = {
 
         // assertion
         if (params['assertion_data']) {
-            var assert_result = this.get_obj_data(this.assert_key);
+            let assert_result = this.get_obj_data(this.assert_key);
             assert_result[dataHashKey] = params['assertion_data'];
             this.setItem(this.assert_key, assert_result);
         }
 
-        //
-        this.load();
+        // 刷新host和history list
+        if($('#history-list-box').length > 0) {
+            this.refresh_history_list();
+            this.refresh_host_list();
+        } else {
+            this.init_interface();
+        }
+
+        // 加入分组
+        if (params['group_id']) {
+            App.group.add_history(params['group_id'], dataHashKey);
+        }
     },
 
     /**
@@ -66,14 +77,17 @@ var History = {
         this.setItem(this.assert_default_key, data);
     },
 
+    /**
+     *
+     */
     set_default_assert: function() {
-        var default_assert_data = this.get_default_assert();
+        let default_assert_data = this.get_default_assert();
         if (!$.isEmptyObject(default_assert_data)) {
-            var assert_type = default_assert_data['type'];
-            var assert_content = default_assert_data['content'];
+            let assert_type = default_assert_data['type'],
+                assert_content = default_assert_data['content'];
             if (assert_type) {
                 $('input[name=form-data-assert-type]').attr('checked', false).each(function () {
-                    var value = $(this).val();
+                    let value = $(this).val();
                     if (value === assert_type) {
                         $(this).prop('checked', 'checked');
                         $(this).attr('checked', true);
@@ -100,90 +114,124 @@ var History = {
             }
         }
     },
+
     /**
-     * 构建history列表
+     * 初始化界面
      */
-    load: function() {
+    init_interface: function() {
         // host列表
-        this.build_host_ui_list();
-        //$('#history-host').append(host_list_html.join(""));
-        //
-        this.build_ui_list(null);
-        //$('#history-content').find('tbody').html(_html.join(""));
-        //$('#history-count').html(_html.length);
-        //
-        //if (hostData) {
-        //    _html = [];
-        //    for (var i in hostData) {
-        //        var select = '';
-        //        if (this.host === hostData[i]) {
-        //            select = 'selected="selected"';
-        //        }
-        //        _html.push('<option value="'+ hostData[i] +'" '+ select +'>'+ hostData[i] +'</option>');
-        //    }
-        //    $('#host-select').html(_html.join(""));
-        //}
+        let host_list = this.get_host_list();
+        let history_list = this.get_history_list(null, null);
+        let data = {
+            host_list: host_list,
+            history_list: history_list
+        };
+        View.display('history', 'main', data, '#history-content');
+        this.show_history_count(history_list);
     },
 
     /**
-     * 构建host list界面
-     * @param replace
+     * 刷新host list界面
      */
-    build_host_ui_list: function(replace) {
-        var host_list = this.get_host_list();
-        var len = host_list.length,
-            _html = [];
-        for (var i = 0; i < len; i++) {
-            var _html_item = '<li data-host="'+ host_list[i] +'">' +
-                    '<span>'+ host_list[i] +'</span>' +
-                    '<i class="mdi mdi-close"></i>' +
-                '</li>';
-            _html.push(_html_item);
-        }
-        if (replace) {
-            $('#history-host').html(_html.join(""));
-        } else {
-            $('#history-host').append(_html.join(""));
+    refresh_host_list: function() {
+        let host_list = this.get_host_list(),
+            _this = this;
+        View.display('history', 'host_list', host_list, '#history-host');
+        if (this.selected_host) {
+            $('#history-host').find('li').each(function() {
+                let host = $(this).attr('data-host');
+                if (host === _this.selected_host) {
+                    $(this).find('span').trigger('click');
+                }
+            });
         }
     },
 
     /**
-     * 构建界面LISt
+     * 刷新history list界面
+     * @param host
+     * @param group_id
+     * @param key
+     */
+    refresh_history_list: function(host, group_id, key) {
+        let history_list = this.get_history_list(null, host, group_id, key);
+        View.display('history', 'main_list', history_list, '#history-list-box');
+    },
+
+    /**
+     * 获取历史记录数，可根据host筛选
+     * @param data
+     * @param host
+     * @param group_id
+     * @param search_key
      * @returns {Array}
      */
-    build_ui_list: function(data, host) {
-        var hashData = this.getListData(this.listKey);
-        var historyData = data ? data : this.getData();
-        var _html = [];
+    get_history_list: function(data, host, group_id, search_key) {
+        let hashData = this.getListData(this.listKey),
+            historyData = data ? data : this.getData(),
+            list = [];
+
         if (hashData) {
-            var len = hashData.length;
-            for (var i = len - 1; i >=0; i--) {
-                var key = hashData[i];
+            let len = hashData.length;
+            for (let i = len - 1; i >=0; i--) {
+                let key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
                     if (host && historyData[key]['host'] !== host) {
                         continue;
                     }
-                    var request_type_icon = historyData[key]['type'] ? historyData[key]['type'][0] : '-';
-                    //var url = historyData[key]['url'].replace(historyData[key]['host'], '');
-                    var _htmlItem = '<tr data-key="' + key + '">' +
-                        '<td class="w-30 history-item-action" data-key="' + key + '">' +
-                            '<i class="mdi mdi-dots-horizontal font-size-20"></i>' +
-                        '</td>' +
-                        '<td class="w-50 align-center request-type request-type-' + historyData[key]['type'] + '">' +
-                            '<span>' + request_type_icon + '</span>' +
-                        '</td>' +
-                        '<td>' + historyData[key]['name'] + '</td>' +
-                        '<td>' + historyData[key]['url'] + '</td>';
-                    _html.push(_htmlItem);
-                } else {
-                    console.log('no kye: ' + key);
+                    if (group_id && historyData[key]['group_id'] !== group_id) {
+                        continue;
+                    }
+                    if (search_key && (search_key.indexOf(key) === -1)) {
+                        continue;
+                    }
+                    historyData[key]['key'] = key;
+                    list.push(historyData[key]);
                 }
             }
         }
+        return list;
+    },
 
-        $('#history-content').find('tbody').html(_html.join(""));
-        $('#history-count').html(_html.length);
-        //return _html;
+    /**
+     * 构建界面List
+     * @param data 数据，没有值使用所有数据
+     * @param host 指定host数据
+     */
+    build_ui_list: function(data, host) {
+        if (host) {
+            this.selected_host = host;
+        }
+        let list = this.get_history_list(data, host);
+        View.display('history', 'main_list', list, '#history-list-box');
+
+        // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
+        this.show_history_count(list, host);
+    },
+
+    /**
+     * 显示历史记录数量
+     * @param list
+     * @param host
+     */
+    show_history_count: function(list, host) {
+        // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
+        let history_count = list.length;
+        if (!host) {
+            $('#history-count-all').text(history_count);
+        } else {
+            $('#history-host').find('li').each(function() {
+                let data_host = $(this).attr('data-host');
+                if (host === data_host) {
+                    let target = $(this).find('em.history-count');
+                    if (target.length === 0) {
+                        $(this).find('span').append(' <em class="history-count">('+ history_count +')</em>');
+                    } else {
+                        target.text('(' + history_count + ')');
+                    }
+                }
+            });
+        }
     },
 
     /**
@@ -224,7 +272,7 @@ var History = {
      * @returns {{}}
      */
     getData: function() {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(this.dataKey));
         } catch (e) {
@@ -239,7 +287,7 @@ var History = {
      * @returns {Array}
      */
     getListData: function(key) {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
         } catch (e) {
@@ -254,7 +302,7 @@ var History = {
      * @returns {{}}
      */
     get_obj_data: function(key) {
-        var result = null;
+        let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
         } catch (e) {
@@ -269,23 +317,23 @@ var History = {
      */
     del: function(key) {
         //var historyDataTmp = {};
-        var historyData = this.getData();
-        for (var i in historyData) {
+        let historyData = this.getData();
+        for (let i in historyData) {
             if (i === key) {
                 delete historyData[i];
             }
         }
         this.setItem(this.dataKey, historyData);
         //
-        var hashData = this.getListData(this.listKey);
-        for (var i in hashData) {
+        let hashData = this.getListData(this.listKey);
+        for (let i in hashData) {
             if (hashData[i] === key) {
                 hashData.splice(i, 1);
             }
         }
         this.setItem(this.listKey, hashData);
         //
-        this.load();
+        this.refresh_history_list();
     },
 
     /**
@@ -293,8 +341,8 @@ var History = {
      * @param host
      */
     del_host: function(host) {
-        var host_list = this.get_host_list();
-        for (var i in host_list) {
+        let host_list = this.get_host_list();
+        for (let i in host_list) {
             if (host_list[i] === host) {
                 host_list.splice(i, 1);
             }
@@ -308,15 +356,15 @@ var History = {
      * 清除较早数据
      */
     clearPre: function() {
-        var list = this.getListData(this.listKey);
+        let list = this.getListData(this.listKey);
         if (list.length <= 5) {
             // 全部清除
             this.clearAll();
         } else {
             // 清除最早5条
-            var data = this.getData();
-            for (var i = 0; i < 5; i++) {
-                var key = list[i];
+            let data = this.getData();
+            for (let i = 0; i < 5; i++) {
+                let key = list[i];
                 delete data[key];
             }
             list.splice(0, 5);
@@ -339,26 +387,30 @@ var History = {
      */
     search: function(_obj, e) {
         if (e.keyCode === 13) {
-            var search_key = $.trim(_obj.val());
+            let search_key = $.trim(_obj.val()),
+                result_data = {};
 
             if (search_key) {
-                var search_key_list = search_key.split(' ');
-                var result_data = {};
-                var history_list = this.getData();
+                this.search_key = search_key;
+                let search_key_list = search_key.split(' '),
+                    history_list = this.getData();
+
                 if (history_list) {
-                    for (var i in history_list) {
-                        var name = history_list[i]['name'];
-                        var url = history_list[i]['url'];
-                        for (var j in search_key_list) {
-                            var key = search_key_list[j];
-                            var is_searched = false;
+                    for (let i in history_list) {
+                        let name = history_list[i]['name'],
+                            url = history_list[i]['url'];
+
+                        for (let j in search_key_list) {
+                            let key = search_key_list[j],
+                                is_searched = false;
+
                             if (name.indexOf(key) !== -1) {
-                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>')
+                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
                                 is_searched = true;
                             }
 
                             if (url.indexOf(key) !== -1) {
-                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>')
+                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
                                 is_searched = true;
                             }
 
@@ -371,8 +423,6 @@ var History = {
             }
 
             this.build_ui_list(result_data);
-            //$('#history-content').find('tbody').html(_html.join(""));
-            //$('#history-count').html(_html.length);
         }
     }
 };

@@ -38,6 +38,7 @@ Event.extend('form', function() {
                     url_obj = $('#url'),
                     url = $.trim(url_obj.val()),
                     apiName = $.trim($('#api-name').val()),
+                    group_id = $('.history-group-selector').val(),
                     form_data_type = $('input[name=form-data-type]:checked').val();
                 if (url) {
                     if (url.substr(0, 7) !== 'http://' && url.substr(0, 8) !== 'https://') {
@@ -80,7 +81,7 @@ Event.extend('form', function() {
                         // response
                         let response_content_type = jqXHR.getResponseHeader('content-type');
                         // check response content-type
-                        Common.display_response(res, response_content_type);
+                        res = Common.display_response(res, response_content_type, jqXHR);
                         $this.attr('disabled', false).html('Send');
 
                         // 时间
@@ -112,7 +113,8 @@ Event.extend('form', function() {
                             result: res,
                             time: use_time,
                             status: jqXHR.status,
-                            assertion_data: assertion_data
+                            assertion_data: assertion_data,
+                            group_id: group_id
                         });
                     });
                 }
@@ -132,7 +134,7 @@ Event.extend('form', function() {
                     }
                 }
                 content.push('</ul>');
-                Common.tips($(this), content.join(''));
+                Common.tips.show($(this), content.join(''));
             });
 
             $('body').on('click', '#host-select-item li', function(e) {

@@ -50,17 +50,27 @@ View.extend('history', function() {
             </ul>
             <div class="history-host radius-small-all">
                 <ul id="history-host" class="radius-small-all history-host-list">
-                    <li class="focus"><span class="radius-small-all">All (<em id="history-count-all">...</em>)</span></li>
-                    {{ for var i in data }}
-                    <li data-host="{{ data[i] }}">
-                        <span>{{ data[i] }}</span>
-                        <i class="mdi mdi-close"></i>
-                    </li>
-                    {{ end }}
+                    {{ View.get_view('history', 'host_list', data) }}
                 </ul>
             </div>
             <!-- history group -->
             <div class="history-host history-group-list hide" id="history-group"></div>
+        `;
+    };
+
+    /**
+     * host list
+     * @returns {string}
+     */
+    this.host_list = function() {
+        return `
+            <li class="focus"><span class="radius-small-all">All (<em id="history-count-all">...</em>)</span></li>
+            {{ for var i in data }}
+            <li data-host="{{ data[i] }}">
+                <span>{{ data[i] }}</span>
+                <i class="mdi mdi-close"></i>
+            </li>
+            {{ end }}
         `;
     };
 

@@ -6,9 +6,10 @@
 let App = {
     requestType: 'GET',
     host: '',
+
     run: function() {
         // 获取历史记录
-        History.load();
+        History.init_interface();
         // 获取测试记录
         Test.init();
         // 默认断言

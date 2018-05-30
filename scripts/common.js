@@ -7,16 +7,17 @@ let Common = {
         /**
          * 获取列表数据
          * @param key
+         * @param default_return
          * @returns {Array}
          */
-        getListData: function(key) {
+        getListData: function(key, default_return) {
             let result = null;
             try {
                 result =  JSON.parse(localStorage.getItem(key));
             } catch (e) {
             }
 
-            return result ? result : [];
+            return result ? result : default_return ? default_return : [];
         },
 
         /**
@@ -33,47 +34,77 @@ let Common = {
      * 提示
      * @param focus
      * @param content
+     * @param options
      */
-    tips: function(focus, content) {
-        let obj = $('#tips-box');
-        if (obj.length) {
-            obj.html(content).show();
-        } else {
-            let _html = '<div id="tips-box">'+ content +'</div>';
-            $('body').append(_html);
-            obj = $('#tips-box');
+    tips: {
+        timer: null,
+        show: function(focus, content, options) {
+            let _this = this;
+            let opt = options || {};
+            let obj = $('#tips-box');
+            if (obj.length) {
+                obj.html(content).show();
+            } else {
+                let _html = '<div id="tips-box">'+ content +'</div>';
+                $('body').append(_html);
+                obj = $('#tips-box');
+            }
+
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+
+            focus.off('mouseleave').on('mouseleave', function() {
+                _this.timer = setTimeout(function() {
+                    $('#tips-box').hide();
+                }, 3000);
+            });
+
+            let focus_offset = focus.offset(),
+                focus_width = focus.outerWidth(),
+                focus_height = focus.outerHeight(),
+                focus_top = focus_offset.top,
+                focus_left = focus_offset.left,
+                target_width = obj.outerWidth(),
+                target_height = obj.outerHeight(),
+                client_width = Common.clientSize('clientWidth'),
+                client_height = Common.clientSize('clientHeight');
+
+            switch (opt.position) {
+                case "left":
+                    focus_left = focus_left - target_width <= 0 ? focus_left + focus_width : focus_left - target_width;
+
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    break;
+                case "right":
+                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width;
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    break;
+                default:
+                    if (focus_left + target_width > client_width) {
+                        focus_left = focus_left - target_width + focus_width;
+                        focus_top = focus_top + focus_height;
+                    }
+
+                    // 检查位置和调试，如果超出屏幕，向上显示
+                    if (focus_top + target_height > client_height) {
+                        focus_top = focus_top - target_height;
+                    }
+                    focus_top = focus_top + focus_height;
+                    break;
+            }
+
+            obj.css({'top': focus_top, 'left': focus_left})
+                .off('mouseenter').on('mouseenter', function() {
+                    clearTimeout(_this.timer);
+            }).off('mouseleave').on('mouseleave', function() {
+                $(this).hide();
+            });
         }
-
-        let tips_timer = setTimeout(function() {
-            $('#tips-box').hide();
-        }, 3000);
-
-        let focus_offset = focus.offset(),
-            focus_width = focus.outerWidth(),
-            focus_height = focus.outerHeight(),
-            obj_top = focus_offset.top,
-            obj_left = focus_offset.left,
-            obj_width = obj.outerWidth(),
-            obj_height = obj.outerHeight(),
-            client_width = this.clientSize('clientWidth'),
-            client_height = this.clientSize('clientHeight');
-
-        // 检查位置和宽度，如果超出屏幕，向右显示
-        if (obj_left + obj_width > client_width) {
-            obj_left = obj_left - obj_width + focus_width;
-        }
-
-        // 检查位置和调试，如果超出屏幕，向上显示
-        if (obj_top + obj_height > client_height) {
-            obj_top = obj_top - obj_height;
-        }
-
-        $('#tips-box').css({'top': obj_top + focus_height, 'left': obj_left})
-            .off('mouseenter').on('mouseenter', function() {
-                clearTimeout(tips_timer);
-        }).off('mouseleave').on('mouseleave', function() {
-            $(this).hide();
-        });
     },
 
     /**
@@ -192,8 +223,9 @@ let Common = {
      * 显示响应结果
      * @param result
      * @param response_content_type
+     * @param jqXHR
      */
-    display_response: function(result, response_content_type) {
+    display_response: function(result, response_content_type, jqXHR) {
         let target = $('#result'),
             target_textarea = $('#result-textarea');
 
@@ -205,6 +237,9 @@ let Common = {
                     target_textarea.text('').addClass('hide');
                     break;
                 case "json":
+                    if (jqXHR && jqXHR.status !== 200) {
+                        result = jqXHR.responseJSON;
+                    }
                     target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
                         .css('background-color', '#fff').removeClass('hide');
                     target_textarea.text('').addClass('hide');
@@ -217,6 +252,8 @@ let Common = {
             // 将显示数据类型重置为第一个tab
             $('.response-type').find('li').eq(0).trigger('click');
         });
+
+        return result;
     },
 
     /**

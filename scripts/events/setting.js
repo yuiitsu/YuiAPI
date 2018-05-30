@@ -13,7 +13,7 @@ Event.extend('setting', function() {
          */
         show_setting: function() {
             $('#settings').on('click', function() {
-                Common.tips($(this), View.get_view('setting', 'setting', {}));
+                Common.tips.show($(this), View.get_view('setting', 'setting', {}));
             });
         },
 

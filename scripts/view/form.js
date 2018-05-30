@@ -9,7 +9,7 @@ View.extend('form', function() {
             <div class="tab-line">
                 <div class="api-name-line display-inline">
                     <input type="text" class="input-text" placeholder="Enter api name" id="api-name" />
-                    <div class="form-group-selector">
+                    <div class="form-group-selector" id="group-selector">
                     {{ App.group.get_select_view() }}
                     </div>
                 </div>

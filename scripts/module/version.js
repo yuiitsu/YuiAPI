@@ -14,6 +14,7 @@ let version = {
             'Adjusted UI',
             'Added display when the response content_type is img',
             'Added display when the response content_type is xml',
+            'Added history group',
         ],
         'v0.1.0': [
             'fixed an issue that the json data display error in arguments'

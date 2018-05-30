@@ -8,6 +8,8 @@ let History = {
     hostCacheKey: 'host_list',
     assert_key: 'assert_data',
     assert_default_key: 'assert_default_data',
+    selected_host: '',
+    search_key: '',
     /**
      * 添加数据
      * @param params
@@ -53,8 +55,14 @@ let History = {
             this.setItem(this.assert_key, assert_result);
         }
 
-        //
-        this.load();
+        // 刷新host和history list
+        this.refresh_history_list();
+        this.refresh_host_list();
+
+        // 加入分组
+        if (params['group_id']) {
+            App.group.add_history(params['group_id'], dataHashKey);
+        }
     },
 
     /**
@@ -102,10 +110,11 @@ let History = {
             }
         }
     },
+
     /**
-     * 构建history列表
+     * 初始化界面
      */
-    load: function() {
+    init_interface: function() {
         // host列表
         let host_list = this.get_host_list();
         let history_list = this.get_history_list(null, null);
@@ -114,26 +123,46 @@ let History = {
             history_list: history_list
         };
         View.display('history', 'main', data, '#history-content');
-        // 显示历史记录数
         this.show_history_count(history_list);
     },
 
     /**
-     * 构建host list界面
+     * 刷新host list界面
      */
-    //build_host_ui_list: function() {
-    //    let host_list = this.get_host_list();
-    //    //return this.get_host_list();
-    //    View.display('history', 'sidebar', host_list, '#history-sidebar');
-    //},
+    refresh_host_list: function() {
+        let host_list = this.get_host_list(),
+            _this = this;
+        View.display('history', 'host_list', host_list, '#history-host');
+        if (this.selected_host) {
+            $('#history-host').find('li').each(function() {
+                let host = $(this).attr('data-host');
+                if (host === _this.selected_host) {
+                    $(this).find('span').trigger('click');
+                }
+            });
+        }
+    },
+
+    /**
+     * 刷新history list界面
+     * @param host
+     * @param group_id
+     * @param key
+     */
+    refresh_history_list: function(host, group_id, key) {
+        let history_list = this.get_history_list(null, host, group_id, key);
+        View.display('history', 'main_list', history_list, '#history-list-box');
+    },
 
     /**
      * 获取历史记录数，可根据host筛选
      * @param data
      * @param host
+     * @param group_id
+     * @param search_key
      * @returns {Array}
      */
-    get_history_list: function(data, host) {
+    get_history_list: function(data, host, group_id, search_key) {
         let hashData = this.getListData(this.listKey),
             historyData = data ? data : this.getData(),
             list = [];
@@ -144,6 +173,12 @@ let History = {
                 let key = hashData[i];
                 if (historyData.hasOwnProperty(key)) {
                     if (host && historyData[key]['host'] !== host) {
+                        continue;
+                    }
+                    if (group_id && historyData[key]['group_id'] !== group_id) {
+                        continue;
+                    }
+                    if (search_key && (search_key.indexOf(key) === -1)) {
                         continue;
                     }
                     historyData[key]['key'] = key;
@@ -160,6 +195,9 @@ let History = {
      * @param host 指定host数据
      */
     build_ui_list: function(data, host) {
+        if (host) {
+            this.selected_host = host;
+        }
         let list = this.get_history_list(data, host);
         View.display('history', 'main_list', list, '#history-list-box');
 
@@ -291,7 +329,7 @@ let History = {
         }
         this.setItem(this.listKey, hashData);
         //
-        this.load();
+        this.refresh_history_list();
     },
 
     /**
@@ -349,6 +387,7 @@ let History = {
                 result_data = {};
 
             if (search_key) {
+                this.search_key = search_key;
                 let search_key_list = search_key.split(' '),
                     history_list = this.getData();
 

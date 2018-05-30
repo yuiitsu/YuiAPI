@@ -75,7 +75,7 @@ Event.extend('history', function() {
                         '<li data-type="Test.normalAdd">add to #2</li>'+
                         '<li data-type="delete">delete</li>'+
                     '</ul>';
-                Common.tips($(this), content);
+                Common.tips.show($(this), content);
                 //Test.firstAdd(key);
                 e.stopPropagation();
             }).on('click', '.history-all-action', function(e) {
@@ -83,7 +83,7 @@ Event.extend('history', function() {
                         '<li data-type="Test.allAdd">all add to #2</li>'+
                         '<li data-type="clear">clear</li>'+
                     '</ul>';
-                Common.tips($(this), content);
+                Common.tips.show($(this), content);
                 e.stopPropagation();
             }).on('click', '.test-first-list-body .test-del', function(e) {
                 if (confirm('Confirm to clear the data')) {

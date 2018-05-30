@@ -10,9 +10,10 @@ View.extend('group', function() {
                 <button class="btn btn-primary" id="history-group-new">New Group</button>           
             </div>
             {{ if data && data.length > 0 }}
-            <ul>
+            <ul id="history-group-ul">
                 {{ for var i in data }}
-                <li data-group-id="{{ data[i]['group_id'] }}">{{ data[i]['name'] }}</li>           
+                {{ var history_count = data[i]['history_count'] ? data[i]['history_count'] : 0 }}
+                <li data-group-id="{{ data[i]['group_id'] }}">{{ data[i]['name'] }} <em>({{ history_count }})</em></li>           
                 {{ end }}
             </ul>
             {{ else }}

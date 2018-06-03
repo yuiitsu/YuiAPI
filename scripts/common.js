@@ -57,7 +57,7 @@ let Common = {
             focus.off('mouseleave').on('mouseleave', function() {
                 _this.timer = setTimeout(function() {
                     $('#tips-box').hide();
-                }, 3000);
+                }, 300);
             });
 
             let focus_offset = focus.offset(),

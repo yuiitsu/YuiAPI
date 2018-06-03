@@ -12,7 +12,8 @@ View.extend('setting', function() {
             <ul class="history-tips-list setting-list">
                 <li>Export</li>
                 <li>Import</li>
-                <li>default assertion</li>
+                <li>Default assertion</li>
+                <li data-module="setting" data-method="about">About YuiAPI</li>
             </ul>
         `;
     };

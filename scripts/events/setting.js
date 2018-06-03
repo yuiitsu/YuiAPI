@@ -24,6 +24,15 @@ Event.extend('setting', function() {
             $('body').on('click', '.setting-list li', function(e) {
                 let name = $(this).text(),
                     _html = '';
+
+                let data_module = $(this).attr('data-module'),
+                    data_method = $(this).attr('data-method');
+
+                if (data_module && data_method) {
+                    App[data_module][data_method]();
+                    return false;
+                }
+
                 switch (name) {
                     case "Export":
                         let history_list = History.getHistoryListData(),

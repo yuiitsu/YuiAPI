@@ -2,14 +2,17 @@
  * 版本更新记录
  * Created by Yuiitsu on 2018/05/22.
  */
-let version = {
+const Version = {
 
-    current_version: 'v0.1.1',
+    current_version: 'v0.2.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.2.0': [
+            ''
+        ],
         'v0.1.1': [
             'Adjusted UI',
             'Added display when the response content_type is img',
@@ -48,5 +51,5 @@ let version = {
 };
 
 $(function() {
-    version.check();
+    Version.check();
 });

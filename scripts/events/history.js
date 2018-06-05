@@ -70,72 +70,11 @@ Event.extend('history', function() {
             });
         },
 
-        open_item_menu: function() {
-            $('#history-content').on('click', '.history-item-action', function(e) {
-                let key = $(this).attr('data-key');
-                Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
-                    key: key
-                }));
-                e.stopPropagation();
-            });
-        },
-
         /**
-         * 列表操作
+         * 打开一个history
          */
-        list_control: function() {
-            // history记录项删除
-            $('#history-content').on('click', '.history-del', function(e) {
-                if (confirm('Confirm to clear the data')) {
-                    let hashKey = $(this).parent().parent().attr('data-key');
-                    if (hashKey) {
-                        App.history.del(hashKey);
-                    }
-                }
-                e.stopPropagation();
-            }).on('click', '.history-all-action', function(e) {
-                let content = '<ul class="history-tips-list history-tips-all-list">'+
-                        '<li data-type="Test.allAdd">all add to #2</li>'+
-                        '<li data-type="clear">clear</li>'+
-                    '</ul>';
-                Common.tips.show($(this), content);
-                e.stopPropagation();
-            }).on('click', '.test-first-list-body .test-del', function(e) {
-                if (confirm('Confirm to clear the data')) {
-                    let hashKey = $(this).parent().parent().attr('data-key');
-                    if (hashKey) {
-                        Test.delFirst(hashKey);
-                    }
-                }
-                e.stopPropagation();
-            }).on('click', '.test-normal-list-body .test-del', function(e) {
-                if (confirm('Confirm to clear the data')) {
-                    let hashKey = $(this).parent().parent().attr('data-key');
-                    if (hashKey) {
-                        Test.delNormal(hashKey);
-                    }
-                }
-                e.stopPropagation();
-            }).on('click', '.test-normal-list-body .test-del', function(e) {
-                if (confirm('Confirm to clear the data')) {
-                    let hashKey = $(this).parent().parent().attr('data-key');
-                    if (hashKey) {
-                        Test.delNormal(hashKey);
-                    }
-                }
-                e.stopPropagation();
-
-            }).on('click', '.test-item', function(e) {
-                let result = {};
-                try {
-                    result = JSON.parse($(this).attr('data-result'));
-                } catch (e) {
-                }
-                $('#result').html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)));
-                $('.tabs li').eq(1).trigger('click');
-                e.stopPropagation();
-
-            }).on('click', '#history-list-box tr', function() {
+        history_item_select: function() {
+            $('#history-content').on('click', '#history-list-box tr', function() {
                 // 选中数据
                 let key = $(this).attr('data-key');
                 // 从缓存中获取数据
@@ -212,6 +151,23 @@ Event.extend('history', function() {
                     // group_id下拉菜单
                     App.group.display_selector(group_id);
                 }
+            });
+        },
+
+        open_all_action: function() {
+            $('#history-content').on('click', '.history-all-action', function(e) {
+                Common.tips.show($(this), View.get_view('history', 'history_all_action_menu', {}));
+                e.stopPropagation();
+            })
+        },
+
+        open_item_menu: function() {
+            $('#history-content').on('mouseover', '#history-list-box tbody tr', function(e) {
+                let key = $(this).attr('data-key');
+                Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
+                    key: key
+                }));
+                e.stopPropagation();
             });
         },
 

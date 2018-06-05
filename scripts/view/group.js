@@ -62,6 +62,7 @@ View.extend('group', function() {
                 {{ var selected = data['list'][i]['group_id'].toString() === data['selected_group_id'] ? 'selected="selected"' : '' }}
                 <option value="{{ data['list'][i]['group_id'] }}" {{ selected }}>{{ data['list'][i]['name'] }}</option>
                 {{ end }}
+                <option value="">New Group</option>
             </select>
         `;
     };

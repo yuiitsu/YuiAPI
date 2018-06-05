@@ -255,7 +255,7 @@ textarea{padding:10px;}
 /* tips */
 #tips-box{border: 1px solid #ddd;background-color:#fff;border-radius: 3px;padding: 10px;position: absolute;
     left:0;top:0;}
-.tips-array{position: absolute;left:0;top:0;width:8px;height:8px;}
+.tips-array{position: absolute;left:0;width:8px;height:8px;}
 
 .tips-array-top{top:-8px;}
 .tips-array-top .tips-array-out{position:absolute;border-bottom:8px solid #ddd;border-right:8px solid transparent;
@@ -268,6 +268,12 @@ textarea{padding:10px;}
     border-bottom:8px solid transparent;left:0;top:0;}
 .tips-array-left .tips-array-in{position:absolute;border-top:8px solid transparent;border-right:8px solid #fff;
     border-bottom:8px solid transparent;left:1px;top:0;}
+
+.tips-array-bottom{bottom:-8px;}
+.tips-array-bottom .tips-array-out{position:absolute;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:8px solid #ddd;left:0;top:0;}
+.tips-array-bottom .tips-array-in{position:absolute;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:8px solid #fff;left:0;top:-1px;}
 
 /* module */
 #module-box{position: relative;left:0;top:0;}

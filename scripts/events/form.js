@@ -102,7 +102,7 @@ Event.extend('form', function() {
                         }
                         App.form.selected_group_id = group_id;
                         // 写入History
-                        History.add({
+                        App.history.add({
                             url: url,
                             type: App.requestType,
                             name: apiName,
@@ -126,7 +126,7 @@ Event.extend('form', function() {
          */
         host_select: function() {
             $('#host-select').on('click', function() {
-                let host_list = History.get_host_list(),
+                let host_list = App.history.get_host_list(),
                     content = ['<ul class="history-tips-list" id="host-select-item">'];
                 if (host_list.length > 0) {
                     for (let i in host_list) {

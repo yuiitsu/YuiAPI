@@ -92,17 +92,17 @@ let Common = {
                     if (focus_left + target_width > client_width) {
                         focus_left = focus_left - target_width + focus_width;
                         focus_top = focus_top + focus_height;
-                        arr_obj.removeClass('tips-array-left tips-array-right tips-array-top').addClass('tips-array-bottom');
-                    } else {
-                        arr_obj.removeClass('tips-array-left tips-array-right tips-array-bottom').addClass('tips-array-top');
                     }
+                    arr_obj.removeClass('tips-array-left tips-array-right tips-array-bottom').addClass('tips-array-top');
+                    focus_top = focus_top + focus_height;
                     arr_obj.css('left', 8);
 
                     // 检查位置和调试，如果超出屏幕，向上显示
                     if (focus_top + target_height > client_height) {
-                        focus_top = focus_top - target_height;
+                        focus_top = focus_top - target_height - focus_height;
+                        arr_obj.removeClass('tips-array-left tips-array-right tips-array-top').addClass('tips-array-bottom');
+                        arr_obj.css({'bottom':-8});
                     }
-                    focus_top = focus_top + focus_height;
                     break;
             }
 

@@ -120,6 +120,14 @@ View.extend('history', function() {
         `;
     };
 
+    this.history_all_action_menu = function() {
+        return `
+            <ul class="history-tips-list history-tips-all-list">
+                <li class="history-clear color-failed">clear</li>
+            </ul>
+        `;
+    };
+
     /**
      * 历史记录单个数据菜单
      * @returns {string}
@@ -128,6 +136,7 @@ View.extend('history', function() {
         return `
             <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
                 <li class="add-to-group">Add to group</li>
+                <li class="set-assertion">Set assertion</li>
                 <li class="delete color-failed">delete</li>
             </ul>
         `;

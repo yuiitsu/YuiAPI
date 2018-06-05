@@ -75,6 +75,17 @@ View.extend('history', function() {
     };
 
     /**
+     * host单个数据菜单
+     */
+    this.host_item_menu = function() {
+        return `
+            <ul class="history-group-item-menu">
+                <li class="history-del color-failed" data-host="{{ data['host'] }}">delete</li>
+            </ul>
+        `;
+    };
+
+    /**
      * 历史记录列表
      */
     this.main_list = function() {
@@ -107,5 +118,35 @@ View.extend('history', function() {
                 </tbody>
             </table>
         `;
-    }
+    };
+
+    /**
+     * 历史记录单个数据菜单
+     * @returns {string}
+     */
+    this.history_item_menu = function() {
+        return `
+            <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
+                <li class="add-to-group">Add to group</li>
+                <li class="delete color-failed">delete</li>
+            </ul>
+        `;
+    };
+
+    /**
+     * 添加到分组表单
+     */
+    this.add_to_group_form = function() {
+        return `
+            <div class="history-add-to-group-form">
+                <div class="h-30 margin-bottom-10 margin-top-10">
+                    {{ App.group.get_select_view() }}
+                </div>
+                <div class="h-30">
+                    <input type="hidden" class="history-key" value="{{ data['key'] }}" />
+                    <button class="btn btn-primary" id="history-add-to-group">Save</button>
+                </div>
+            </div>
+        `;
+    };
 });

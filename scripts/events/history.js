@@ -17,17 +17,36 @@ Event.extend('history', function() {
                 host = host ? host : '';
                 $('#history-host').find('li').removeClass('focus');
                 $(this).parent().addClass('focus');
-                History.build_ui_list(null, host);
+                App.history.build_ui_list(null, host);
                 e.stopPropagation();
-            }).on('click', 'li i', function(e) {
-                let host = $(this).parent().attr('data-host');
-                if (host) {
-                    if (confirm('Confirm to delete the host')) {
-                        History.del_host(host);
-                        $(this).parent().remove();
-                    }
+            });
+        },
+
+        /**
+         * host hover
+         */
+        host_hover: function() {
+            $('#history-content').on('mouseover', '#history-sidebar li', function() {
+                let host = $(this).attr('data-host');
+                if (!host) {
+                    return false;
                 }
-                e.stopPropagation();
+
+                let item_menu_html = View.get_view('history', 'host_item_menu', {'host': host});
+                Common.tips.show($(this), item_menu_html, {position: 'right'});
+            });
+        },
+
+        host_delete: function() {
+            $('body').on('click', '.history-del', function() {
+                let host = $(this).attr('data-host');
+                if (!host) {
+                    return false;
+                }
+
+                if (confirm('Confirm to delete the host')) {
+                    App.history.del_host(host);
+                }
             });
         },
 
@@ -51,6 +70,16 @@ Event.extend('history', function() {
             });
         },
 
+        open_item_menu: function() {
+            $('#history-content').on('click', '.history-item-action', function(e) {
+                let key = $(this).attr('data-key');
+                Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
+                    key: key
+                }));
+                e.stopPropagation();
+            });
+        },
+
         /**
          * 列表操作
          */
@@ -60,23 +89,9 @@ Event.extend('history', function() {
                 if (confirm('Confirm to clear the data')) {
                     let hashKey = $(this).parent().parent().attr('data-key');
                     if (hashKey) {
-                        History.del(hashKey);
+                        App.history.del(hashKey);
                     }
                 }
-                e.stopPropagation();
-            //}).on('click', '#all-test', function(e) {
-            //    // 全部加入普通测试组
-            //    Test.allAdd();
-            //    e.stopPropagation();
-            }).on('click', '.history-item-action', function(e) {
-                let key = $(this).attr('data-key'),
-                    content = '<ul class="history-tips-list history-tips-add-list" data-key="'+ key +'">'+
-                        '<li data-type="Test.firstAdd">add to #1</li>'+
-                        '<li data-type="Test.normalAdd">add to #2</li>'+
-                        '<li data-type="delete">delete</li>'+
-                    '</ul>';
-                Common.tips.show($(this), content);
-                //Test.firstAdd(key);
                 e.stopPropagation();
             }).on('click', '.history-all-action', function(e) {
                 let content = '<ul class="history-tips-list history-tips-all-list">'+
@@ -124,7 +139,7 @@ Event.extend('history', function() {
                 // 选中数据
                 let key = $(this).attr('data-key');
                 // 从缓存中获取数据
-                let historyData = History.getData();
+                let historyData = App.history.getData();
                 if (historyData[key]) {
                     let url = historyData[key]['url'],
                         requestType = historyData[key]['type'],
@@ -177,7 +192,7 @@ Event.extend('history', function() {
                     }
 
                     // assert
-                    let assert_data = History.get_assert_data(),
+                    let assert_data = App.history.get_assert_data(),
                         assert_content = '';
                     if (assert_data.hasOwnProperty(key)) {
                         let assert_type = assert_data[key]['type'];
@@ -201,46 +216,50 @@ Event.extend('history', function() {
         },
 
         /**
-         * 列表提示窗口控制
+         * 打开加入分组界面
          */
-        tips_control: function() {
-            $('body').on('click', '.history-tips-add-list li', function(e) {
-                // 单个
-                let key = $(this).parent().attr('data-key'),
-                    type = $(this).attr('data-type');
+        add_to_group_form: function() {
+            $('body').on('click', '.history-tips-add-list li.add-to-group', function(e) {
+                let key = $(this).parent().attr('data-key');
+                Common.module('Add to group', View.get_view('history', 'add_to_group_form', {'key': key}), '');
+                e.stopPropagation();
+            });
+        },
 
-                switch (type) {
-                    case 'delete':
-                        if (confirm('Confirm to clear the data')) {
-                            if (key) {
-                                History.del(key);
-                            }
-                        }
-                        break;
-                    case 'Test.firstAdd':
-                        Test.firstAdd(key);
-                        Common.notification('Add to #1 success');
-                        break;
-                    case 'Test.normalAdd':
-                        Test.normalAdd(key);
-                        Common.notification('Add to #2 success');
-                        break;
+        /**
+         * 加入分组
+         */
+        add_to_group: function() {
+            $('body').on('click', '#history-add-to-group', function(e) {
+                let target = $('.history-add-to-group-form');
+                let group_id = target.find('.history-group-selector').val(),
+                    history_key = target.find('.history-key').val();
+                if (!group_id || !history_key) {
+                    return false;
+                }
+                App.history.add_to_group(history_key, group_id);
+                $('#module-box').remove();
+                e.stopPropagation();
+            });
+        },
+
+        /**
+         * 删除
+         */
+        delete: function() {
+            $('body').on('click', '.history-tips-add-list li.delete', function(e) {
+                let key = $(this).parent().attr('data-key');
+                if (key) {
+                    if (confirm('Confirm to clear the data')) {
+                        App.history.del(key);
+                    }
                 }
                 e.stopPropagation();
+            });
+        },
 
-            }).on('click', '.history-tips-all-list li', function(e) {
-                // 所有
-                let type = $(this).attr('data-type');
-                switch (type) {
-                    case 'Test.allAdd':
-                        Test.allAdd();
-                        Common.notification('Add to #2 success');
-                        break;
-                    case 'clear':
-                        break;
-                }
-                e.stopPropagation();
-            })
+        clear: function() {
+
         },
 
         /**
@@ -248,7 +267,7 @@ Event.extend('history', function() {
          */
         search: function() {
             $('#history-search').on('keydown', function(e) {
-                History.search($(this), e);
+                App.history.search($(this), e);
             });
         },
 

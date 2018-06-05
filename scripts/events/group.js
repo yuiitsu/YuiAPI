@@ -24,9 +24,11 @@ Event.extend('group', function() {
          */
         item_hover: function() {
             $('#history-content').on('mouseover', '#history-group-ul li', function(e) {
-                let group_id = $(this).attr('data-group-id');
+                let group_id = $(this).attr('data-group-id'),
+                    name = $(this).attr('data-group-name');
                 if (group_id) {
-                    Common.tips.show($(this), '<span class="history-group-del" data-group-id="'+ group_id +'">delete</span>', {position: 'right'});
+                    let item_menu_html = View.get_view('group', 'item_menu', {'group_id': group_id, 'name': name});
+                    Common.tips.show($(this), item_menu_html, {position: 'right'});
                 }
             });
         },
@@ -58,18 +60,41 @@ Event.extend('group', function() {
         },
 
         /**
+         * 打开编辑表单
+         */
+        item_modify_form: function() {
+            $('body').on('click', '.history-group-modify', function() {
+                let group_id = $(this).attr('data-group-id'),
+                    name = $(this).attr('data-group-name');
+                Common.module('Modify Group', View.get_view('group', 'form', {
+                    group_id: group_id,
+                    name: name
+                }), '');
+            })
+        },
+
+        /**
          * 保存新分组
          */
-        save_new_group: function() {
+        save_group: function() {
             let _this = this;
             $('body').on('click', '#history-group-save', function() {
-                let group_name = $.trim($('#history-group-name').val());
+                let group_name = $.trim($('#history-group-name').val()),
+                    group_id = $.trim($('#history-group-id').val());
                 if (!group_name) {
                     return false;
                 }
 
-                if (App.group.new_group(group_name)) {
-                    $('#module-box').remove();
+                if (group_id) {
+                    // 修改
+                    if (App.group.modify_group(group_id, group_name)) {
+                        $('#module-box').remove();
+                    }
+                } else {
+                    // 新增
+                    if (App.group.new_group(group_name)) {
+                        $('#module-box').remove();
+                    }
                 }
             });
         }

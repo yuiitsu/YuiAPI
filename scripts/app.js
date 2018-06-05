@@ -8,17 +8,15 @@ let App = {
     host: '',
 
     run: function() {
-        // 获取历史记录
-        History.init_interface();
         // 获取测试记录
-        Test.init();
-        // 默认断言
-        History.set_default_assert();
+        //Test.init();
 
         for (let i in this) {
-            if (this[i].hasOwnProperty('init')) {
-                this[i]['init']();
-                console.log('[Module] %s init.', i);
+            if (this.hasOwnProperty(i)) {
+                if (this[i].hasOwnProperty('init')) {
+                    this[i]['init']();
+                    console.log('[Module] %s init.', i);
+                }
             }
         }
     },

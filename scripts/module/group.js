@@ -202,6 +202,6 @@ App.extend('group', function() {
         View.display('group', 'select', {
             'list': self.group_list,
             'selected_group_id': selected_group_id
-        }, '#group-selector');
+        }, '.group-selector');
     };
 });

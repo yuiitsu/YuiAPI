@@ -92,10 +92,12 @@ let Common = {
                     if (focus_left + target_width > client_width) {
                         focus_left = focus_left - target_width + focus_width;
                         focus_top = focus_top + focus_height;
+                        arr_obj.css('right', 8);
+                    } else {
+                        arr_obj.css('left', 8);
                     }
                     arr_obj.removeClass('tips-array-left tips-array-right tips-array-bottom').addClass('tips-array-top');
                     focus_top = focus_top + focus_height;
-                    arr_obj.css('left', 8);
 
                     // 检查位置和调试，如果超出屏幕，向上显示
                     if (focus_top + target_height > client_height) {
@@ -144,11 +146,15 @@ let Common = {
      * @param action
      */
     module: function(name, content, action) {
+        let module_id = Date.parse(new Date());
         $('body').append(View.get_view('common', 'module', {
             name: name,
             content: content,
-            action: action
+            action: action,
+            module_id: module_id
         }));
+
+        $('.module-box-' + module_id).find('.js-handler').attr('data-module-id', module_id);
 
         // 检查高度
         let target = $('.module-main');
@@ -158,7 +164,8 @@ let Common = {
         target.css('height', target_height);
 
         $('.module-close').off('click').on('click', function() {
-            $('#module-box').remove();
+            let module_id = $(this).attr('data-module-id');
+            $('.module-box-' + module_id).remove();
         });
     },
 

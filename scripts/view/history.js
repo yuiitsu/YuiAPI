@@ -80,7 +80,8 @@ View.extend('history', function() {
     this.host_item_menu = function() {
         return `
             <ul class="history-group-item-menu">
-                <li class="history-del color-failed" data-host="{{ data['host'] }}">delete</li>
+                <li class="history-test disabled" data-host="{{ data['host'] }}">Test</li>
+                <li class="history-del color-failed" data-host="{{ data['host'] }}">Delete</li>
             </ul>
         `;
     };
@@ -136,8 +137,8 @@ View.extend('history', function() {
         return `
             <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
                 <li class="add-to-group">Add to group</li>
-                <li class="set-assertion">Set assertion</li>
-                <li class="delete color-failed">delete</li>
+                <li class="set-assertion disabled">Set assertion</li>
+                <li class="delete color-failed">Delete</li>
             </ul>
         `;
     };
@@ -148,12 +149,12 @@ View.extend('history', function() {
     this.add_to_group_form = function() {
         return `
             <div class="history-add-to-group-form">
-                <div class="h-30 margin-bottom-10 margin-top-10">
+                <div class="h-30 margin-bottom-10 margin-top-10 group-selector">
                     {{ App.group.get_select_view() }}
                 </div>
                 <div class="h-30">
                     <input type="hidden" class="history-key" value="{{ data['key'] }}" />
-                    <button class="btn btn-primary" id="history-add-to-group">Save</button>
+                    <button class="btn btn-primary js-handler" id="history-add-to-group">Save</button>
                 </div>
             </div>
         `;

@@ -44,7 +44,7 @@ View.extend('group', function() {
                     <input type="hidden" id="history-group-id" value="{{ group_id }}" />
                 </div>
                 <div class="h-30">
-                    <button class="btn btn-primary" id="history-group-save">Save</button>
+                    <button class="btn btn-primary js-handler" id="history-group-save">Save</button>
                 </div>
             </div>
         `;
@@ -56,14 +56,16 @@ View.extend('group', function() {
      */
     this.select = function() {
         return `
-            <select class="history-group-selector">
-                <option value="">select group</option>
-                {{ for var i in data['list'] }}
-                {{ var selected = data['list'][i]['group_id'].toString() === data['selected_group_id'] ? 'selected="selected"' : '' }}
-                <option value="{{ data['list'][i]['group_id'] }}" {{ selected }}>{{ data['list'][i]['name'] }}</option>
-                {{ end }}
-                <option value="">New Group</option>
-            </select>
+            <div class="history-group-selector-box">
+                <select class="history-group-selector">
+                    <option value="">select group</option>
+                    {{ for var i in data['list'] }}
+                    {{ var selected = data['list'][i]['group_id'].toString() === data['selected_group_id'] ? 'selected="selected"' : '' }}
+                    <option value="{{ data['list'][i]['group_id'] }}" {{ selected }}>{{ data['list'][i]['name'] }}</option>
+                    {{ end }}
+                </select>
+                <i class="mdi mdi-plus history-group-selector-new"></i>
+            </div>
         `;
     };
 
@@ -73,8 +75,8 @@ View.extend('group', function() {
     this.item_menu = function() {
         return `
             <ul class="history-group-item-menu">
-                <li class="history-group-modify" data-group-id="{{ data['group_id'] }}" data-group-name="{{ data['name'] }}">Modify</li>      
-                <li class="history-group-test" data-group-id="{{ data['group_id'] }}">Test</li>
+                <li class="history-group-modify" data-group-id="{{ data['group_id'] }}" data-group-name="{{ data['name'] }}">Rename</li>      
+                <li class="history-group-test disabled" data-group-id="{{ data['group_id'] }}">Test</li>
                 <li class="history-group-del" data-group-id="{{ data['group_id'] }}">Delete</li>
             </ul>
         `;

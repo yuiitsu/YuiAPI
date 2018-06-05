@@ -10,9 +10,8 @@ View.extend('setting', function() {
     this.setting = function() {
         return `
             <ul class="history-tips-list setting-list">
-                <li>Export</li>
-                <li>Import</li>
-                <li>Default assertion</li>
+                <li class="disabled">Export</li>
+                <li class="disabled">Import</li>
                 <li data-module="setting" data-method="about">About YuiAPI</li>
             </ul>
         `;

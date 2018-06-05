@@ -189,12 +189,13 @@ Event.extend('history', function() {
             $('body').on('click', '#history-add-to-group', function(e) {
                 let target = $('.history-add-to-group-form');
                 let group_id = target.find('.history-group-selector').val(),
-                    history_key = target.find('.history-key').val();
+                    history_key = target.find('.history-key').val(),
+                    module_id = $(this).attr('data-module-id');
                 if (!group_id || !history_key) {
                     return false;
                 }
                 App.history.add_to_group(history_key, group_id);
-                $('#module-box').remove();
+                $('.module-box-' + module_id).remove();
                 e.stopPropagation();
             });
         },

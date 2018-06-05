@@ -35,9 +35,9 @@ Event.extend('setting', function() {
 
                 switch (name) {
                     case "Export":
-                        let history_list = History.getHistoryListData(),
-                            history_data = History.getData(),
-                            host_list = History.get_host_list(),
+                        let history_list = App.history.getHistoryListData(),
+                            history_data = App.history.getData(),
+                            host_list = App.history.get_host_list(),
                             data = {
                                 history_list: history_list,
                                 history_data: history_data,
@@ -56,7 +56,7 @@ Event.extend('setting', function() {
                         Common.module(name, _html, '<button class="btn btn-primary">Import</button>');
                         break;
                     case "default assertion":
-                        let default_assert_data = History.get_default_assert(),
+                        let default_assert_data = App.history.get_default_assert(),
                             assert_type = default_assert_data['type'],
                             assert_content = default_assert_data['content'] ? default_assert_data['content'] : '';
 
@@ -91,7 +91,7 @@ Event.extend('setting', function() {
                     };
                 }
 
-                History.save_default_assert(assert_data);
+                App.history.save_default_assert(assert_data);
                 Common.notification('save success');
             });
         }

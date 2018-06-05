@@ -12,9 +12,9 @@ const Version = {
     update_logs: {
         'v0.2.0': [
             'Added delete history',
-            'Added history to group',
-            'Added test from group',
+            'Improved operation mode of grouping',
             'Adjusted UI and response of the test',
+            'Fixed some bugs'
         ],
         'v0.1.1': [
             'Adjusted UI',
@@ -48,7 +48,7 @@ const Version = {
             Common.module('Update logs', View.get_view('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
-            }), '<button class="btn btn-primary module-close">Close</button>');
+            }), '<button class="btn btn-primary module-close js-handler">Close</button>');
         }
     }
 };

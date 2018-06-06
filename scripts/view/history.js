@@ -80,6 +80,7 @@ View.extend('history', function() {
     this.host_item_menu = function() {
         return `
             <ul class="history-group-item-menu">
+                <li class="history-cookies" data-host="{{ data['host'] }}">Cookies</li>
                 <li class="history-test disabled" data-host="{{ data['host'] }}">Test</li>
                 <li class="history-del color-failed" data-host="{{ data['host'] }}">Delete</li>
             </ul>

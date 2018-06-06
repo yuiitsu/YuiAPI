@@ -26,7 +26,7 @@ Event.extend('history', function() {
          * host hover
          */
         host_hover: function() {
-            $('#history-content').on('mouseover', '#history-sidebar li', function() {
+            $('#history-content').on('mouseover', '#history-sidebar li', function(e) {
                 let host = $(this).attr('data-host');
                 if (!host) {
                     return false;
@@ -34,11 +34,12 @@ Event.extend('history', function() {
 
                 let item_menu_html = View.get_view('history', 'host_item_menu', {'host': host});
                 Common.tips.show($(this), item_menu_html, {position: 'right'});
+                e.stopPropagation();
             });
         },
 
         host_delete: function() {
-            $('body').on('click', '.history-del', function() {
+            $('body').on('click', '.history-del', function(e) {
                 let host = $(this).attr('data-host');
                 if (!host) {
                     return false;
@@ -47,6 +48,7 @@ Event.extend('history', function() {
                 if (confirm('Confirm to delete the host')) {
                     App.history.del_host(host);
                 }
+                e.stopPropagation();
             });
         },
 

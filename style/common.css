@@ -262,6 +262,13 @@ textarea{padding:10px;}
 .code-null{color:magenta;}
 .code-key{color:#A52A2A;}
 
+/* cookies */
+.cookies-table{width:100%;font-size: 14px;}
+.cookies-table thead th{height:30px;line-height:30px;background-color:#efefef;padding:0 5px;}
+.cookies-table tbody td{height:30px;line-height:30px;background-color:#f7f7f7;padding:0 5px;}
+.cookies-del{cursor:pointer;}
+.cookies-del:hover{color:#ff0000;}
+
 /* about */
 .about{}
 .about h2{padding:10px 0;}

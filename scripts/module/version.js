@@ -2,14 +2,20 @@
  * 版本更新记录
  * Created by Yuiitsu on 2018/05/22.
  */
-let version = {
+const Version = {
 
-    current_version: 'v0.1.1',
+    current_version: 'v0.2.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.2.0': [
+            'Adjusted UI',
+            'Added deletion of history host',
+            'Improved operation mode of grouping',
+            'Fixed some bugs'
+        ],
         'v0.1.1': [
             'Adjusted UI',
             'Added display when the response content_type is img',
@@ -42,11 +48,11 @@ let version = {
             Common.module('Update logs', View.get_view('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
-            }), '<button class="btn btn-primary module-close">Close</button>');
+            }), '<button class="btn btn-primary module-close js-handler">Close</button>');
         }
     }
 };
 
 $(function() {
-    version.check();
+    Version.check();
 });

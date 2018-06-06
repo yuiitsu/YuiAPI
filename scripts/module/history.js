@@ -1,15 +1,21 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-let History = {
-    host: '',
-    listKey: 'history_list',
-    dataKey: 'history_data',
-    hostCacheKey: 'host_list',
-    assert_key: 'assert_data',
-    assert_default_key: 'assert_default_data',
-    selected_host: '',
-    search_key: '',
+App.extend('history', function() {
+
+    this.host =  '';
+    this.listKey = 'history_list';
+    this.dataKey = 'history_data';
+    this.hostCacheKey = 'host_list';
+    this.assert_key = 'assert_data';
+    this.assert_default_key = 'assert_default_data';
+    this.selected_host = '';
+    this.search_key = '';
+
+    this.init = function() {
+        this.init_interface();
+    };
+
     /**
      * 添加数据
      * @param params
@@ -22,7 +28,7 @@ let History = {
      *      params['status']
      *      params['assertion_data']
      */
-    add: function(params) {
+    this.add = function(params) {
         // 获取host
         this.host = Common.getHost(params['url']);
         let dataHashKey = Common.md5(params['url']);
@@ -67,20 +73,20 @@ let History = {
         if (params['group_id']) {
             App.group.add_history(params['group_id'], dataHashKey);
         }
-    },
+    };
 
     /**
      * 保存默认断言
      * @param data
      */
-    save_default_assert: function(data) {
+    this.save_default_assert = function(data) {
         this.setItem(this.assert_default_key, data);
-    },
+    };
 
     /**
      *
      */
-    set_default_assert: function() {
+    this.set_default_assert = function() {
         let default_assert_data = this.get_default_assert();
         if (!$.isEmptyObject(default_assert_data)) {
             let assert_type = default_assert_data['type'],
@@ -97,14 +103,14 @@ let History = {
                 //$('input[name=form-data-assert-type]').each()
             }
         }
-    },
+    };
 
     /**
      * 存储数据
      * @param key
      * @param data
      */
-    setItem: function(key, data) {
+    this.setItem = function(key, data) {
         try {
             localStorage.setItem(key, JSON.stringify(data));
         } catch (e) {
@@ -113,12 +119,12 @@ let History = {
                 localStorage.setItem(key, JSON.stringify(data));
             }
         }
-    },
+    };
 
     /**
      * 初始化界面
      */
-    init_interface: function() {
+    this.init_interface = function() {
         // host列表
         let host_list = this.get_host_list();
         let history_list = this.get_history_list(null, null);
@@ -128,12 +134,12 @@ let History = {
         };
         View.display('history', 'main', data, '#history-content');
         this.show_history_count(history_list);
-    },
+    };
 
     /**
      * 刷新host list界面
      */
-    refresh_host_list: function() {
+    this.refresh_host_list = function() {
         let host_list = this.get_host_list(),
             _this = this;
         View.display('history', 'host_list', host_list, '#history-host');
@@ -145,7 +151,7 @@ let History = {
                 }
             });
         }
-    },
+    };
 
     /**
      * 刷新history list界面
@@ -153,10 +159,10 @@ let History = {
      * @param group_id
      * @param key
      */
-    refresh_history_list: function(host, group_id, key) {
+    this.refresh_history_list = function(host, group_id, key) {
         let history_list = this.get_history_list(null, host, group_id, key);
         View.display('history', 'main_list', history_list, '#history-list-box');
-    },
+    };
 
     /**
      * 获取历史记录数，可根据host筛选
@@ -166,7 +172,7 @@ let History = {
      * @param search_key
      * @returns {Array}
      */
-    get_history_list: function(data, host, group_id, search_key) {
+    this.get_history_list = function(data, host, group_id, search_key) {
         let hashData = this.getListData(this.listKey),
             historyData = data ? data : this.getData(),
             list = [];
@@ -191,14 +197,14 @@ let History = {
             }
         }
         return list;
-    },
+    };
 
     /**
      * 构建界面List
      * @param data 数据，没有值使用所有数据
      * @param host 指定host数据
      */
-    build_ui_list: function(data, host) {
+    this.build_ui_list = function(data, host) {
         if (host) {
             this.selected_host = host;
         }
@@ -207,14 +213,14 @@ let History = {
 
         // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
         this.show_history_count(list, host);
-    },
+    };
 
     /**
      * 显示历史记录数量
      * @param list
      * @param host
      */
-    show_history_count: function(list, host) {
+    this.show_history_count = function(list, host) {
         // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
         let history_count = list.length;
         if (!host) {
@@ -232,46 +238,46 @@ let History = {
                 }
             });
         }
-    },
+    };
 
     /**
      * 获取host list
      * @returns {*|Array}
      */
-    get_host_list: function() {
+    this.get_host_list = function() {
         return this.getListData(this.hostCacheKey);
-    },
+    };
 
     /**
      * 获取历史list数据
      * @returns {*|Array}
      */
-    getHistoryListData: function() {
+    this.getHistoryListData = function() {
         return this.getListData(this.listKey);
-    },
+    };
 
     /**
      * 获取断言数据
      * @returns {*|{}}
      */
-    get_assert_data: function() {
+    this.get_assert_data = function() {
         return this.get_obj_data(this.assert_key);
-    },
+    };
 
     /**
      * 获取默认断言数据
      * @returns {*|{}}
      */
-    get_default_assert: function() {
+    this.get_default_assert = function() {
         return this.get_obj_data(this.assert_default_key);
-    },
+    };
 
 
     /**
      * 获取字典数据
      * @returns {{}}
      */
-    getData: function() {
+    this.getData = function() {
         let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(this.dataKey));
@@ -279,14 +285,14 @@ let History = {
         }
 
         return result ? result : {};
-    },
+    };
 
     /**
      * 获取列表数据
      * @param key
      * @returns {Array}
      */
-    getListData: function(key) {
+    this.getListData = function(key) {
         let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
@@ -294,14 +300,14 @@ let History = {
         }
 
         return result ? result : [];
-    },
+    };
 
     /**
      * 获取对象数据
      * @param key
      * @returns {{}}
      */
-    get_obj_data: function(key) {
+    this.get_obj_data = function(key) {
         let result = null;
         try {
             result =  JSON.parse(localStorage.getItem(key));
@@ -309,14 +315,13 @@ let History = {
         }
 
         return result ? result : {};
-    },
+    };
 
     /**
      * 删除数据
      * @param key
      */
-    del: function(key) {
-        //var historyDataTmp = {};
+    this.del = function(key) {
         let historyData = this.getData();
         for (let i in historyData) {
             if (i === key) {
@@ -334,13 +339,13 @@ let History = {
         this.setItem(this.listKey, hashData);
         //
         this.refresh_history_list();
-    },
+    };
 
     /**
      * 删除host
      * @param host
      */
-    del_host: function(host) {
+    this.del_host = function(host) {
         let host_list = this.get_host_list();
         for (let i in host_list) {
             if (host_list[i] === host) {
@@ -348,14 +353,13 @@ let History = {
             }
         }
         this.setItem(this.hostCacheKey, host_list);
-        //
-        //this.build_host_ui_list('replace');
-    },
+        this.refresh_host_list();
+    };
 
     /**
      * 清除较早数据
      */
-    clearPre: function() {
+    this.clearPre = function() {
         let list = this.getListData(this.listKey);
         if (list.length <= 5) {
             // 全部清除
@@ -371,21 +375,21 @@ let History = {
             localStorage.setItem(this.dataKey, JSON.stringify(data));
             localStorage.setItem(this.listKey, JSON.stringify(list));
         }
-    },
+    };
     /**
      * 清除所有数据
      */
-    clearAll: function() {
+    this.clearAll = function() {
         localStorage.removeItem(this.dataKey);
         localStorage.removeItem(this.listKey);
         localStorage.removeItem(this.hostCacheKey);
-    },
+    };
     /**
      * 搜索
      * @param _obj
      * @param e
      */
-    search: function(_obj, e) {
+    this.search = function(_obj, e) {
         if (e.keyCode === 13) {
             let search_key = $.trim(_obj.val()),
                 result_data = {};
@@ -424,5 +428,20 @@ let History = {
 
             this.build_ui_list(result_data);
         }
-    }
-};
+    };
+
+    /**
+     * 添加到分组
+     * @param history_key
+     * @param group_id
+     */
+    this.add_to_group = function(history_key, group_id) {
+        if (!history_key || !group_id) {
+            Common.notification('Error: arguments error.', 'danger');
+            return false;
+        }
+
+        App.group.add_history(group_id, history_key);
+        Common.notification('save ok.');
+    };
+});

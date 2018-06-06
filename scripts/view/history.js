@@ -75,6 +75,18 @@ View.extend('history', function() {
     };
 
     /**
+     * host单个数据菜单
+     */
+    this.host_item_menu = function() {
+        return `
+            <ul class="history-group-item-menu">
+                <li class="history-test disabled" data-host="{{ data['host'] }}">Test</li>
+                <li class="history-del color-failed" data-host="{{ data['host'] }}">Delete</li>
+            </ul>
+        `;
+    };
+
+    /**
      * 历史记录列表
      */
     this.main_list = function() {
@@ -107,5 +119,44 @@ View.extend('history', function() {
                 </tbody>
             </table>
         `;
-    }
+    };
+
+    this.history_all_action_menu = function() {
+        return `
+            <ul class="history-tips-list history-tips-all-list">
+                <li class="history-clear color-failed">clear</li>
+            </ul>
+        `;
+    };
+
+    /**
+     * 历史记录单个数据菜单
+     * @returns {string}
+     */
+    this.history_item_menu = function() {
+        return `
+            <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
+                <li class="add-to-group">Add to group</li>
+                <li class="set-assertion disabled">Set assertion</li>
+                <li class="delete color-failed">Delete</li>
+            </ul>
+        `;
+    };
+
+    /**
+     * 添加到分组表单
+     */
+    this.add_to_group_form = function() {
+        return `
+            <div class="history-add-to-group-form">
+                <div class="h-30 margin-bottom-10 margin-top-10 group-selector">
+                    {{ App.group.get_select_view() }}
+                </div>
+                <div class="h-30">
+                    <input type="hidden" class="history-key" value="{{ data['key'] }}" />
+                    <button class="btn btn-primary js-handler" id="history-add-to-group">Save</button>
+                </div>
+            </div>
+        `;
+    };
 });

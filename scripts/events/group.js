@@ -16,6 +16,7 @@ Event.extend('group', function() {
         open_form: function() {
             $('#history-content').on('click', '#history-group-new', function(e) {
                 Common.module('New Group', View.get_view('group', 'form', ''), '');
+                e.stopPropagation();
             });
         },
 
@@ -24,10 +25,13 @@ Event.extend('group', function() {
          */
         item_hover: function() {
             $('#history-content').on('mouseover', '#history-group-ul li', function(e) {
-                let group_id = $(this).attr('data-group-id');
+                let group_id = $(this).attr('data-group-id'),
+                    name = $(this).attr('data-group-name');
                 if (group_id) {
-                    Common.tips.show($(this), '<span class="history-group-del" data-group-id="'+ group_id +'">delete</span>', {position: 'right'});
+                    let item_menu_html = View.get_view('group', 'item_menu', {'group_id': group_id, 'name': name});
+                    Common.tips.show($(this), item_menu_html, {position: 'right'});
                 }
+                e.stopPropagation();
             });
         },
 
@@ -40,6 +44,7 @@ Event.extend('group', function() {
                 let group_id = $(this).attr('data-group-id');
                 App.group.load_history(group_id);
                 $(this).addClass('focus');
+                e.stopPropagation();
             });
         },
 
@@ -54,23 +59,57 @@ Event.extend('group', function() {
                         App.group.delete(group_id);
                     }
                 }
+                e.stopPropagation();
             });
+        },
+
+        /**
+         * 打开编辑表单
+         */
+        item_modify_form: function() {
+            $('body').on('click', '.history-group-modify', function(e) {
+                let group_id = $(this).attr('data-group-id'),
+                    name = $(this).attr('data-group-name');
+                Common.module('Modify Group', View.get_view('group', 'form', {
+                    group_id: group_id,
+                    name: name
+                }), '');
+                e.stopPropagation();
+            })
         },
 
         /**
          * 保存新分组
          */
-        save_new_group: function() {
+        save_group: function() {
             let _this = this;
-            $('body').on('click', '#history-group-save', function() {
-                let group_name = $.trim($('#history-group-name').val());
+            $('body').on('click', '#history-group-save', function(e) {
+                let group_name = $.trim($('#history-group-name').val()),
+                    group_id = $.trim($('#history-group-id').val()),
+                    module_id = $(this).attr('data-module-id');
                 if (!group_name) {
                     return false;
                 }
 
-                if (App.group.new_group(group_name)) {
-                    $('#module-box').remove();
+                if (group_id) {
+                    // 修改
+                    if (App.group.modify_group(group_id, group_name)) {
+                        $('.module-box-' + module_id).remove();
+                    }
+                } else {
+                    // 新增
+                    if (App.group.new_group(group_name)) {
+                        $('.module-box-' + module_id).remove();
+                    }
                 }
+                e.stopPropagation();
+            });
+        },
+
+        selector_new_group: function() {
+            $('body').on('click', '.history-group-selector-new', function(e) {
+                Common.module('New Group', View.get_view('group', 'form', ''), '');
+                e.stopPropagation();
             });
         }
     };

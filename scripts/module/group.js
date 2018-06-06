@@ -33,7 +33,7 @@ App.extend('group', function() {
         // 检查重名
         for (let i in this.group_list) {
             if (this.group_list[i]['name'] === group_name) {
-                Common.notification('Error: group name is existed.', 'danger');
+                Common.notification('Error: group name already exists.', 'danger');
                 return false;
             }
         }
@@ -41,10 +41,44 @@ App.extend('group', function() {
         // 添加新的分组
         let group_id = Date.parse(new Date());
         this.group_list.push({
-            group_id: group_id,
+            group_id: group_id.toString(),
             name: group_name,
             history_count: 0
         });
+
+        Common.cache.save(this.list_key, this.group_list);
+        Common.notification('save ok.');
+        // 设置数据
+        Model.set('group_list', this.group_list);
+        return true;
+    };
+
+    /**
+     * 修改分组名称
+     * @param group_id
+     * @param group_name
+     */
+    this.modify_group = function(group_id, group_name) {
+        if (!group_id || !group_name) {
+            Common.notification('Error: group name or group id is empty.', 'danger');
+            return false;
+        }
+
+        // 检查重名
+        for (let i in this.group_list) {
+            if (this.group_list[i]['name'] === group_name && this.group_list[i]['group_id'].toString() !== group_id) {
+                Common.notification('Error: group name already exists.', 'danger');
+                return false;
+            }
+        }
+
+        // 修改分组名称
+        for (let i in this.group_list) {
+            if (this.group_list[i]['group_id'].toString() === group_id) {
+                this.group_list[i]['name'] = group_name;
+                break;
+            }
+        }
 
         Common.cache.save(this.list_key, this.group_list);
         Common.notification('save ok.');
@@ -60,18 +94,26 @@ App.extend('group', function() {
         if (!group_id) {
             return false;
         }
-        for (let i in this.group_list) {
-            if (group_id === this.group_list[i]['group_id'].toString()) {
-                this.group_list.splice(i, 1);
+        let _this = this;
+        this.group_list.forEach(function(item, i) {
+            if (group_id === item['group_id'].toString()) {
+                _this.group_list.splice(i, 1);
             }
-        }
+        });
+        //for (let i in this.group_list) {
+        //    if (group_id === this.group_list[i]['group_id'].toString()) {
+        //        this.group_list.splice(i, 1);
+        //    }
+        //}
         Common.cache.save(this.list_key, this.group_list);
 
         // 删除history关系
-        //let group_history = Common.cache.getListData(this.history_group_key, {});
         for (let i in this.group_history) {
-            if (i === group_id) {
-                delete  this.group_history[i];
+            if (this.group_history.hasOwnProperty(i)) {
+                if (i === group_id) {
+                    delete  this.group_history[i];
+                    break;
+                }
             }
         }
         Common.cache.save(this.history_group_key, this.group_history);
@@ -132,7 +174,7 @@ App.extend('group', function() {
             }
             Common.cache.save(this.list_key, this.group_list);
         }
-        History.refresh_history_list(null, null, history_keys);
+        App.history.refresh_history_list(null, null, history_keys);
     };
 
     /**
@@ -160,6 +202,6 @@ App.extend('group', function() {
         View.display('group', 'select', {
             'list': self.group_list,
             'selected_group_id': selected_group_id
-        }, '#group-selector');
+        }, '.group-selector');
     };
 });

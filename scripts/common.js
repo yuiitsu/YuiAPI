@@ -42,13 +42,12 @@ let Common = {
             let _this = this;
             let opt = options || {};
             let obj = $('#tips-box');
-            if (obj.length) {
-                obj.html(content).show();
-            } else {
-                let _html = '<div id="tips-box">'+ content +'</div>';
-                $('body').append(_html);
-                obj = $('#tips-box');
-            }
+
+            obj.remove();
+            $('body').append(View.get_view('common', 'tips', {
+                content: content
+            }));
+            obj = $('#tips-box');
 
             if (this.timer) {
                 clearTimeout(this.timer);
@@ -56,8 +55,8 @@ let Common = {
 
             focus.off('mouseleave').on('mouseleave', function() {
                 _this.timer = setTimeout(function() {
-                    $('#tips-box').hide();
-                }, 3000);
+                    $('#tips-box').remove();
+                }, 300);
             });
 
             let focus_offset = focus.offset(),
@@ -68,33 +67,44 @@ let Common = {
                 target_width = obj.outerWidth(),
                 target_height = obj.outerHeight(),
                 client_width = Common.clientSize('clientWidth'),
-                client_height = Common.clientSize('clientHeight');
+                client_height = Common.clientSize('clientHeight'),
+                arr_obj = $('.tips-array');
 
             switch (opt.position) {
                 case "left":
                     focus_left = focus_left - target_width <= 0 ? focus_left + focus_width : focus_left - target_width;
-
                     if (focus_top + target_height > client_height) {
                         focus_top = focus_top - target_height;
                     }
                     break;
                 case "right":
+                    arr_obj.removeClass('tips-array-right tips-array-top tips-array-bottom').addClass('tips-array-left');
                     focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width;
                     if (focus_top + target_height > client_height) {
-                        focus_top = focus_top - target_height;
+                        focus_top = client_height - target_height;
+                        arr_obj.css('top', target_height - 24);
+                    } else {
+                        arr_obj.css('top', 8)
                     }
+
                     break;
                 default:
                     if (focus_left + target_width > client_width) {
                         focus_left = focus_left - target_width + focus_width;
                         focus_top = focus_top + focus_height;
+                        arr_obj.css('right', 8);
+                    } else {
+                        arr_obj.css('left', 8);
                     }
+                    arr_obj.removeClass('tips-array-left tips-array-right tips-array-bottom').addClass('tips-array-top');
+                    focus_top = focus_top + focus_height;
 
                     // 检查位置和调试，如果超出屏幕，向上显示
                     if (focus_top + target_height > client_height) {
-                        focus_top = focus_top - target_height;
+                        focus_top = focus_top - target_height - focus_height;
+                        arr_obj.removeClass('tips-array-left tips-array-right tips-array-top').addClass('tips-array-bottom');
+                        arr_obj.css({'bottom':-8});
                     }
-                    focus_top = focus_top + focus_height;
                     break;
             }
 
@@ -102,7 +112,7 @@ let Common = {
                 .off('mouseenter').on('mouseenter', function() {
                     clearTimeout(_this.timer);
             }).off('mouseleave').on('mouseleave', function() {
-                $(this).hide();
+                $(this).remove();
             });
         }
     },
@@ -119,28 +129,32 @@ let Common = {
         clearTimeout(notification_timer);
         //
         let bg = type ? type : 'success';
-        let _html = '<div id="notification-box" class="bg-'+ bg +'">'+
-                text +
-            '</div>';
-        $('body').append(_html);
+        $('body').append(View.get_view('common', 'notification', {
+            text: text,
+            bg: bg
+        }));
 
         notification_timer = setTimeout(function() {
             $('#notification-box').fadeOut();
         }, 2000);
     },
 
+    /**
+     * module
+     * @param name
+     * @param content
+     * @param action
+     */
     module: function(name, content, action) {
-        let _html = '<div id="module-box">'+
-                '<div class="module-mask"></div>'+
-                '<div class="module-content">'+
-                    '<div class="module-header">'+ name +
-                        '<i class="mdi mdi-close fr module-close"></i>'+
-                    '</div>'+
-                    '<div class="module-main">'+ content +'</div>'+
-                    '<div class="module-actions">'+ action +'</div>'+
-                '</div>'+
-            '</div>';
-        $('body').append(_html);
+        let module_id = Date.parse(new Date());
+        $('body').append(View.get_view('common', 'module', {
+            name: name,
+            content: content,
+            action: action,
+            module_id: module_id
+        }));
+
+        $('.module-box-' + module_id).find('.js-handler').attr('data-module-id', module_id);
 
         // 检查高度
         let target = $('.module-main');
@@ -150,8 +164,24 @@ let Common = {
         target.css('height', target_height);
 
         $('.module-close').off('click').on('click', function() {
-            $('#module-box').remove();
+            let module_id = $(this).attr('data-module-id');
+            $('.module-box-' + module_id).remove();
         });
+    },
+
+    /**
+     * 对话框
+     * @returns {{confirm: confirm, ok: ok}}
+     */
+    dialog: function() {
+        return {
+            confirm: function() {
+
+            },
+            ok: function() {
+
+            }
+        }
     },
 
     /**
@@ -229,29 +259,37 @@ let Common = {
         let target = $('#result'),
             target_textarea = $('#result-textarea');
 
-        Common.get_response_content_type(response_content_type, function(type) {
-            switch (type) {
-                case "img":
-                    result = '<img src="'+ result +'" />';
-                    target.html(result).css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
-                case "json":
-                    if (jqXHR && jqXHR.status !== 200) {
-                        result = jqXHR.responseJSON;
-                    }
-                    target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
-                        .css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
-                case "xml":
-                    target.text('').addClass('hide');
-                    target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
-                    break;
-            }
-            // 将显示数据类型重置为第一个tab
-            $('.response-type').find('li').eq(0).trigger('click');
-        });
+        if (jqXHR && jqXHR.statusText === 'error') {
+            result = 'Server error. Please check the api server.';
+            target.html(result).css('background-color', '#fff').removeClass('hide');
+            target_textarea.text('').addClass('hide');
+        } else {
+
+            Common.get_response_content_type(response_content_type, function (type) {
+                switch (type) {
+                    case "img":
+                        result = '<img src="' + result + '" />';
+                        target.html(result).css('background-color', '#fff').removeClass('hide');
+                        target_textarea.text('').addClass('hide');
+                        break;
+                    case "json":
+                        if (jqXHR && jqXHR.status !== 200) {
+                            result = jqXHR.responseJSON;
+                        }
+                        target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                            .css('background-color', '#fff').removeClass('hide');
+                        target_textarea.text('').addClass('hide');
+                        break;
+                    case "xml":
+                        target.text('').addClass('hide');
+                        target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
+                        break;
+                }
+
+            });
+        }
+        // 将显示数据类型重置为第一个tab
+        $('.response-type').find('li').eq(0).trigger('click');
 
         return result;
     },

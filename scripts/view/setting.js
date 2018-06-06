@@ -51,4 +51,22 @@ View.extend('setting', function() {
             </div>
         `;
     };
+
+    /**
+     * 关于
+     */
+    this.about = function() {
+        return `
+            <div class="about">
+                <h2>YuiAPI <em>beta {{ data['version'] }}</em></h2>       
+                <div class="about-content">
+                    <p>YuiAPI是一非常简单易用的API调试客户端，同时可以生成漂亮的API文档(开发中)，更多的功能在开发中。</p>
+                    <p>本软件由Yuiitsu独立开发维护，如果有任何问题可以通过<a href="https://github.com/yuiitsu" target="_blank" class="underline">Github</a>联系。也可以在上面找到项目的源代码。</p>
+                    <p>再次感谢您选择使用YuiAPI.</p>
+                    <p class="align-right"><em>Yuiitsu</em></p>
+                    <p class="align-right"><em>2018-06-06</em></p>
+                </div>
+            </div>
+        `;
+    };
 });

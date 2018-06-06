@@ -14,6 +14,8 @@ App.extend('setting', function() {
      */
     this.about = function() {
         let version = Version.current_version;
-        Common.module('About YuiAPI', version, '');
+        Common.module('About YuiAPI', View.get_view('setting', 'about', {
+            version: version
+        }), '');
     };
 });

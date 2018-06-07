@@ -157,14 +157,14 @@ Event.extend('history', function() {
         },
 
         open_all_action: function() {
-            $('#history-content').on('click', '.history-all-action', function(e) {
+            $('#history-content').on('mouseover', '.history-all-action', function(e) {
                 Common.tips.show($(this), View.get_view('history', 'history_all_action_menu', {}));
                 e.stopPropagation();
             })
         },
 
         open_item_menu: function() {
-            $('#history-content').on('mouseover', '#history-list-box tbody tr', function(e) {
+            $('#history-content').on('mouseover', '#history-list-box tbody td.history-item-action', function(e) {
                 let key = $(this).attr('data-key');
                 Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
                     key: key

@@ -160,7 +160,8 @@ App.extend('group', function() {
      * @param group_id
      */
     this.load_history = function(group_id) {
-        let history_keys = null;
+        let history_keys = null,
+            _this = this;
         if (group_id) {
             history_keys = [-1];
             if (this.group_history[group_id]) {
@@ -174,7 +175,22 @@ App.extend('group', function() {
             }
             Common.cache.save(this.list_key, this.group_list);
         }
-        App.history.refresh_history_list(null, null, history_keys);
+        App.history.refresh_history_list(null, null, history_keys, function(history_list) {
+            if (group_id) {
+                let group_list_len = _this.group_list.length,
+                    history_count = history_list.length;
+                for (let i = 0; i < group_list_len; i++) {
+                    if (_this.group_list[i]['group_id'].toString() === group_id) {
+                        if (_this.group_list[i]['history_count'] !== history_count) {
+                            _this.group_list[i]['history_count'] = history_count;
+                            Common.cache.save(_this.list_key, _this.group_list);
+                            _this.display();
+                        }
+                        break;
+                    }
+                }
+            }
+        });
     };
 
     /**

@@ -4,12 +4,19 @@
  */
 const Version = {
 
-    current_version: 'v0.2.0',
+    current_version: 'v0.2.1',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.2.1': [
+            'Adjusted UI',
+            'Improved operation mode of grouping',
+            'Added cookies manager',
+            'Added history move up/down',
+            'Fixed an issue that the request content type not executed correctly when selecting the raw type.'
+        ],
         'v0.2.0': [
             'Adjusted UI',
             'Added deletion of history host',

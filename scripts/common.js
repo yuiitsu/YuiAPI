@@ -175,11 +175,43 @@ let Common = {
      */
     dialog: function() {
         return {
-            confirm: function() {
+            show: function(type, msg, confirm_callback, cancel_callbak) {
+                let dialog_id = Date.parse(new Date());
+                $('body').append(View.get_view('common', 'dialog', {
+                    type: type,
+                    msg: msg,
+                    dialog_id: dialog_id
+                }));
 
+                $('.dialog-close').off('click').on('click', function() {
+                    let dialog_id = $(this).attr('data-dialog-id');
+                    $('.dialog-' + dialog_id).remove();
+                    if ($.isFunction(cancel_callbak)) {
+                        cancel_callbak();
+                    }
+                });
+
+                $('.dialog-action-button').off('click').on('click', function() {
+                    let dialog_id = $(this).attr('data-dialog-id'),
+                        data_type = $(this).attr('data-type');
+                    $('.dialog-' + dialog_id).remove();
+
+                    if (data_type === 'confirm') {
+                        if ($.isFunction(confirm_callback)) {
+                            confirm_callback();
+                        }
+                    } else {
+                        if ($.isFunction(cancel_callbak)) {
+                            cancel_callbak();
+                        }
+                    }
+                });
             },
-            ok: function() {
-
+            confirm: function(msg, confirm_callback, cancel_callback) {
+                this.show('confirm', msg, confirm_callback, cancel_callback);
+            },
+            ok: function(msg, confirm_callback, cancel_callback) {
+                this.show('ok', msg, confirm_callback, cancel_callback);
             }
         }
     },

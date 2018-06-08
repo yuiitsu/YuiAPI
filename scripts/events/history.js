@@ -45,9 +45,9 @@ Event.extend('history', function() {
                     return false;
                 }
 
-                if (confirm('Confirm to delete the host')) {
+                Common.dialog().confirm('Confirm to delete the host', function() {
                     App.history.del_host(host);
-                }
+                });
                 e.stopPropagation();
             });
         },
@@ -203,15 +203,27 @@ Event.extend('history', function() {
         },
 
         /**
+         * 向上/下移动
+         */
+        move_position: function() {
+            $('body').on('click', '.history-move', function(e) {
+                let data_type = $(this).attr('data-type'),
+                    key = $(this).parent().attr('data-key');
+                App.history.move_position(data_type, key);
+                e.stopPropagation();
+            });
+        },
+
+        /**
          * 删除
          */
         delete: function() {
             $('body').on('click', '.history-tips-add-list li.delete', function(e) {
                 let key = $(this).parent().attr('data-key');
                 if (key) {
-                    if (confirm('Confirm to clear the data')) {
+                    Common.dialog().confirm('Confirm to clear the data?', function() {
                         App.history.del(key);
-                    }
+                    });
                 }
                 e.stopPropagation();
             });

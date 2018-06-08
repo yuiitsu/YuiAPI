@@ -139,6 +139,8 @@ View.extend('history', function() {
             <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
                 <li class="add-to-group">Add to group</li>
                 <li class="set-assertion disabled">Set assertion</li>
+                <li class="history-move" data-type="up">Move up</li>
+                <li class="history-move" data-type="down">Move down</li>
                 <li class="delete color-failed">Delete</li>
             </ul>
         `;

@@ -53,12 +53,12 @@ Event.extend('group', function() {
          */
         item_delete: function() {
             $('body').on('click', '.history-group-del', function(e) {
-                if(confirm('Confirm to delete data?')) {
-                    let group_id = $(this).attr('data-group-id');
+                let group_id = $(this).attr('data-group-id');
+                Common.dialog().confirm('Confirm to delete data?', function() {
                     if (group_id) {
                         App.group.delete(group_id);
                     }
-                }
+                });
                 e.stopPropagation();
             });
         },

@@ -37,6 +37,28 @@ View.extend('common', function() {
         `;
     };
 
-    this.dialog = function() {};
+    this.dialog = function() {
+        return `
+            <div class="dialog dialog-{{ data['dialog_id'] }}">
+                <div class="module-mask"></div>
+                <div class="dialog-content">
+                    <div class="dialog-header">
+                        <i class="mdi mdi-close fr dialog-close" data-dialog-id="{{ data['dialog_id'] }}"></i>
+                    </div>
+                    <div class="dialog-msg">{{ data['msg'] }}</div>
+                    <div class="dialog-action">
+                        <div class="dialog-action-button" data-dialog-id="{{ data['dialog_id'] }}" data-type="confirm">
+                            <button class="btn btn-primary">OK</button>
+                        </div>
+                        {{ if data['type'] === 'confirm' }}
+                        <div class="dialog-action-button" data-dialog-id="{{ data['dialog_id'] }}" data-type="cancel">
+                            <button class="btn btn-default">Cancel</button>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        `;
+    };
 });
 

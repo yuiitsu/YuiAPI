@@ -158,10 +158,15 @@ App.extend('history', function() {
      * @param host
      * @param group_id
      * @param key
+     * @param callback
      */
-    this.refresh_history_list = function(host, group_id, key) {
+    this.refresh_history_list = function(host, group_id, key, callback) {
         let history_list = this.get_history_list(null, host, group_id, key);
         View.display('history', 'main_list', history_list, '#history-list-box');
+
+        if ($.isFunction(callback)) {
+            callback(history_list);
+        }
     };
 
     /**
@@ -444,4 +449,42 @@ App.extend('history', function() {
         App.group.add_history(group_id, history_key);
         Common.notification('save ok.');
     };
+
+    /**
+     * 上移/下移
+     * @param type
+     * @param key
+     */
+    this.move_position = function(type, key) {
+        let hashData = this.getListData(this.listKey),
+            position = 0;
+        let history_len = hashData.length;
+
+        for (let i = 0; i < history_len; i++) {
+            if (key === hashData[i]) {
+                position = i;
+                break;
+            }
+        }
+
+        if (type === 'up') {
+            // 向上移
+            if (position === history_len - 1) {
+                return false;
+            }
+            let target_position = position + 2;
+            hashData.splice(target_position, 0, key);
+            hashData.splice(position, 1);
+        } else {
+            // 向下移
+            if (position === 0) {
+                return false;
+            }
+            hashData.splice(position - 1, 0, key);
+            hashData.splice(position + 1, 1);
+        }
+
+        this.setItem(this.listKey, hashData);
+        this.refresh_history_list();
+    }
 });

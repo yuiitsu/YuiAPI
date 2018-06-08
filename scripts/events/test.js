@@ -26,9 +26,10 @@ Event.extend('test', function() {
          */
         clear: function() {
             $('.test-clear').on('click', function() {
-                if (confirm('Confirm to clear the data')) {
-                    Test.clear($(this).attr('data-type'));
-                }
+                let data_type = $(this).attr('data-type');
+                Common.dialog().confirm('Confirm to clear the data?', function() {
+                    Test.clear(data_type);
+                });
             });
         }
     };

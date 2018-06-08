@@ -65,6 +65,8 @@ Event.extend('form', function() {
                             break;
                         case "raw":
                             formData = $.trim($('#form-data-raw').find('textarea').val());
+                            let content_type = $('#raw-content-type').val();
+                            request_params.headers['Content-Type'] = content_type;
                             break;
                     }
 

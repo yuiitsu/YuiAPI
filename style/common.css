@@ -66,6 +66,8 @@ textarea{padding:10px;}
 .btn{border:0;cursor:pointer;border-radius: 3px;}
 .btn-primary{background-color:#a9fd00;border-color:#2e6da4;border-bottom:2px solid #87ca00;color:#222;}
 .btn-primary:hover{background-color:#AADF45;}
+.btn-default{background-color:#eee;border-color:#eee;border-bottom:2px solid #87ca00;color:#222;}
+.btn-default:hover{background-color:#ddd;}
 
 /* content */
 .container{height:100%;background:url("../images/background/bg.jpg"); background-size: cover;}
@@ -265,7 +267,7 @@ textarea{padding:10px;}
 /* cookies */
 .cookies-table{width:100%;font-size: 14px;}
 .cookies-table thead th{height:30px;line-height:30px;background-color:#efefef;padding:0 5px;}
-.cookies-table tbody td{height:30px;line-height:30px;background-color:#f7f7f7;padding:0 5px;}
+.cookies-table tbody td{height:30px;line-height:30px;background-color:#f7f7f7;padding:0 5px;word-break: break-all;}
 .cookies-del{cursor:pointer;}
 .cookies-del:hover{color:#ff0000;}
 
@@ -311,6 +313,15 @@ textarea{padding:10px;}
 /* notification */
 #notification-box {position: fixed;width:300px;height:40px;padding:10px;border-radius: 3px;top:50px;left:50%;
     margin-left:-150px;color:#fff;text-align: center;}
+
+/* dialog */
+.dialog{position: relative;left:0;top:0;}
+.dialog-content{position: fixed;left:50%;top:50%;transform: translate(-50%, -50%);width:450px;background-color:#fff;
+    border: 1px solid #ddd;border-radius: 5px;padding: 10px;}
+.dialog-header{height:30px;}
+.dialog-msg{line-height:1.6;margin-bottom:20px;}
+.dialog-action{height:30px;text-align: center;}
+.dialog-action-button{display: inline-block;width:100px;margin:0 5px;}
 
 .hide{display: none;}
 

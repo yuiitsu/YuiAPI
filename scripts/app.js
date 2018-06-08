@@ -8,9 +8,6 @@ let App = {
     host: '',
 
     run: function() {
-        // 获取测试记录
-        //Test.init();
-
         for (let i in this) {
             if (this.hasOwnProperty(i)) {
                 if (this[i].hasOwnProperty('init')) {

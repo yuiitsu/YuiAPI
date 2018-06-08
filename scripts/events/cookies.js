@@ -32,12 +32,12 @@ Event.extend('cookies', function() {
                     return false;
                 }
 
-                if (confirm('Confirm to delete the data?')) {
+                Common.dialog().confirm('Confirm to delete the data?', function() {
                     App.cookies.remove(host, name, function (res) {
                         console.log(res);
                         _this.parent().remove();
                     });
-                }
+                });
                 e.stopPropagation();
             });
         }

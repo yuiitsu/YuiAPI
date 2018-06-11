@@ -15,7 +15,8 @@ Event.extend('history', function() {
             $('#history-content').on('click', '#history-sidebar li span', function(e) {
                 let host = $(this).parent().attr('data-host');
                 host = host ? host : '';
-                $('#history-host').find('li').removeClass('focus');
+                //$('#history-host').find('li').removeClass('focus');
+                $('.history-host').find('li').removeClass('focus');
                 $(this).parent().addClass('focus');
                 App.history.build_ui_list(null, host);
                 e.stopPropagation();
@@ -76,7 +77,7 @@ Event.extend('history', function() {
          * 打开一个history
          */
         history_item_select: function() {
-            $('#history-content').on('click', '#history-list-box tr', function() {
+            $('#history-content').on('click', '#history-list-box tr', function(e) {
                 // 选中数据
                 let key = $(this).attr('data-key');
                 // 从缓存中获取数据
@@ -153,6 +154,7 @@ Event.extend('history', function() {
                     // group_id下拉菜单
                     App.group.display_selector(group_id);
                 }
+                e.stopPropagation();
             });
         },
 
@@ -171,6 +173,63 @@ Event.extend('history', function() {
                 }));
                 e.stopPropagation();
             });
+        },
+
+        drag: function() {
+            let is_mousedown = false,
+                selected_history_key = '';
+
+            let body_mouse_up_event = {
+                on: function() {
+                    $('body').off('mouseup').on('mouseup', function(e) {
+                        is_mousedown = false;
+                        selected_history_key = '';
+                        $('#history-list-box tr').removeClass('focus');
+                        e.stopPropagation();
+                    });
+                },
+                off: function() {
+                    $('body').off('mouseup');
+                }
+            };
+
+            $('#history-content').on('mousedown', '#history-list-box tr', function(e) {
+                let history_key = $(this).attr('data-key');
+                is_mousedown = true;
+                selected_history_key = history_key;
+                $(this).addClass('focus');
+                e.stopPropagation();
+            }).on('mousemove', function() {
+                if(!is_mousedown) {
+                    return false;
+                }
+
+                // do
+            });
+
+            $('#history-group').on('mouseup', '.history-group-item', function(e) {
+                let group_id = $(this).attr('data-group-id');
+                if (is_mousedown && selected_history_key) {
+                    App.group.add_history(group_id, selected_history_key);
+                }
+
+                is_mousedown = false;
+                selected_history_key = '';
+                $('#history-list-box tr').removeClass('focus');
+                e.stopPropagation();
+            }).on('mouseenter', '#history-group-ul', function(e) {
+                body_mouse_up_event.off();
+                e.stopPropagation();
+            }).on('mouseleave', '#history-group-ul', function(e) {
+                body_mouse_up_event.on();
+                e.stopPropagation();
+            });
+
+            body_mouse_up_event.on();
+        },
+
+        drag_up: function() {
+
         },
 
         /**

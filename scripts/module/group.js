@@ -150,6 +150,7 @@ App.extend('group', function() {
             }
             Common.cache.save(this.list_key, this.group_list);
             Model.set('group_history', this.group_history);
+            this.display();
         }
 
         Common.cache.save(this.history_group_key, this.group_history);
@@ -175,6 +176,10 @@ App.extend('group', function() {
             }
             Common.cache.save(this.list_key, this.group_list);
         }
+        App.history.selected_object = {
+            type: 'group',
+            key: group_id
+        };
         App.history.refresh_history_list(null, null, history_keys, function(history_list) {
             if (group_id) {
                 let group_list_len = _this.group_list.length,
@@ -203,7 +208,7 @@ App.extend('group', function() {
     /**
      * 渲染页面
      */
-    this.display = function(group_list) {
+    this.display = function() {
         // 分组列表
         View.display('group', 'list', self.group_list, '#history-group');
         // 表单下拉列表

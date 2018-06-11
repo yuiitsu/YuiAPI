@@ -43,6 +43,7 @@ Event.extend('group', function() {
                 $('#history-group-ul').find('li').removeClass('focus');
                 let group_id = $(this).attr('data-group-id');
                 App.group.load_history(group_id);
+                $('.history-host').find('li').removeClass('focus');
                 $(this).addClass('focus');
                 e.stopPropagation();
             });

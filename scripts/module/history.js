@@ -10,6 +10,11 @@ App.extend('history', function() {
     this.assert_key = 'assert_data';
     this.assert_default_key = 'assert_default_data';
     this.selected_host = '';
+    this.selected_group_id = '';
+    this.selected_object = {
+        type: '',
+        key: ''
+    };
     this.search_key = '';
 
     this.init = function() {
@@ -142,15 +147,22 @@ App.extend('history', function() {
     this.refresh_host_list = function() {
         let host_list = this.get_host_list(),
             _this = this;
-        View.display('history', 'host_list', host_list, '#history-host');
-        if (this.selected_host) {
-            $('#history-host').find('li').each(function() {
-                let host = $(this).attr('data-host');
-                if (host === _this.selected_host) {
-                    $(this).find('span').trigger('click');
-                }
-            });
+        let output_data = {
+            list: host_list,
+            selected_host: ''
+        };
+        if (this.selected_object['type'] === 'host') {
+            output_data['selected_host'] = this.selected_object['key'];
         }
+        View.display('history', 'host_list', output_data, '#history-host');
+        //if (this.selected_host) {
+        //    $('#history-host').find('li').each(function() {
+        //        let host = $(this).attr('data-host');
+        //        if (host === _this.selected_host) {
+        //            $(this).find('span').trigger('click');
+        //        }
+        //    });
+        //}
     };
 
     /**
@@ -161,11 +173,21 @@ App.extend('history', function() {
      * @param callback
      */
     this.refresh_history_list = function(host, group_id, key, callback) {
-        let history_list = this.get_history_list(null, host, group_id, key);
-        View.display('history', 'main_list', history_list, '#history-list-box');
-
-        if ($.isFunction(callback)) {
-            callback(history_list);
+        if (!key) {
+            if (this.selected_object['type'] === 'host') {
+                host = this.selected_object['key']
+            } else if (this.selected_object['type'] === 'group') {
+                group_id = this.selected_object['key']
+            }
+        }
+        if (group_id) {
+            App.group.load_history(group_id);
+        } else {
+            let history_list = this.get_history_list(null, host, group_id, key);
+            View.display('history', 'main_list', history_list, '#history-list-box');
+            if ($.isFunction(callback)) {
+                callback(history_list);
+            }
         }
     };
 
@@ -211,7 +233,16 @@ App.extend('history', function() {
      */
     this.build_ui_list = function(data, host) {
         if (host) {
-            this.selected_host = host;
+            //this.selected_host = host;
+            this.selected_object = {
+                type: 'host',
+                key: host
+            }
+        } else {
+            this.selected_object = {
+                type: '',
+                key: ''
+            }
         }
         let list = this.get_history_list(data, host);
         View.display('history', 'main_list', list, '#history-list-box');

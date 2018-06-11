@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.2.1',
+    current_version: 'v0.3.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.3.0': [
+            'Added api test from group or host'
+        ],
         'v0.2.1': [
             'Adjusted UI',
             'Improved operation mode of grouping',

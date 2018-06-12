@@ -114,6 +114,9 @@ let Common = {
             }).off('mouseleave').on('mouseleave', function() {
                 $(this).remove();
             });
+        },
+        remove: function() {
+            $('#tips-box').remove();
         }
     },
 

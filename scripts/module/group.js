@@ -157,6 +157,39 @@ App.extend('group', function() {
     };
 
     /**
+     * 将history从分组里移除
+     * @param history_hash_key
+     */
+    this.remove_history = function(history_hash_key) {
+        let selected_object = App.selected_object;
+        if (selected_object['type'] !== 'group') {
+            Common.notification('Error: data is error. please reload the page.', 'danger');
+            return false;
+        }
+
+        let group_id = selected_object['key'];
+        let group_history_len = this.group_history[group_id].length;
+        for (let i = 0; i < group_history_len; i++) {
+            if (this.group_history[group_id][i] === history_hash_key) {
+                this.group_history[group_id].splice(i, 1);
+            }
+        }
+
+        for (let i in this.group_list) {
+            if (this.group_list[i]['group_id'].toString() === group_id) {
+                //let history_count = this.group_list[i]['history_count'] ? this.group_list[i]['history_count'] : 0;
+                this.group_list[i]['history_count'] = this.group_list[i]['history_count'] ? this.group_list[i]['history_count'] - 1 : 0;
+            }
+        }
+        Common.cache.save(this.list_key, this.group_list);
+        Model.set('group_history', this.group_history);
+        this.display();
+
+        Common.cache.save(this.history_group_key, this.group_history);
+        this.load_history(group_id);
+    };
+
+    /**
      * 根据group_id加载history list
      * @param group_id
      */
@@ -176,7 +209,7 @@ App.extend('group', function() {
             }
             Common.cache.save(this.list_key, this.group_list);
         }
-        App.history.selected_object = {
+        App.selected_object = {
             type: 'group',
             key: group_id
         };

@@ -138,6 +138,9 @@ View.extend('history', function() {
     this.history_item_menu = function() {
         return `
             <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
+                {{ if data['selected_object']['type'] === 'group' }}
+                <li class="remove-from-group">Remove from group</li>
+                {{ end }}
                 <li class="add-to-group">Add to group</li>
                 <li class="set-assertion disabled">Set assertion</li>
                 <li class="history-move" data-type="up">Move up</li>

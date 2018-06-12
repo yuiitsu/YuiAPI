@@ -6,6 +6,10 @@
 let App = {
     requestType: 'GET',
     host: '',
+    selected_object: {
+        type: '',
+        key: ''
+    },
 
     run: function() {
         for (let i in this) {

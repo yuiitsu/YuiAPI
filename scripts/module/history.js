@@ -9,12 +9,6 @@ App.extend('history', function() {
     this.hostCacheKey = 'host_list';
     this.assert_key = 'assert_data';
     this.assert_default_key = 'assert_default_data';
-    this.selected_host = '';
-    this.selected_group_id = '';
-    this.selected_object = {
-        type: '',
-        key: ''
-    };
     this.search_key = '';
 
     this.init = function() {
@@ -426,44 +420,47 @@ App.extend('history', function() {
      * @param e
      */
     this.search = function(_obj, e) {
-        if (e.keyCode === 13) {
-            let search_key = $.trim(_obj.val()),
-                result_data = {};
+        let search_key = $.trim(_obj.val()),
+            result_data = {};
 
-            if (search_key) {
-                this.search_key = search_key;
-                let search_key_list = search_key.split(' '),
-                    history_list = this.getData();
+        if (search_key) {
+            this.search_key = search_key;
+            let search_key_list = search_key.split(' '),
+                history_list = this.getData();
 
-                if (history_list) {
-                    for (let i in history_list) {
-                        let name = history_list[i]['name'],
-                            url = history_list[i]['url'];
+            if (history_list) {
+                for (let i in history_list) {
+                    let name = history_list[i]['name'],
+                        url = history_list[i]['url'];
 
-                        for (let j in search_key_list) {
-                            let key = search_key_list[j],
-                                is_searched = false;
+                    for (let j in search_key_list) {
+                        let key = search_key_list[j],
+                            is_searched = false;
 
-                            if (name.indexOf(key) !== -1) {
-                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
-                                is_searched = true;
-                            }
+                        if (name.indexOf(key) !== -1) {
+                            history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
+                            is_searched = true;
+                        }
 
-                            if (url.indexOf(key) !== -1) {
-                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
-                                is_searched = true;
-                            }
+                        if (url.indexOf(key) !== -1) {
+                            history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
+                            is_searched = true;
+                        }
 
-                            if (is_searched) {
-                                result_data[i] = history_list[i];
-                            }
+                        if (is_searched) {
+                            result_data[i] = history_list[i];
                         }
                     }
                 }
             }
 
-            this.build_ui_list(result_data);
+            App.selected_object = {
+                'type': '',
+                'key': ''
+            }
         }
+
+        this.build_ui_list(result_data);
     };
 
     /**

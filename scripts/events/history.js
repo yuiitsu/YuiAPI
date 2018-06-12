@@ -168,8 +168,10 @@ Event.extend('history', function() {
         open_item_menu: function() {
             $('#history-content').on('mouseover', '#history-list-box tbody td.history-item-action', function(e) {
                 let key = $(this).attr('data-key');
+                console.log(App.selected_object);
                 Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
-                    key: key
+                    key: key,
+                    selected_object: App.selected_object
                 }));
                 e.stopPropagation();
             });
@@ -228,8 +230,16 @@ Event.extend('history', function() {
             body_mouse_up_event.on();
         },
 
-        drag_up: function() {
-
+        /**
+         * 从分组移除
+         */
+        remove_from_group: function() {
+            $('body').on('click', '.history-tips-add-list li.remove-from-group', function(e) {
+                let key = $(this).parent().attr('data-key');
+                App.group.remove_history(key);
+                Common.tips.remove();
+                e.stopPropagation();
+            });
         },
 
         /**
@@ -297,7 +307,10 @@ Event.extend('history', function() {
          */
         search: function() {
             $('#history-search').on('keydown', function(e) {
-                App.history.search($(this), e);
+                if (e.keyCode === 13) {
+                    App.history.search($(this), e);
+                    $('.history-host').find('li').removeClass('focus');
+                }
             });
         },
 

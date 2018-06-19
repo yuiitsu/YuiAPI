@@ -168,4 +168,13 @@ View.extend('history', function() {
             </div>
         `;
     };
+
+    /**
+     * 拖动目标位置line
+     */
+    this.drag_mask_line = function() {
+        return `
+            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="4">Insert here</td></tr>
+        `;
+    };
 });

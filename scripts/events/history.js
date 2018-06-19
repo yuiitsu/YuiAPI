@@ -230,20 +230,36 @@ Event.extend('history', function() {
                 }
 
                 if (e.clientY > target_top + target_height / 2) {
-                    if ($('#history-drag-mask').length === 0) {
-                        $(this).after('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="next"><td colspan="4">Insert here</td></tr>')
-                    } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
-                        $('#history-drag-mask').remove();
-                        $(this).after('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="next"><td colspan="4">Insert here</td></tr>')
+                    if ($(this).index() !== source_object.index() - 1) {
+                        if ($('#history-drag-mask').length === 0) {
+                            $(this).after(View.get_view('history', 'drag_mask_line', {
+                                'key': data_key,
+                                'position': 'next'
+                            }));
+                        } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                            $('#history-drag-mask').remove();
+                            $(this).after(View.get_view('history', 'drag_mask_line', {
+                                'key': data_key,
+                                'position': 'next'
+                            }));
+                        }
                     }
                 }
 
                 if (e.clientY > target_top && e.clientY < target_top + target_height / 2) {
-                    if ($('#history-drag-mask').length === 0) {
-                        $(this).before('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="pre"><td colspan="4">Insert here</td></tr>')
-                    } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
-                        $('#history-drag-mask').remove();
-                        $(this).before('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="pre"><td colspan="4">Insert here</td></tr>')
+                    if ($(this).index() !== source_object.index() + 1) {
+                        if ($('#history-drag-mask').length === 0) {
+                            $(this).before(View.get_view('history', 'drag_mask_line', {
+                                'key': data_key,
+                                'position': 'pre'
+                            }));
+                        } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                            $('#history-drag-mask').remove();
+                            $(this).before(View.get_view('history', 'drag_mask_line', {
+                                'key': data_key,
+                                'position': 'pre'
+                            }));
+                        }
                     }
                 }
             }).on('mouseleave', '#history-list-box', function(e) {

@@ -482,34 +482,44 @@ App.extend('history', function() {
      * 上移/下移
      * @param type
      * @param key
+     * @param target_key
+     * @param target_position
      */
-    this.move_position = function(type, key) {
+    this.move_position = function(type, key, target_key, target_position) {
         let hashData = this.getListData(this.listKey),
-            position = 0;
+            position = 0,
+            target_index = 0;
         let history_len = hashData.length;
 
         for (let i = 0; i < history_len; i++) {
             if (key === hashData[i]) {
                 position = i;
-                break;
+            }
+
+            if (target_key === hashData[i]) {
+                target_index = i;
             }
         }
 
-        if (type === 'up') {
-            // 向上移
-            if (position === history_len - 1) {
-                return false;
-            }
-            let target_position = position + 2;
-            hashData.splice(target_position, 0, key);
-            hashData.splice(position, 1);
-        } else {
-            // 向下移
-            if (position === 0) {
-                return false;
-            }
-            hashData.splice(position - 1, 0, key);
-            hashData.splice(position + 1, 1);
+        switch (target_position) {
+            case "next":
+                hashData.splice(target_index, 0, key);
+                if (position > target_index) {
+                    hashData.splice(position + 1, 1);
+                } else if(position < target_index) {
+                    //hashData.splice(target_index, 0, key);
+                    hashData.splice(position, 1);
+                }
+                break;
+            case "pre":
+                hashData.splice(target_index + 1, 0, key);
+                if (position > target_index) {
+                    hashData.splice(position + 1, 1);
+                } else if (position < target_index) {
+                    //hashData.splice(target_index + 1, 0, key);
+                    hashData.splice(position, 1);
+                }
+                break;
         }
 
         this.setItem(this.listKey, hashData);

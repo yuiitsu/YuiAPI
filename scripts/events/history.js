@@ -225,27 +225,56 @@ Event.extend('history', function() {
                     target_height = $(this).outerHeight(),
                     data_key = $(this).attr('data-key');
 
+                if (data_key === source_object.attr('data-key')) {
+                    return false;
+                }
+
                 if (e.clientY > target_top + target_height / 2) {
-                    $(this).find('td').css({'border-bottom': '2px solid #ccc', 'border-top': '0'});
-                    if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                    if ($('#history-drag-mask').length === 0) {
+                        $(this).after('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="next"><td colspan="4">Insert here</td></tr>')
+                    } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
                         $('#history-drag-mask').remove();
+                        $(this).after('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="next"><td colspan="4">Insert here</td></tr>')
                     }
-                    $(this).after('<tr id="history-drag-mask" data-drag-key="'+ data_key +'"><td colspan="4">Insert here</td></tr>')
                 }
 
                 if (e.clientY > target_top && e.clientY < target_top + target_height / 2) {
-                    $(this).find('td').css({'border-top': '2px solid #ccc', 'border-bottom': '1px solid #f1f1f1'});
+                    if ($('#history-drag-mask').length === 0) {
+                        $(this).before('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="pre"><td colspan="4">Insert here</td></tr>')
+                    } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                        $('#history-drag-mask').remove();
+                        $(this).before('<tr id="history-drag-mask" data-drag-key="'+ data_key +'" data-position="pre"><td colspan="4">Insert here</td></tr>')
+                    }
                 }
-                console.log(target_top);
-                console.log(e.clientY);
-                //e.stopPropagation();
-            }).on('mouseleave', '#history-list-box tr', function(e) {
+            }).on('mouseleave', '#history-list-box', function(e) {
+                if(!is_mouse_down) {
+                    return false;
+                }
+                $('#history-drag-mask').remove();
+                e.stopPropagation();
+            }).on('mouseup', '#history-list-box tr', function(e) {
                 if(!is_mouse_down) {
                     return false;
                 }
 
-                $(this).find('td').css({'border-top': '0', 'border-bottom': '1px solid #f1f1f1'});
-                e.stopPropagation();
+                if($('#history-drag-mask').length === 0) {
+                    return false;
+                }
+                let target = $('#history-drag-mask');
+                let source_data_key = source_object.attr('data-key'),
+                    source_html = source_object.prop('outerHTML'),
+                    target_data_key = target.attr('data-drag-key'),
+                    target_position = target.attr('data-position');
+
+                if (!target_data_key || !target_position) {
+                    return false;
+                }
+
+                App.history.move_position(null, source_data_key, target_data_key, target_position);
+
+                target.replaceWith(source_html);
+                source_object.remove();
+                $('#history-list-box tr').removeClass('opacity-3');
             });
 
             $('#history-group').on('mouseup', '.history-group-item', function(e) {
@@ -255,13 +284,11 @@ Event.extend('history', function() {
                 }
                 is_mouse_down = false;
                 selected_history_key = '';
-                e.stopPropagation();
+                $('#history-list-box tr').removeClass('opacity-3');
             }).on('mouseenter', '#history-group-ul', function(e) {
                 body_mouse_up_event.off();
-                e.stopPropagation();
             }).on('mouseleave', '#history-group-ul', function(e) {
                 body_mouse_up_event.on();
-                e.stopPropagation();
             });
 
             body_mouse_up_event.on();

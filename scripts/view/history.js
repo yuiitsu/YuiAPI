@@ -143,8 +143,10 @@ View.extend('history', function() {
                 {{ end }}
                 <li class="add-to-group">Add to group</li>
                 <li class="set-assertion disabled">Set assertion</li>
+                <!--
                 <li class="history-move" data-type="up">Move up</li>
                 <li class="history-move" data-type="down">Move down</li>
+                -->
                 <li class="delete color-failed">Delete</li>
             </ul>
         `;

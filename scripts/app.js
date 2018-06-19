@@ -28,7 +28,9 @@ let App = {
      * @param func
      */
     extend: function(name, func) {
-        func.prototype = View;
+        //func_temp.prototype = this;
+        //func.prototype = new func_temp();
+        func.prototype = App;
         this[name] = new func();
     }
 };

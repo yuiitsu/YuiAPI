@@ -74,11 +74,10 @@ const View = {
         /**
          * 解析变量
          */
-        var parseData = function() {
+        let parseData = function() {
 
-            var item;
-            // 检查变量
-            var patt = /\{\{ (.+?) \}\}/i;
+            let item,
+                patt = /\{\{ (.+?) \}\}/i;
             while (item = patt.exec(result)) {
                 result = result.replace(item[0], "'+" + item[1].replace(new RegExp(/\\/g), "") + "+'");
             }
@@ -87,10 +86,9 @@ const View = {
         /**
          * 解析定义
          */
-        var parseVer = function() {
-            var item;
-            // 检查变量
-            var patt = /\{\{ var (.+?) \}\}/i;
+        let parseVer = function() {
+            let item,
+                patt = /\{\{ var (.+?) \}\}/i;
             while (item = patt.exec(result)) {
                 parseStatus = true;
                 result = result.replace(item[0], "var " + item[1].replace(new RegExp(/\\/g), "") + ";");
@@ -100,9 +98,9 @@ const View = {
         /**
          * 解析条件
          */
-        var parseCondition = function() {
-            var item;
-            var patt = /\{\{ if (.+?) \}\}/i;
+        let parseCondition = function() {
+            let item,
+                patt = /\{\{ if (.+?) \}\}/i;
             while (item = patt.exec(result)) {
                 parseStatus = true;
                 result = result.replace(item[0], "if("+ item[1].replace(new RegExp(/\\/g), "") +"){");

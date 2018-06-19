@@ -228,12 +228,12 @@ App.extend('history', function() {
     this.build_ui_list = function(data, host) {
         if (host) {
             //this.selected_host = host;
-            this.selected_object = {
+            App.selected_object = {
                 type: 'host',
                 key: host
             }
         } else {
-            this.selected_object = {
+            App.selected_object = {
                 type: '',
                 key: ''
             }

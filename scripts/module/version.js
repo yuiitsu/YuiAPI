@@ -11,7 +11,8 @@ const Version = {
      */
     update_logs: {
         'v0.3.0': [
-            'Added api test from group or host'
+            //'Added api test from group or host',
+            'Added drag the history to group and sort.'
         ],
         'v0.2.1': [
             'Adjusted UI',

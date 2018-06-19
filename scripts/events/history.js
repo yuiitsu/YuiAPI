@@ -225,40 +225,39 @@ Event.extend('history', function() {
                     target_height = $(this).outerHeight(),
                     data_key = $(this).attr('data-key');
 
-                if (data_key === source_object.attr('data-key')) {
-                    return false;
-                }
+                if (data_key !== source_object.attr('data-key')) {
 
-                if (e.clientY > target_top + target_height / 2) {
-                    if ($(this).index() !== source_object.index() - 1) {
-                        if ($('#history-drag-mask').length === 0) {
-                            $(this).after(View.get_view('history', 'drag_mask_line', {
-                                'key': data_key,
-                                'position': 'next'
-                            }));
-                        } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
-                            $('#history-drag-mask').remove();
-                            $(this).after(View.get_view('history', 'drag_mask_line', {
-                                'key': data_key,
-                                'position': 'next'
-                            }));
+                    if (e.clientY > target_top + target_height / 2) {
+                        if ($(this).index() !== source_object.index() - 1) {
+                            if ($('#history-drag-mask').length === 0) {
+                                $(this).after(View.get_view('history', 'drag_mask_line', {
+                                    'key': data_key,
+                                    'position': 'next'
+                                }));
+                            } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                                $('#history-drag-mask').remove();
+                                $(this).after(View.get_view('history', 'drag_mask_line', {
+                                    'key': data_key,
+                                    'position': 'next'
+                                }));
+                            }
                         }
                     }
-                }
 
-                if (e.clientY > target_top && e.clientY < target_top + target_height / 2) {
-                    if ($(this).index() !== source_object.index() + 1) {
-                        if ($('#history-drag-mask').length === 0) {
-                            $(this).before(View.get_view('history', 'drag_mask_line', {
-                                'key': data_key,
-                                'position': 'pre'
-                            }));
-                        } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
-                            $('#history-drag-mask').remove();
-                            $(this).before(View.get_view('history', 'drag_mask_line', {
-                                'key': data_key,
-                                'position': 'pre'
-                            }));
+                    if (e.clientY > target_top && e.clientY < target_top + target_height / 2) {
+                        if ($(this).index() !== source_object.index() + 1) {
+                            if ($('#history-drag-mask').length === 0) {
+                                $(this).before(View.get_view('history', 'drag_mask_line', {
+                                    'key': data_key,
+                                    'position': 'pre'
+                                }));
+                            } else if ($('#history-drag-mask').length > 0 && $('#history-drag-mask').attr('data-key') !== data_key) {
+                                $('#history-drag-mask').remove();
+                                $(this).before(View.get_view('history', 'drag_mask_line', {
+                                    'key': data_key,
+                                    'position': 'pre'
+                                }));
+                            }
                         }
                     }
                 }

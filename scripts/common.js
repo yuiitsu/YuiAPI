@@ -299,7 +299,6 @@ let Common = {
             target.html(result).css('background-color', '#fff').removeClass('hide');
             target_textarea.text('').addClass('hide');
         } else {
-
             Common.get_response_content_type(response_content_type, function (type) {
                 switch (type) {
                     case "img":
@@ -367,7 +366,7 @@ let Common = {
     syntaxHighlight: function(json) {
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'code-number';
+            let cls = 'code-number';
             if (/^"/.test(match)) {
                 if (/:$/.test(match)) {
                     cls = 'code-key';

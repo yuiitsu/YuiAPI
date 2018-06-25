@@ -182,14 +182,14 @@ textarea{padding:10px;}
 .history-list-box{-webkit-flex: 1;overflow: auto;-webkit-touch-callout: none;user-select: none;}
 .history-list-box::-webkit-scrollbar {width: 10px;height:10px;}
 .history-table{min-width:600px;width: 100%;font-size:13px;}
-.history-table th{padding:8px;}
+.history-table th{border-bottom:1px solid #ddd;padding:8px;}
 .history-table th.history-list-name{min-width: 150px;word-wrap: break-word;}
 .history-table tbody tr{cursor:pointer;}
 .history-table tbody tr:hover{background-color:#f5f5f5;}
 .history-table tbody tr.focus{background-color:#f5f5f5;}
 .history-table tbody tr:hover td.request-type span{transition:All 0.4s ease-in-out;}
 .history-table tbody tr:hover td.request-type span{transform:rotate(360deg);}
-.history-table tbody tr td{padding:8px;}
+.history-table tbody tr td{padding:8px;border-bottom: 1px solid #f1f1f1;}
 .history-table tbody tr td.request-type-GET{}
 .history-table tbody tr td.request-type-GET span{background-color:#009900;}
 .history-table tbody tr td.request-type-PUT span{background-color:#CC6600;}
@@ -263,7 +263,7 @@ textarea{padding:10px;}
 .form-params-type ul li.focus{background-color:#f5f5f5;}
 .form-data{width:100%;-webkit-flex: 1;overflow-y:auto;background-color:#f5f5f5;padding:10px;border-radius: 3px;}
 .form-data table{width:100%;font-size:14px;}
-.form-data table td{padding:10px 5px;}
+.form-data table td{border-bottom:1px solid #eaeaea;padding:10px 5px;}
 .form-data .input-text{padding:5px 10px;height:35px;}
 .form-data select{color:#444;}
 .form-value-data-type{margin-right:1px;}

@@ -3,6 +3,7 @@
  * Created by Yuiitsu on 2018/05/21.
  */
 Event.extend('form', function() {
+    let self = this;
     /**
      * 执行事件监听
      */
@@ -48,7 +49,7 @@ Event.extend('form', function() {
                     $('.tabs li').eq(1).trigger('click');
                     // 获取参数
                     let formData = '',
-                        header_data = Common.getFormParams().header(),
+                        header_data = App.common.getFormParams().header(),
                         request_params = {
                             type: App.requestType,
                             headers: header_data['data']
@@ -56,12 +57,12 @@ Event.extend('form', function() {
 
                     switch (form_data_type) {
                         case "form-data-true":
-                            formData = Common.getFormParams().form_data('form-data');
+                            formData = App.common.getFormParams().form_data('form-data');
                             request_params['processData'] = false;
                             request_params['contentType'] = false;
                             break;
                         case "form-data":
-                            formData = Common.getFormParams().form();
+                            formData = App.common.getFormParams().form();
                             break;
                         case "raw":
                             formData = $.trim($('#form-data-raw').find('textarea').val());
@@ -75,7 +76,7 @@ Event.extend('form', function() {
                     result_obj.css('background-color', '#efefef');
                     let start_timestamp=new Date().getTime();
 
-                    Common.request(url, request_params, formData['data'], function(res, jqXHR) {
+                    App.common.request(url, request_params, formData['data'], function(res, jqXHR) {
                         // headers
                         let headers =jqXHR.getAllResponseHeaders();
                         $('#response-headers').html(headers);
@@ -83,7 +84,7 @@ Event.extend('form', function() {
                         // response
                         let response_content_type = jqXHR.getResponseHeader('content-type');
                         // check response content-type
-                        res = Common.display_response(res, response_content_type, jqXHR);
+                        res = App.common.display_response(res, response_content_type, jqXHR);
                         $this.attr('disabled', false).html('Send');
 
                         // 时间
@@ -136,14 +137,14 @@ Event.extend('form', function() {
                     }
                 }
                 content.push('</ul>');
-                Common.tips.show($(this), content.join(''));
+                App.common.tips.show($(this), content.join(''));
             });
 
             $('body').on('click', '#host-select-item li', function(e) {
                 let value = $(this).text(),
                     urlObject = $('#url'),
                     url = $.trim(urlObject.val()),
-                    host = Common.getHost(url);
+                    host = App.common.getHost(url);
 
                 urlObject.val(url.replace(host, value));
                 e.stopPropagation();

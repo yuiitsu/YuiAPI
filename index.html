@@ -4,36 +4,37 @@
     <title>YuiAPI - A REST Client, Api Test and document</title>
     <link href="style/materialdesignicons.min.css" rel="stylesheet" />
     <link href="style/common.css" rel="stylesheet" />
+    <link href="style/theme/dark/style.css" rel="stylesheet" />
     <script src="scripts/lib/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="scripts/lib/jquery.format.js" type="text/javascript"></script>
     <script src="scripts/model.js" type="text/javascript"></script>
     <script src="scripts/view.js" type="text/javascript"></script>
-    <script src="scripts/view/common.js" type="text/javascript"></script>
-    <script src="scripts/view/history.js" type="text/javascript"></script>
-    <script src="scripts/view/group.js" type="text/javascript"></script>
-    <script src="scripts/view/form.js" type="text/javascript"></script>
-    <script src="scripts/view/setting.js" type="text/javascript"></script>
-    <script src="scripts/view/cookies.js" type="text/javascript"></script>
-    <script src="scripts/common.js" type="text/javascript"></script>
+    <script src="scripts/module/common/view.js" type="text/javascript"></script>
+    <script src="scripts/module/history/view.js" type="text/javascript"></script>
+    <script src="scripts/module/group/view.js" type="text/javascript"></script>
+    <script src="scripts/module/form/view.js" type="text/javascript"></script>
+    <script src="scripts/module/setting/view.js" type="text/javascript"></script>
+    <script src="scripts/module/cookie/view.js" type="text/javascript"></script>
     <script src="scripts/app.js" type="text/javascript"></script>
-    <script src="scripts/module/history.js" type="text/javascript"></script>
-    <script src="scripts/module/form.js" type="text/javascript"></script>
-    <script src="scripts/module/test.js" type="text/javascript"></script>
-    <script src="scripts/module/group.js" type="text/javascript"></script>
-    <script src="scripts/module/setting.js" type="text/javascript"></script>
-    <script src="scripts/module/cookies.js" type="text/javascript"></script>
+    <script src="scripts/module/common/module.js" type="text/javascript"></script>
+    <script src="scripts/module/history/module.js" type="text/javascript"></script>
+    <script src="scripts/module/form/module.js" type="text/javascript"></script>
+    <script src="scripts/module/test/module.js" type="text/javascript"></script>
+    <script src="scripts/module/group/module.js" type="text/javascript"></script>
+    <script src="scripts/module/setting/module.js" type="text/javascript"></script>
+    <script src="scripts/module/cookie/module.js" type="text/javascript"></script>
     <script src="scripts/event.js" type="text/javascript"></script>
-    <script src="scripts/events/common.js" type="text/javascript"></script>
-    <script src="scripts/events/form.js" type="text/javascript"></script>
-    <script src="scripts/events/history.js" type="text/javascript"></script>
-    <script src="scripts/events/group.js" type="text/javascript"></script>
-    <script src="scripts/events/setting.js" type="text/javascript"></script>
-    <script src="scripts/events/test.js" type="text/javascript"></script>
-    <script src="scripts/events/cookies.js" type="text/javascript"></script>
+    <script src="scripts/module/common/event.js" type="text/javascript"></script>
+    <script src="scripts/module/form/event.js" type="text/javascript"></script>
+    <script src="scripts/module/history/event.js" type="text/javascript"></script>
+    <script src="scripts/module/group/event.js" type="text/javascript"></script>
+    <script src="scripts/module/setting/event.js" type="text/javascript"></script>
+    <script src="scripts/module/test/event.js" type="text/javascript"></script>
+    <script src="scripts/module/cookie/event.js" type="text/javascript"></script>
     <script src="scripts/module/version.js" type="text/javascript"></script>
 </head>
 <body>
-<div class="container">
+<div class="container bg-container">
     <div class="content-left">
         <div class="left-top-line">
             <div class="logo display-inline">
@@ -52,7 +53,7 @@
 
         </div>
         <!-- History start -->
-        <div class="left-content" id="history-content"></div>
+        <div class="left-content bg-dark font-color-white" id="history-content"></div>
         <!-- History end -->
         <div class="left-content hide" id="output-content">
             <div class="tabs-bottom">
@@ -134,7 +135,7 @@
             </div>
         </div>
         <!-- 表单 -->
-        <div class="content-box" id="form-box"></div>
+        <div class="content-box bg-dark font-color-white" id="form-box"></div>
     </div>
 </div>
 </body>

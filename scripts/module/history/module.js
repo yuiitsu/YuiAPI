@@ -29,8 +29,8 @@ App.extend('history', function() {
      */
     this.add = function(params) {
         // 获取host
-        this.host = Common.getHost(params['url']);
-        let dataHashKey = Common.md5(params['url']);
+        this.host = this.common.getHost(params['url']);
+        let dataHashKey = this.common.md5(params['url']);
         //
         let historyData = this.getData();
         historyData[dataHashKey] = params;
@@ -470,12 +470,12 @@ App.extend('history', function() {
      */
     this.add_to_group = function(history_key, group_id) {
         if (!history_key || !group_id) {
-            Common.notification('Error: arguments error.', 'danger');
+            this.common.notification('Error: arguments error.', 'danger');
             return false;
         }
 
         App.group.add_history(group_id, history_key);
-        Common.notification('save ok.');
+        this.common.notification('save ok.');
     };
 
     /**

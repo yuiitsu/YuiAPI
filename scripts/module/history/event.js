@@ -34,7 +34,7 @@ Event.extend('history', function() {
                 }
 
                 let item_menu_html = View.get_view('history', 'host_item_menu', {'host': host});
-                Common.tips.show($(this), item_menu_html, {position: 'right'});
+                App.common.tips.show($(this), item_menu_html, {position: 'right'});
                 e.stopPropagation();
             });
         },
@@ -46,7 +46,7 @@ Event.extend('history', function() {
                     return false;
                 }
 
-                Common.dialog().confirm('Confirm to delete the host', function() {
+                App.common.dialog().confirm('Confirm to delete the host', function() {
                     App.history.del_host(host);
                 });
                 e.stopPropagation();
@@ -103,7 +103,7 @@ Event.extend('history', function() {
                     $('#response-status').html(status);
                     $('.tabs li').eq(1).trigger('click');
 
-                    Common.display_response(result, response_content_type);
+                    App.common.display_response(result, response_content_type);
                     App.requestType = requestType;
 
                     // 显示参数
@@ -160,7 +160,7 @@ Event.extend('history', function() {
 
         open_all_action: function() {
             $('#history-content').on('mouseover', '.history-all-action', function(e) {
-                Common.tips.show($(this), View.get_view('history', 'history_all_action_menu', {}));
+                App.common.tips.show($(this), View.get_view('history', 'history_all_action_menu', {}));
                 e.stopPropagation();
             })
         },
@@ -168,7 +168,7 @@ Event.extend('history', function() {
         open_item_menu: function() {
             $('#history-content').on('mouseover', '#history-list-box tbody td.history-item-action', function(e) {
                 let key = $(this).attr('data-key');
-                Common.tips.show($(this), View.get_view('history', 'history_item_menu', {
+                App.common.tips.show($(this), View.get_view('history', 'history_item_menu', {
                     key: key,
                     selected_object: App.selected_object
                 }));
@@ -316,7 +316,7 @@ Event.extend('history', function() {
             $('body').on('click', '.history-tips-add-list li.remove-from-group', function(e) {
                 let key = $(this).parent().attr('data-key');
                 App.group.remove_history(key);
-                Common.tips.remove();
+                App.common.tips.remove();
                 e.stopPropagation();
             });
         },
@@ -327,7 +327,7 @@ Event.extend('history', function() {
         add_to_group_form: function() {
             $('body').on('click', '.history-tips-add-list li.add-to-group', function(e) {
                 let key = $(this).parent().attr('data-key');
-                Common.module('Add to group', View.get_view('history', 'add_to_group_form', {'key': key}), '');
+                App.common.module('Add to group', View.get_view('history', 'add_to_group_form', {'key': key}), '');
                 e.stopPropagation();
             });
         },
@@ -369,7 +369,7 @@ Event.extend('history', function() {
             $('body').on('click', '.history-tips-add-list li.delete', function(e) {
                 let key = $(this).parent().attr('data-key');
                 if (key) {
-                    Common.dialog().confirm('Confirm to clear the data?', function() {
+                    App.common.dialog().confirm('Confirm to clear the data?', function() {
                         App.history.del(key);
                     });
                 }

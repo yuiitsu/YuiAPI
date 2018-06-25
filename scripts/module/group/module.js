@@ -8,8 +8,8 @@ App.extend('group', function() {
     // 列表存储key
     this.history_group_key = 'group_history';
     this.list_key = 'group_list';
-    this.group_list = Common.cache.getListData(this.list_key);
-    this.group_history = Common.cache.getListData(this.history_group_key, {});
+    this.group_list = self.common.cache.getListData(this.list_key);
+    this.group_history = self.common.cache.getListData(this.history_group_key, {});
 
     /**
      * 初始化
@@ -26,14 +26,14 @@ App.extend('group', function() {
      */
     this.new_group = function(group_name) {
         if (!group_name) {
-            Common.notification('Error: group name is empty.', 'danger');
+            self.common.notification('Error: group name is empty.', 'danger');
             return false;
         }
 
         // 检查重名
         for (let i in this.group_list) {
             if (this.group_list[i]['name'] === group_name) {
-                Common.notification('Error: group name already exists.', 'danger');
+                self.common.notification('Error: group name already exists.', 'danger');
                 return false;
             }
         }
@@ -46,8 +46,8 @@ App.extend('group', function() {
             history_count: 0
         });
 
-        Common.cache.save(this.list_key, this.group_list);
-        Common.notification('save ok.');
+        self.common.cache.save(this.list_key, this.group_list);
+        self.common.notification('save ok.');
         // 设置数据
         Model.set('group_list', this.group_list);
         return true;
@@ -60,14 +60,14 @@ App.extend('group', function() {
      */
     this.modify_group = function(group_id, group_name) {
         if (!group_id || !group_name) {
-            Common.notification('Error: group name or group id is empty.', 'danger');
+            self.common.notification('Error: group name or group id is empty.', 'danger');
             return false;
         }
 
         // 检查重名
         for (let i in this.group_list) {
             if (this.group_list[i]['name'] === group_name && this.group_list[i]['group_id'].toString() !== group_id) {
-                Common.notification('Error: group name already exists.', 'danger');
+                self.common.notification('Error: group name already exists.', 'danger');
                 return false;
             }
         }
@@ -80,8 +80,8 @@ App.extend('group', function() {
             }
         }
 
-        Common.cache.save(this.list_key, this.group_list);
-        Common.notification('save ok.');
+        self.common.cache.save(this.list_key, this.group_list);
+        self.common.notification('save ok.');
         // 设置数据
         Model.set('group_list', this.group_list);
         return true;
@@ -105,7 +105,7 @@ App.extend('group', function() {
         //        this.group_list.splice(i, 1);
         //    }
         //}
-        Common.cache.save(this.list_key, this.group_list);
+        self.common.cache.save(this.list_key, this.group_list);
 
         // 删除history关系
         for (let i in this.group_history) {
@@ -116,7 +116,7 @@ App.extend('group', function() {
                 }
             }
         }
-        Common.cache.save(this.history_group_key, this.group_history);
+        self.common.cache.save(this.history_group_key, this.group_history);
         Model.set('group_list', this.group_list);
     };
 
@@ -126,7 +126,7 @@ App.extend('group', function() {
      * @param history_hash_key
      */
     this.add_history = function(group_id, history_hash_key) {
-        //let data = Common.cache.getListData(this.history_group_key, {});
+        //let data = self.common.cache.getListData(this.history_group_key, {});
         if (!this.group_history.hasOwnProperty(group_id)) {
             this.group_history[group_id] = [];
         }
@@ -148,12 +148,12 @@ App.extend('group', function() {
                     this.group_list[i]['history_count'] = history_count + 1;
                 }
             }
-            Common.cache.save(this.list_key, this.group_list);
+            self.common.cache.save(this.list_key, this.group_list);
             Model.set('group_history', this.group_history);
             this.display();
         }
 
-        Common.cache.save(this.history_group_key, this.group_history);
+        self.common.cache.save(this.history_group_key, this.group_history);
     };
 
     /**
@@ -163,7 +163,7 @@ App.extend('group', function() {
     this.remove_history = function(history_hash_key) {
         let selected_object = App.selected_object;
         if (selected_object['type'] !== 'group') {
-            Common.notification('Error: data is error. please reload the page.', 'danger');
+            self.common.notification('Error: data is error. please reload the page.', 'danger');
             return false;
         }
 
@@ -181,11 +181,11 @@ App.extend('group', function() {
                 this.group_list[i]['history_count'] = this.group_list[i]['history_count'] ? this.group_list[i]['history_count'] - 1 : 0;
             }
         }
-        Common.cache.save(this.list_key, this.group_list);
+        self.common.cache.save(this.list_key, this.group_list);
         Model.set('group_history', this.group_history);
         this.display();
 
-        Common.cache.save(this.history_group_key, this.group_history);
+        self.common.cache.save(this.history_group_key, this.group_history);
         this.load_history(group_id);
     };
 
@@ -207,7 +207,7 @@ App.extend('group', function() {
                     }
                 }
             }
-            Common.cache.save(this.list_key, this.group_list);
+            self.common.cache.save(this.list_key, this.group_list);
         }
         App.selected_object = {
             type: 'group',
@@ -221,7 +221,7 @@ App.extend('group', function() {
                     if (_this.group_list[i]['group_id'].toString() === group_id) {
                         if (_this.group_list[i]['history_count'] !== history_count) {
                             _this.group_list[i]['history_count'] = history_count;
-                            Common.cache.save(_this.list_key, _this.group_list);
+                            self.common.cache.save(_this.list_key, _this.group_list);
                             _this.display();
                         }
                         break;

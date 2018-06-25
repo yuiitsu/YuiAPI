@@ -1,0 +1,37 @@
+
+/* bg */
+.bg-container{background:#1c2029;}
+.bg-dark{background:#236885;}
+.bg-light{background:#347b97;}
+
+/* border */
+.border-light{border-color:#337490;}
+.border-bottom-light{border-bottom:1px solid #347591;}
+
+/* font color */
+.font-color-white{color:#fff;}
+.font-color-dark{color:#000;}
+
+/* button */
+.btn{border:0;cursor:pointer;border-radius: 3px;}
+.btn-primary{background-color:#e26591;border-color:#e26591;border-bottom:0;color:#fff;font-weight: bold;}
+.btn-primary:hover{background-color:#e9799d;}
+.btn-default{background-color:#eee;border-color:#eee;border-bottom:2px solid #87ca00;color:#222;}
+.btn-default:hover{background-color:#ddd;}
+
+/**/
+.tabs ul li.focus{background:#236885;color:#fff;border-top-left-radius:0;border-top-right-radius:0;}
+
+/* content left */
+.content-left{padding:0 10px 10px;}
+
+/* content right */
+.content-right{padding: 0 10px 10px 50%;}
+
+/* history */
+.history-table tbody tr:hover{background-color:#347b97;}
+.history-table tbody tr.focus{background-color:#347b97;}
+
+/* form */
+.form-params-type ul li.focus{background:#347b97;}
+

@@ -193,7 +193,7 @@ Event.extend('history', function() {
                         source_object = null;
                         is_mouse_down = false;
                         selected_history_key = '';
-                        e.stopPropagation();
+                        //e.stopPropagation();
                     });
                 },
                 off: function() {
@@ -208,12 +208,10 @@ Event.extend('history', function() {
                 source_object = $(this);
                 e.stopPropagation();
             }).on('mousemove', function() {
-                if(!is_mouse_down) {
-                    return false;
-                }
-
-                if (source_object) {
-                    source_object.addClass('opacity-3');
+                if(is_mouse_down) {
+                    if (source_object) {
+                        source_object.addClass('opacity-3');
+                    }
                 }
                 // e.stopPropagation();
             }).on('mousemove', '#history-list-box tr', function(e) {

@@ -126,7 +126,19 @@ Event.extend('history', function() {
                             raw_obj.val('');
                             break;
                         case "raw":
-                            raw_obj.val(data);
+                            if (typeof data === "object") {
+                                if (data.hasOwnProperty('content_type') && data.hasOwnProperty('data')) {
+                                    let content_type = data['content_type'];
+                                    $('#raw-content-type').find('option').each(function() {
+                                        if (content_type === $(this).val()) {
+                                            $(this).attr('selected', true);
+                                        }
+                                    });
+                                    raw_obj.val(data['data']);
+                                }
+                            } else {
+                                raw_obj.val(data);
+                            }
                             break;
                         default:
                             console.log('form-data-type error');

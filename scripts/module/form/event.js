@@ -65,8 +65,13 @@ Event.extend('form', function() {
                             formData = App.common.getFormParams().form();
                             break;
                         case "raw":
-                            formData = $.trim($('#form-data-raw').find('textarea').val());
+                            formData = {};
+                            formData['data'] = $.trim($('#form-data-raw').find('textarea').val());
                             let content_type = $('#raw-content-type').val();
+                            formData['history_data'] = {
+                                'content_type': content_type,
+                                'data': formData['data']
+                            };
                             request_params.headers['Content-Type'] = content_type;
                             break;
                     }

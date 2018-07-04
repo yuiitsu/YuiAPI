@@ -4,12 +4,18 @@
  */
 const Version = {
 
-    current_version: 'v0.2.1',
+    current_version: 'v0.3.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.3.0': [
+            //'Added api test from group or host',
+            'Added drag the history to group and sort.',
+            'Fixed an issue that the raw data failed to be saved.',
+            'Fixed some bugs.'
+        ],
         'v0.2.1': [
             'Adjusted UI',
             'Improved operation mode of grouping',
@@ -52,7 +58,7 @@ const Version = {
             // 将新版本号写入缓存
             localStorage.setItem('version', this.current_version);
             // 显示更新记录
-            Common.module('Update logs', View.get_view('setting', 'version_update_logs', {
+            App.common.module('Update logs', View.get_view('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
             }), '<button class="btn btn-primary module-close js-handler">Close</button>');

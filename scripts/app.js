@@ -6,8 +6,14 @@
 let App = {
     requestType: 'GET',
     host: '',
+    selected_object: {
+        type: '',
+        key: ''
+    },
 
     run: function() {
+        // 初始化界面
+        // 加载module
         for (let i in this) {
             if (this.hasOwnProperty(i)) {
                 if (this[i].hasOwnProperty('init')) {
@@ -24,7 +30,9 @@ let App = {
      * @param func
      */
     extend: function(name, func) {
-        func.prototype = View;
+        //func_temp.prototype = this;
+        //func.prototype = new func_temp();
+        func.prototype = App;
         this[name] = new func();
     }
 };

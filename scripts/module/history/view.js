@@ -50,7 +50,7 @@ View.extend('history', function() {
             </ul>
             <div class="history-host radius-small-all">
                 <ul id="history-host" class="radius-small-all history-host-list">
-                    {{ View.get_view('history', 'host_list', data) }}
+                    {{ View.get_view('history', 'host_list', {'list': data}) }}
                 </ul>
             </div>
             <!-- history group -->
@@ -65,9 +65,10 @@ View.extend('history', function() {
     this.host_list = function() {
         return `
             <li class="focus"><span class="radius-small-all">All (<em id="history-count-all">...</em>)</span></li>
-            {{ for var i in data }}
-            <li data-host="{{ data[i] }}">
-                <span>{{ data[i] }}</span>
+            {{ for var i in data['list'] }}
+            {{ var focus = data['selected_host'] === data['list'][i] ? 'focus' : '' }}
+            <li data-host="{{ data['list'][i] }}" class="{{ focus }}">
+                <span>{{ data['list'][i] }}</span>
                 <i class="mdi mdi-close"></i>
             </li>
             {{ end }}
@@ -92,29 +93,29 @@ View.extend('history', function() {
      */
     this.main_list = function() {
         return `
-            <table class="history-table" cellspacing="0">
+            <table class="history-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="w-30" style="cursor: pointer">
+                        <th class="w-30 border-bottom-light" style="cursor: pointer">
                             <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                         </th>
-                        <th class="w-50">Type</th>
-                        <th class="align-left history-list-name">Name</th>
-                        <th class="align-left">URL</th>
+                        <th class="w-50 border-bottom-light">Type</th>
+                        <th class="align-left history-list-name border-bottom-light">Name</th>
+                        <th class="align-left border-bottom-light">URL</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{ for var i in data }}
                     {{ var request_type_icon = data[i]['type'] ? data[i]['type'][0] : '-' }}
                     <tr data-key="{{ data[i]['key'] }}">
-                        <td class="w-30 history-item-action" data-key="{{ data[i]['key'] }}">
+                        <td class="w-30 history-item-action border-bottom-light" data-key="{{ data[i]['key'] }}">
                             <i class="mdi mdi-dots-horizontal font-size-20"></i>
                         </td>
-                        <td class="w-50 align-center request-type request-type-{{ data[i]['type'] }}">
+                        <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
                             <span>{{ request_type_icon }}</span>
                         </td>
-                        <td>{{ data[i]['name'] }}</td>
-                        <td>{{ data[i]['url'] }}</td>
+                        <td class="border-bottom-light">{{ data[i]['name'] }}</td>
+                        <td class="border-bottom-light">{{ data[i]['url'] }}</td>
                     </tr>
                     {{ end }}
                 </tbody>
@@ -137,10 +138,15 @@ View.extend('history', function() {
     this.history_item_menu = function() {
         return `
             <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
+                {{ if data['selected_object']['type'] === 'group' }}
+                <li class="remove-from-group">Remove from group</li>
+                {{ end }}
                 <li class="add-to-group">Add to group</li>
                 <li class="set-assertion disabled">Set assertion</li>
+                <!--
                 <li class="history-move" data-type="up">Move up</li>
                 <li class="history-move" data-type="down">Move down</li>
+                -->
                 <li class="delete color-failed">Delete</li>
             </ul>
         `;
@@ -160,6 +166,15 @@ View.extend('history', function() {
                     <button class="btn btn-primary js-handler" id="history-add-to-group">Save</button>
                 </div>
             </div>
+        `;
+    };
+
+    /**
+     * 拖动目标位置line
+     */
+    this.drag_mask_line = function() {
+        return `
+            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="4">Insert here</td></tr>
         `;
     };
 });

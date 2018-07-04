@@ -1,9 +1,9 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-let Common = {
-
-    cache: {
+App.extend('common', function() {
+    let self = this;
+    this.cache = {
         /**
          * 获取列表数据
          * @param key
@@ -28,7 +28,7 @@ let Common = {
         save: function(key, value) {
             localStorage.setItem(key, JSON.stringify(value));
         }
-    },
+    };
 
     /**
      * 提示
@@ -36,7 +36,7 @@ let Common = {
      * @param content
      * @param options
      */
-    tips: {
+    this.tips = {
         timer: null,
         show: function(focus, content, options) {
             let _this = this;
@@ -66,8 +66,8 @@ let Common = {
                 focus_left = focus_offset.left,
                 target_width = obj.outerWidth(),
                 target_height = obj.outerHeight(),
-                client_width = Common.clientSize('clientWidth'),
-                client_height = Common.clientSize('clientHeight'),
+                client_width = self.clientSize('clientWidth'),
+                client_height = self.clientSize('clientHeight'),
                 arr_obj = $('.tips-array');
 
             switch (opt.position) {
@@ -114,15 +114,18 @@ let Common = {
             }).off('mouseleave').on('mouseleave', function() {
                 $(this).remove();
             });
+        },
+        remove: function() {
+            $('#tips-box').remove();
         }
-    },
+    };
 
     /**
      * 通知
      * @param text
      * @param type
      */
-    notification: function(text, type) {
+    this.notification = function(text, type) {
         // 初始化
         let notification_timer = null;
         $('#notification-box').remove();
@@ -137,7 +140,7 @@ let Common = {
         notification_timer = setTimeout(function() {
             $('#notification-box').fadeOut();
         }, 2000);
-    },
+    };
 
     /**
      * module
@@ -145,7 +148,7 @@ let Common = {
      * @param content
      * @param action
      */
-    module: function(name, content, action) {
+    this.module = function(name, content, action) {
         let module_id = Date.parse(new Date());
         $('body').append(View.get_view('common', 'module', {
             name: name,
@@ -167,13 +170,13 @@ let Common = {
             let module_id = $(this).attr('data-module-id');
             $('.module-box-' + module_id).remove();
         });
-    },
+    };
 
     /**
      * 对话框
      * @returns {{confirm: confirm, ok: ok}}
      */
-    dialog: function() {
+    this.dialog = function() {
         return {
             show: function(type, msg, confirm_callback, cancel_callbak) {
                 let dialog_id = Date.parse(new Date());
@@ -214,13 +217,13 @@ let Common = {
                 this.show('ok', msg, confirm_callback, cancel_callback);
             }
         }
-    },
+    };
 
     /**
      * 获取表单数据
      * @returns {{}}
      */
-    getFormParams: function() {
+    this.getFormParams = function() {
         return {
             /**
              * 从表单中获取参数与值
@@ -279,7 +282,7 @@ let Common = {
                 return this.get_data($('#form-data-true'), true);
             }
         };
-    },
+    };
 
     /**
      * 显示响应结果
@@ -287,7 +290,7 @@ let Common = {
      * @param response_content_type
      * @param jqXHR
      */
-    display_response: function(result, response_content_type, jqXHR) {
+    this.display_response = function(result, response_content_type, jqXHR) {
         let target = $('#result'),
             target_textarea = $('#result-textarea');
 
@@ -296,8 +299,7 @@ let Common = {
             target.html(result).css('background-color', '#fff').removeClass('hide');
             target_textarea.text('').addClass('hide');
         } else {
-
-            Common.get_response_content_type(response_content_type, function (type) {
+            self.get_response_content_type(response_content_type, function (type) {
                 switch (type) {
                     case "img":
                         result = '<img src="' + result + '" />';
@@ -308,7 +310,7 @@ let Common = {
                         if (jqXHR && jqXHR.status !== 200) {
                             result = jqXHR.responseJSON;
                         }
-                        target.html(Common.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                        target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
                             .css('background-color', '#fff').removeClass('hide');
                         target_textarea.text('').addClass('hide');
                         break;
@@ -324,7 +326,7 @@ let Common = {
         $('.response-type').find('li').eq(0).trigger('click');
 
         return result;
-    },
+    };
 
     /**
      * 检查response的content_type类型
@@ -332,7 +334,7 @@ let Common = {
      * @param callback
      * @private
      */
-    get_response_content_type: function(content_type, callback) {
+    this.get_response_content_type = function(content_type, callback) {
         if (content_type) {
             if (content_type.indexOf('application/json') !== -1) {
                 callback('json');
@@ -344,27 +346,27 @@ let Common = {
         } else {
             callback('json');
         }
-    },
+    };
 
     /**
      * 高亮显示xml
      * @param xml
      * @returns {string | *}
      */
-    syntaxHighlight_xml: function(xml) {
+    this.syntaxHighlight_xml = function(xml) {
         xml = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return xml;
-    },
+    };
 
     /**
      * 高亮显示代码
      * @param json
      * @returns {string}
      */
-    syntaxHighlight: function(json) {
+    this.syntaxHighlight = function(json) {
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'code-number';
+            let cls = 'code-number';
             if (/^"/.test(match)) {
                 if (/:$/.test(match)) {
                     cls = 'code-key';
@@ -378,18 +380,18 @@ let Common = {
             }
             return '<span class="'+ cls +'">' + match + '</span>';
         });
-    },
+    };
 
     /**
      * 获取链接地址中的host
      * @param url
      * @returns {string}
      */
-    getHost: function(url) {
+    this.getHost = function(url) {
         let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
         let result = parse_Url.exec(url);
         return result[1] + ':' + result[2] + result[3] + (result[4] ? ':' + result[4] : '');
-    },
+    };
 
     /**
      * 发起请求
@@ -398,7 +400,7 @@ let Common = {
      * @param objData 请求数据
      * @param callBack 回调函数
      */
-    request: function(strUrl, objParams, objData, callBack){
+    this.request = function(strUrl, objParams, objData, callBack){
         let options = {
             url: strUrl,
             type: objParams.type ? objParams.type : "GET",
@@ -424,13 +426,13 @@ let Common = {
                 callBack(d, jqXHR);
             }
         });
-    },
+    };
 
     /**
      * 屏幕/文档/滚动宽高
      * @param type 类型
      */
-    clientSize: function(type) {
+    this.clientSize = function(type) {
         let result = [];
         result['scrollTop'] = window.self.document.documentElement.scrollTop ?
             window.self.document.documentElement.scrollTop : window.self.document.body.scrollTop;
@@ -441,14 +443,14 @@ let Common = {
         result['clientWidth'] = window.self.document.documentElement.clientWidth ?
             window.self.document.documentElement.clientWidth : window.self.document.body.clientWidth;
         return result[type];
-    },
+    };
 
     /**
      * MD5
      * @param string
      * @returns {string}
      */
-    md5: function(string) {
+    this.md5 = function(string) {
         function RotateLeft(lValue, iShiftBits) {
             return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
         }
@@ -647,4 +649,4 @@ let Common = {
 
         return temp.toLowerCase();
     }
-};
+});

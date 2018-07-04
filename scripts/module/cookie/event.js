@@ -12,7 +12,7 @@ Event.extend('cookies', function() {
             $('body').on('click', '.history-cookies', function(e) {
                 let host = $(this).attr('data-host');
                 App.cookies.get_all(host, function(cookies) {
-                    Common.module('Cookies', View.get_view('cookies', 'cookies_manager', {
+                    App.common.module('Cookies', View.get_view('cookies', 'cookies_manager', {
                         'list': cookies,
                         'host': host
                     }), '');
@@ -32,7 +32,7 @@ Event.extend('cookies', function() {
                     return false;
                 }
 
-                Common.dialog().confirm('Confirm to delete the data?', function() {
+                App.common.dialog().confirm('Confirm to delete the data?', function() {
                     App.cookies.remove(host, name, function (res) {
                         console.log(res);
                         _this.parent().remove();

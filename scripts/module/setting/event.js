@@ -13,7 +13,7 @@ Event.extend('setting', function() {
          */
         show_setting: function() {
             $('#settings').on('click', function() {
-                Common.tips.show($(this), View.get_view('setting', 'setting', {}));
+                App.common.tips.show($(this), View.get_view('setting', 'setting', {}));
             });
         },
 
@@ -44,7 +44,7 @@ Event.extend('setting', function() {
                                 host_list: host_list
                             };
                         _html = '<h2>coming soon...</h2>';
-                        Common.module(name, _html, '<button class="btn btn-primary" id="export-copy">Copy</button>');
+                        App.common.module(name, _html, '<button class="btn btn-primary" id="export-copy">Copy</button>');
 
                         $('#export-copy').off('click').on('click', function() {
                             $('.module-main').clone();
@@ -52,8 +52,8 @@ Event.extend('setting', function() {
                         break;
                     case "Import":
                         _html = '<h2>coming soon...</h2>';
-                        //Common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
-                        Common.module(name, _html, '<button class="btn btn-primary">Import</button>');
+                        //App.common.module(name, '<textarea style="width:100%;height:498px;" id="import-data"></textarea>', '<button class="btn btn-primary">Import</button>');
+                        App.common.module(name, _html, '<button class="btn btn-primary">Import</button>');
                         break;
                     case "default assertion":
                         let default_assert_data = App.history.get_default_assert(),
@@ -70,7 +70,7 @@ Event.extend('setting', function() {
                         }
 
                         let content_html = View.get_view('setting', 'default_assertion', assert_content);
-                        Common.module(
+                        App.common.module(
                             name,
                             content_html,
                             '<button class="btn btn-primary" id="save-default-assert">Save</button>'
@@ -92,7 +92,7 @@ Event.extend('setting', function() {
                 }
 
                 App.history.save_default_assert(assert_data);
-                Common.notification('save success');
+                App.common.notification('save success');
             });
         }
     };

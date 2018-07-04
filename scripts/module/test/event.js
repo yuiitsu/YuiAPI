@@ -27,7 +27,7 @@ Event.extend('test', function() {
         clear: function() {
             $('.test-clear').on('click', function() {
                 let data_type = $(this).attr('data-type');
-                Common.dialog().confirm('Confirm to clear the data?', function() {
+                App.common.dialog().confirm('Confirm to clear the data?', function() {
                     Test.clear(data_type);
                 });
             });

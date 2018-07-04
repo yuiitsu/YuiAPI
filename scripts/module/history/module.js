@@ -9,7 +9,6 @@ App.extend('history', function() {
     this.hostCacheKey = 'host_list';
     this.assert_key = 'assert_data';
     this.assert_default_key = 'assert_default_data';
-    this.selected_host = '';
     this.search_key = '';
 
     this.init = function() {
@@ -30,8 +29,8 @@ App.extend('history', function() {
      */
     this.add = function(params) {
         // 获取host
-        this.host = Common.getHost(params['url']);
-        let dataHashKey = Common.md5(params['url']);
+        this.host = this.common.getHost(params['url']);
+        let dataHashKey = this.common.md5(params['url']);
         //
         let historyData = this.getData();
         historyData[dataHashKey] = params;
@@ -142,15 +141,22 @@ App.extend('history', function() {
     this.refresh_host_list = function() {
         let host_list = this.get_host_list(),
             _this = this;
-        View.display('history', 'host_list', host_list, '#history-host');
-        if (this.selected_host) {
-            $('#history-host').find('li').each(function() {
-                let host = $(this).attr('data-host');
-                if (host === _this.selected_host) {
-                    $(this).find('span').trigger('click');
-                }
-            });
+        let output_data = {
+            list: host_list,
+            selected_host: ''
+        };
+        if (this.selected_object['type'] === 'host') {
+            output_data['selected_host'] = this.selected_object['key'];
         }
+        View.display('history', 'host_list', output_data, '#history-host');
+        //if (this.selected_host) {
+        //    $('#history-host').find('li').each(function() {
+        //        let host = $(this).attr('data-host');
+        //        if (host === _this.selected_host) {
+        //            $(this).find('span').trigger('click');
+        //        }
+        //    });
+        //}
     };
 
     /**
@@ -161,11 +167,21 @@ App.extend('history', function() {
      * @param callback
      */
     this.refresh_history_list = function(host, group_id, key, callback) {
-        let history_list = this.get_history_list(null, host, group_id, key);
-        View.display('history', 'main_list', history_list, '#history-list-box');
-
-        if ($.isFunction(callback)) {
-            callback(history_list);
+        if (!key) {
+            if (this.selected_object['type'] === 'host') {
+                host = this.selected_object['key']
+            } else if (this.selected_object['type'] === 'group') {
+                group_id = this.selected_object['key']
+            }
+        }
+        if (group_id) {
+            App.group.load_history(group_id);
+        } else {
+            let history_list = this.get_history_list(null, host, group_id, key);
+            View.display('history', 'main_list', history_list, '#history-list-box');
+            if ($.isFunction(callback)) {
+                callback(history_list);
+            }
         }
     };
 
@@ -211,7 +227,16 @@ App.extend('history', function() {
      */
     this.build_ui_list = function(data, host) {
         if (host) {
-            this.selected_host = host;
+            //this.selected_host = host;
+            App.selected_object = {
+                type: 'host',
+                key: host
+            }
+        } else {
+            App.selected_object = {
+                type: '',
+                key: ''
+            }
         }
         let list = this.get_history_list(data, host);
         View.display('history', 'main_list', list, '#history-list-box');
@@ -395,44 +420,47 @@ App.extend('history', function() {
      * @param e
      */
     this.search = function(_obj, e) {
-        if (e.keyCode === 13) {
-            let search_key = $.trim(_obj.val()),
-                result_data = {};
+        let search_key = $.trim(_obj.val()),
+            result_data = {};
 
-            if (search_key) {
-                this.search_key = search_key;
-                let search_key_list = search_key.split(' '),
-                    history_list = this.getData();
+        if (search_key) {
+            this.search_key = search_key;
+            let search_key_list = search_key.split(' '),
+                history_list = this.getData();
 
-                if (history_list) {
-                    for (let i in history_list) {
-                        let name = history_list[i]['name'],
-                            url = history_list[i]['url'];
+            if (history_list) {
+                for (let i in history_list) {
+                    let name = history_list[i]['name'],
+                        url = history_list[i]['url'];
 
-                        for (let j in search_key_list) {
-                            let key = search_key_list[j],
-                                is_searched = false;
+                    for (let j in search_key_list) {
+                        let key = search_key_list[j],
+                            is_searched = false;
 
-                            if (name.indexOf(key) !== -1) {
-                                history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
-                                is_searched = true;
-                            }
+                        if (name.indexOf(key) !== -1) {
+                            history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
+                            is_searched = true;
+                        }
 
-                            if (url.indexOf(key) !== -1) {
-                                history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
-                                is_searched = true;
-                            }
+                        if (url.indexOf(key) !== -1) {
+                            history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
+                            is_searched = true;
+                        }
 
-                            if (is_searched) {
-                                result_data[i] = history_list[i];
-                            }
+                        if (is_searched) {
+                            result_data[i] = history_list[i];
                         }
                     }
                 }
             }
 
-            this.build_ui_list(result_data);
+            App.selected_object = {
+                'type': '',
+                'key': ''
+            }
         }
+
+        this.build_ui_list(result_data);
     };
 
     /**
@@ -442,46 +470,56 @@ App.extend('history', function() {
      */
     this.add_to_group = function(history_key, group_id) {
         if (!history_key || !group_id) {
-            Common.notification('Error: arguments error.', 'danger');
+            this.common.notification('Error: arguments error.', 'danger');
             return false;
         }
 
         App.group.add_history(group_id, history_key);
-        Common.notification('save ok.');
+        this.common.notification('save ok.');
     };
 
     /**
      * 上移/下移
      * @param type
      * @param key
+     * @param target_key
+     * @param target_position
      */
-    this.move_position = function(type, key) {
+    this.move_position = function(type, key, target_key, target_position) {
         let hashData = this.getListData(this.listKey),
-            position = 0;
+            position = 0,
+            target_index = 0;
         let history_len = hashData.length;
 
         for (let i = 0; i < history_len; i++) {
             if (key === hashData[i]) {
                 position = i;
-                break;
+            }
+
+            if (target_key === hashData[i]) {
+                target_index = i;
             }
         }
 
-        if (type === 'up') {
-            // 向上移
-            if (position === history_len - 1) {
-                return false;
-            }
-            let target_position = position + 2;
-            hashData.splice(target_position, 0, key);
-            hashData.splice(position, 1);
-        } else {
-            // 向下移
-            if (position === 0) {
-                return false;
-            }
-            hashData.splice(position - 1, 0, key);
-            hashData.splice(position + 1, 1);
+        switch (target_position) {
+            case "next":
+                hashData.splice(target_index, 0, key);
+                if (position > target_index) {
+                    hashData.splice(position + 1, 1);
+                } else if(position < target_index) {
+                    //hashData.splice(target_index, 0, key);
+                    hashData.splice(position, 1);
+                }
+                break;
+            case "pre":
+                hashData.splice(target_index + 1, 0, key);
+                if (position > target_index) {
+                    hashData.splice(position + 1, 1);
+                } else if (position < target_index) {
+                    //hashData.splice(target_index + 1, 0, key);
+                    hashData.splice(position, 1);
+                }
+                break;
         }
 
         this.setItem(this.listKey, hashData);

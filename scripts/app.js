@@ -12,6 +12,8 @@ let App = {
     },
 
     run: function() {
+        // 初始化界面
+        // 加载module
         for (let i in this) {
             if (this.hasOwnProperty(i)) {
                 if (this[i].hasOwnProperty('init')) {

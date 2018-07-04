@@ -22,11 +22,12 @@ View.extend('form', function() {
                             <option value="POST">POST</option>
                             <option value="PUT">PUT</option>
                             <option value="DELETE">DELETE</option>
+                            <option value="OPTIONS">OPTIONS</option>
                         </select>
                     </div>
                     <div class="url-box vertical-middle">
                         <input type="text" id="url" class="input-text" placeholder="Enter api URL" />
-                        <i class="mdi mdi-format-list-bulleted" id="host-select" title="host history"></i>
+                        <i class="mdi mdi-format-list-bulleted font-color-dark" id="host-select" title="host history"></i>
                     </div>
                     <div class="display-inline request-button vertical-middle">
                         <button id="send" class="btn btn-primary">Send</button>
@@ -40,7 +41,7 @@ View.extend('form', function() {
                         <li>format</li>
                     </ul>
                 </div>
-                <div class="form-data">
+                <div class="form-data bg-light">
                     <!-- form data headers -->
                     <table class="form-data-table hide" cellspacing="0">
                         <thead>
@@ -108,10 +109,10 @@ View.extend('form', function() {
      */
     this.form = function() {
         return `
-            <table class="form-data-table" cellspacing="0">
+            <table class="form-data-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="4" class="border-bottom-light">
                             <label class="form-request-data-type"><input type="radio" name="form-data-type" value="form-data-true" /> form-data</label>
                             <label class="form-request-data-type"><input type="radio" name="form-data-type" checked="checked" value="form-data" /> x-www-form-urlencoded</label>
                             <label class="form-request-data-type"><input type="radio" name="form-data-type" value="raw" /> raw</label>
@@ -124,10 +125,10 @@ View.extend('form', function() {
                         </td>
                     </tr>
                     <tr class="form-data-title">
-                        <td></td>
-                        <td>Key</td>
-                        <td>Value</td>
-                        <td>Description</td>
+                        <td class="border-bottom-light"></td>
+                        <td class="border-bottom-light">Key</td>
+                        <td class="border-bottom-light">Value</td>
+                        <td class="border-bottom-light">Description</td>
                     </tr>
                 </thead>
                 <tbody id="form-data-true" class="form-data-input form-data-type hide" data-type="form-data-true">

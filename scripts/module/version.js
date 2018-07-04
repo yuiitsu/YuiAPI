@@ -56,7 +56,7 @@ const Version = {
             // 将新版本号写入缓存
             localStorage.setItem('version', this.current_version);
             // 显示更新记录
-            Common.module('Update logs', View.get_view('setting', 'version_update_logs', {
+            App.common.module('Update logs', View.get_view('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
             }), '<button class="btn btn-primary module-close js-handler">Close</button>');

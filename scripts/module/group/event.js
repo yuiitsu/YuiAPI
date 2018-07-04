@@ -15,7 +15,7 @@ Event.extend('group', function() {
          */
         open_form: function() {
             $('#history-content').on('click', '#history-group-new', function(e) {
-                Common.module('New Group', View.get_view('group', 'form', ''), '');
+                App.common.module('New Group', View.get_view('group', 'form', ''), '');
                 e.stopPropagation();
             });
         },
@@ -29,7 +29,7 @@ Event.extend('group', function() {
                     name = $(this).attr('data-group-name');
                 if (group_id) {
                     let item_menu_html = View.get_view('group', 'item_menu', {'group_id': group_id, 'name': name});
-                    Common.tips.show($(this), item_menu_html, {position: 'right'});
+                    App.common.tips.show($(this), item_menu_html, {position: 'right'});
                 }
                 e.stopPropagation();
             });
@@ -55,7 +55,7 @@ Event.extend('group', function() {
         item_delete: function() {
             $('body').on('click', '.history-group-del', function(e) {
                 let group_id = $(this).attr('data-group-id');
-                Common.dialog().confirm('Confirm to delete data?', function() {
+                App.common.dialog().confirm('Confirm to delete data?', function() {
                     if (group_id) {
                         App.group.delete(group_id);
                     }
@@ -71,7 +71,7 @@ Event.extend('group', function() {
             $('body').on('click', '.history-group-modify', function(e) {
                 let group_id = $(this).attr('data-group-id'),
                     name = $(this).attr('data-group-name');
-                Common.module('Modify Group', View.get_view('group', 'form', {
+                App.common.module('Modify Group', View.get_view('group', 'form', {
                     group_id: group_id,
                     name: name
                 }), '');
@@ -109,7 +109,7 @@ Event.extend('group', function() {
 
         selector_new_group: function() {
             $('body').on('click', '.history-group-selector-new', function(e) {
-                Common.module('New Group', View.get_view('group', 'form', ''), '');
+                App.common.module('New Group', View.get_view('group', 'form', ''), '');
                 e.stopPropagation();
             });
         }

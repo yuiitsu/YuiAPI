@@ -93,29 +93,29 @@ View.extend('history', function() {
      */
     this.main_list = function() {
         return `
-            <table class="history-table" cellspacing="0">
+            <table class="history-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="w-30" style="cursor: pointer">
+                        <th class="w-30 border-bottom-light" style="cursor: pointer">
                             <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                         </th>
-                        <th class="w-50">Type</th>
-                        <th class="align-left history-list-name">Name</th>
-                        <th class="align-left">URL</th>
+                        <th class="w-50 border-bottom-light">Type</th>
+                        <th class="align-left history-list-name border-bottom-light">Name</th>
+                        <th class="align-left border-bottom-light">URL</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{ for var i in data }}
                     {{ var request_type_icon = data[i]['type'] ? data[i]['type'][0] : '-' }}
                     <tr data-key="{{ data[i]['key'] }}">
-                        <td class="w-30 history-item-action" data-key="{{ data[i]['key'] }}">
+                        <td class="w-30 history-item-action border-bottom-light" data-key="{{ data[i]['key'] }}">
                             <i class="mdi mdi-dots-horizontal font-size-20"></i>
                         </td>
-                        <td class="w-50 align-center request-type request-type-{{ data[i]['type'] }}">
+                        <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
                             <span>{{ request_type_icon }}</span>
                         </td>
-                        <td>{{ data[i]['name'] }}</td>
-                        <td>{{ data[i]['url'] }}</td>
+                        <td class="border-bottom-light">{{ data[i]['name'] }}</td>
+                        <td class="border-bottom-light">{{ data[i]['url'] }}</td>
                     </tr>
                     {{ end }}
                 </tbody>

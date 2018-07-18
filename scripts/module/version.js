@@ -4,12 +4,17 @@
  */
 const Version = {
 
-    current_version: 'v0.3.0',
+    current_version: 'v0.4.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.4.0': [
+            'Fixed an issue that response could not display when the the http status was not 200',
+            'Fixed an issue that request headers not saved',
+            'Fixed an issue that response could not display when the response data was img blob.'
+        ],
         'v0.3.0': [
             //'Added api test from group or host',
             'Added drag the history to group and sort.',

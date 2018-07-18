@@ -63,6 +63,7 @@ Event.extend('form', function() {
                             break;
                         case "form-data":
                             formData = App.common.getFormParams().form();
+                            request_params['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
                             break;
                         case "raw":
                             formData = {};
@@ -117,6 +118,7 @@ Event.extend('form', function() {
                             headers: headers,
                             data: formData['history_data'],
                             data_type: form_data_type,
+                            request_headers: header_data['history_data'],
                             response_content_type: response_content_type,
                             result: res,
                             time: use_time,
@@ -202,6 +204,22 @@ Event.extend('form', function() {
                 View.display('form', 'urlencoded_line', data, '#form-data');
                 $('.form-params-type li').eq(1).trigger('click');
             });
+        },
+
+        /**
+         * headers自动增加行
+         */
+        form_header_input: function() {
+            $('#form-data-headers').on('input', '.form-data-item', function() {
+                let data_type = $(this).attr('data-type');
+                let target_obj = $('#' + data_type);
+                let parent = $(this).parent().parent();
+                if (parent.index() + 1 === target_obj.find('tr').length) {
+                    // 创建新的一行
+                    let _htmlItem = View.get_view('form', 'form_header_line', {});
+                    target_obj.append(_htmlItem);
+                }
+            })
         },
 
         /**

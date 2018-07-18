@@ -88,6 +88,7 @@ Event.extend('history', function() {
                         form_data_type = historyData[key]['data_type'],
                         headers = historyData[key]['headers'],
                         data = historyData[key]['data'],
+                        request_headers = historyData[key]['request_headers'],
                         response_content_type = historyData[key]['response_content_type'],
                         result = historyData[key]['result'],
                         apiName = historyData[key]['name'],
@@ -126,6 +127,8 @@ Event.extend('history', function() {
                             raw_obj.val('');
                             break;
                         case "raw":
+                            View.display('form', 'urlencoded_line', [], '#form-data');
+                            View.display('form', 'form_data_line', [], '#form-data-true');
                             if (typeof data === "object") {
                                 if (data.hasOwnProperty('content_type') && data.hasOwnProperty('data')) {
                                     let content_type = data['content_type'];
@@ -144,6 +147,8 @@ Event.extend('history', function() {
                             console.log('form-data-type error');
                             break;
                     }
+
+                    View.display('form', 'form_header_line', request_headers, '#form-data-headers')
 
                     // assert
                     let assert_data = App.history.get_assert_data(),

@@ -30,6 +30,10 @@ App.extend('common', function() {
         }
     };
 
+    this.is_function = function(str) {
+        return Object.prototype.toString.call(str) === '[object Function]';
+    };
+
     this.object_is_empty = function(obj) {
         for (let i in obj) {
             return false;
@@ -185,7 +189,7 @@ App.extend('common', function() {
      */
     this.dialog = function() {
         return {
-            show: function(type, msg, confirm_callback, cancel_callbak) {
+            show: function(type, msg, confirm_callback, cancel_callback) {
                 let dialog_id = Date.parse(new Date());
                 $('body').append(View.get_view('common', 'dialog', {
                     type: type,
@@ -196,8 +200,8 @@ App.extend('common', function() {
                 $('.dialog-close').off('click').on('click', function() {
                     let dialog_id = $(this).attr('data-dialog-id');
                     $('.dialog-' + dialog_id).remove();
-                    if ($.isFunction(cancel_callbak)) {
-                        cancel_callbak();
+                    if (self.is_function(cancel_callback)) {
+                        cancel_callback();
                     }
                 });
 
@@ -207,12 +211,12 @@ App.extend('common', function() {
                     $('.dialog-' + dialog_id).remove();
 
                     if (data_type === 'confirm') {
-                        if ($.isFunction(confirm_callback)) {
+                        if (self.is_function(confirm_callback)) {
                             confirm_callback();
                         }
                     } else {
-                        if ($.isFunction(cancel_callbak)) {
-                            cancel_callbak();
+                        if (self.is_function(cancel_callback)) {
+                            cancel_callback();
                         }
                     }
                 });
@@ -419,7 +423,7 @@ App.extend('common', function() {
     this.request = function(url, params, data, callBack){
         let request_type = params.type ? params.type : "GET";
         let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(){
+        xhr.addEventListener('readystatechange', function() {
             switch (this.readyState) {
                 case 1:
                     break;
@@ -439,12 +443,12 @@ App.extend('common', function() {
                 case 3:
                     break;
                 case 4:
-                    if($.isFunction(callBack)) {
+                    if (self.is_function(callBack)) {
                         callBack(this.response, this);
                     }
                     break;
             }
-        };
+        });
 
         // 构造数据
         let send_data = null;

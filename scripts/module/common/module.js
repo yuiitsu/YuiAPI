@@ -30,6 +30,17 @@ App.extend('common', function() {
         }
     };
 
+    this.is_function = function(str) {
+        return Object.prototype.toString.call(str) === '[object Function]';
+    };
+
+    this.object_is_empty = function(obj) {
+        for (let i in obj) {
+            return false;
+        }
+        return true;
+    };
+
     /**
      * 提示
      * @param focus
@@ -178,7 +189,7 @@ App.extend('common', function() {
      */
     this.dialog = function() {
         return {
-            show: function(type, msg, confirm_callback, cancel_callbak) {
+            show: function(type, msg, confirm_callback, cancel_callback) {
                 let dialog_id = Date.parse(new Date());
                 $('body').append(View.get_view('common', 'dialog', {
                     type: type,
@@ -189,8 +200,8 @@ App.extend('common', function() {
                 $('.dialog-close').off('click').on('click', function() {
                     let dialog_id = $(this).attr('data-dialog-id');
                     $('.dialog-' + dialog_id).remove();
-                    if ($.isFunction(cancel_callbak)) {
-                        cancel_callbak();
+                    if (self.is_function(cancel_callback)) {
+                        cancel_callback();
                     }
                 });
 
@@ -200,12 +211,12 @@ App.extend('common', function() {
                     $('.dialog-' + dialog_id).remove();
 
                     if (data_type === 'confirm') {
-                        if ($.isFunction(confirm_callback)) {
+                        if (self.is_function(confirm_callback)) {
                             confirm_callback();
                         }
                     } else {
-                        if ($.isFunction(cancel_callbak)) {
-                            cancel_callbak();
+                        if (self.is_function(cancel_callback)) {
+                            cancel_callback();
                         }
                     }
                 });
@@ -294,34 +305,40 @@ App.extend('common', function() {
         let target = $('#result'),
             target_textarea = $('#result-textarea');
 
-        if (jqXHR && jqXHR.statusText === 'error') {
-            result = 'Server error. Please check the api server.';
-            target.html(result).css('background-color', '#fff').removeClass('hide');
-            target_textarea.text('').addClass('hide');
-        } else {
-            self.get_response_content_type(response_content_type, function (type) {
-                switch (type) {
-                    case "img":
-                        result = '<img src="' + result + '" />';
-                        target.html(result).css('background-color', '#fff').removeClass('hide');
-                        target_textarea.text('').addClass('hide');
-                        break;
-                    case "json":
-                        if (jqXHR && jqXHR.status !== 200) {
-                            result = jqXHR.responseJSON;
+        self.get_response_content_type(response_content_type, function (type) {
+            switch (type) {
+                case "img":
+                    try {
+                        target.html('<img id="response-img" src="" />');
+                        let url = window.URL || window.webkitURL;
+                        let img = document.getElementById('response-img');
+                        img.src = url.createObjectURL(result);
+                    } catch (e) {
+                        if (typeof result === 'string') {
+                            target.html('<img src="'+ result +'" />');
+                        } else {
+                            target.html('Image Blob data cannot be displayed. Please send the request.');
                         }
-                        target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
-                            .css('background-color', '#fff').removeClass('hide');
-                        target_textarea.text('').addClass('hide');
-                        break;
-                    case "xml":
-                        target.text('').addClass('hide');
-                        target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
-                        break;
-                }
-
-            });
-        }
+                    }
+                    target.css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "json":
+                    target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                        .css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+                case "xml":
+                    target.text('').addClass('hide');
+                    target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
+                    break;
+                default:
+                    result = result ? result : 'Server error. Please check the api server.';
+                    target.html(result).css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
+                    break;
+            }
+        });
         // 将显示数据类型重置为第一个tab
         $('.response-type').find('li').eq(0).trigger('click');
 
@@ -344,7 +361,7 @@ App.extend('common', function() {
                 callback('xml');
             }
         } else {
-            callback('json');
+            callback('');
         }
     };
 
@@ -364,6 +381,9 @@ App.extend('common', function() {
      * @returns {string}
      */
     this.syntaxHighlight = function(json) {
+        if (!json) {
+            return 'Server error. Please check the api server.'
+        }
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
             let cls = 'code-number';
@@ -395,37 +415,87 @@ App.extend('common', function() {
 
     /**
      * 发起请求
-     * @param strUrl 请求地址
-     * @param objParams 请求类型
-     * @param objData 请求数据
+     * @param url 请求地址
+     * @param params 请求类型
+     * @param data 请求数据
      * @param callBack 回调函数
      */
-    this.request = function(strUrl, objParams, objData, callBack){
-        let options = {
-            url: strUrl,
-            type: objParams.type ? objParams.type : "GET",
-            data: objData,
-            async: objParams.async !== 'false',
-            dataType: objParams.data_type ? objParams.data_type : "json",
-            headers: objParams['headers'],
-            processData: objParams.processData === undefined ? true : objParams.processData
-        };
+    this.request = function(url, params, data, callBack){
+        let request_type = params.type ? params.type : "GET";
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener('readystatechange', function() {
+            switch (this.readyState) {
+                case 1:
+                    break;
+                case 2:
+                    self.get_response_content_type(this.getResponseHeader('content-type'), function(type) {
+                        switch (type) {
+                            case 'json':
+                                xhr.responseType = 'json';
+                                break;
+                            case 'img':
+                                if (xhr.getResponseHeader('accept-ranges') === 'bytes') {
+                                    xhr.responseType = 'blob';
+                                }
+                        }
+                    });
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    if (self.is_function(callBack)) {
+                        callBack(this.response, this);
+                    }
+                    break;
+            }
+        });
 
-        if (objParams.hasOwnProperty('contentType')) {
-            options['contentType'] = objParams.contentType;
+        // 构造数据
+        let send_data = null;
+        if (request_type === 'GET') {
+            url += url.indexOf('?') === -1 ? '?' : '&';
+            if (typeof data === 'object') {
+                send_data = [];
+                for (let i in data) {
+                    if (data.hasOwnProperty(i)) {
+                        send_data.push(i + '=' + data[i])
+                    }
+                }
+                url += encodeURI(send_data.join('&'))
+            }
+        } else {
+            switch (params.headers['Content-Type']) {
+                case 'application/x-www-form-urlencoded':
+                    send_data = [];
+                    for (let i in data) {
+                        if (data.hasOwnProperty(i)) {
+                            send_data.push(i + '=' + data[i])
+                        }
+                    }
+                    send_data = encodeURI(send_data.join('&'));
+                    break;
+                default:
+                    send_data = data;
+                    break;
+            }
         }
 
-        let objJgbAjaxHandler = $.ajax(options);
-        objJgbAjaxHandler.fail(function(jqXHR, text_status, d){
-            if($.isFunction(callBack)){
-                callBack(jqXHR.responseText, jqXHR);
+        xhr.open(request_type, url, params.async !== 'false');
+        // set headers
+        if (params.headers) {
+            for (let i in params.headers) {
+                if (params.headers.hasOwnProperty(i)) {
+                    xhr.setRequestHeader(i, params.headers[i]);
+                }
             }
+        }
+
+        // 请求失败
+        xhr.addEventListener('error', function() {
+            console.log('request error.');
         });
-        objJgbAjaxHandler.done(function(d, text_status, jqXHR){
-            if($.isFunction(callBack)){
-                callBack(d, jqXHR);
-            }
-        });
+
+        xhr.send(send_data);
     };
 
     /**

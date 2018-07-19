@@ -191,6 +191,30 @@ View.extend('form', function() {
     };
 
     /**
+     * 表单header的一行
+     */
+    this.form_header_line = function() {
+        return `
+            {{ for var i in data }}
+            {{ var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
+            {{ var value_format = data[i]['value'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
+            <tr>
+                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" value="{{ item_key }}" /> </td>
+                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" value="{{ value_format }}" /> </td>
+                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" value="{{ data[i]['description'] }}" /> </td>
+            </tr>
+            {{ end }}
+            <tr>
+                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" /> </td>
+                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" /> </td>
+                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" /> </td>
+            </tr>
+        `;
+    };
+
+    /**
      * 表单一行 x-www-form-urlencoded
      * @returns {string}
      */

@@ -104,7 +104,14 @@ Event.extend('history', function() {
                     $('#response-status').html(status);
                     $('.tabs li').eq(1).trigger('click');
 
-                    App.common.display_response(result, response_content_type);
+                    let response_data = {
+                        'headers': headers ? headers : '',
+                        'response': result,
+                        'response_content_type': response_content_type,
+                        'use_time': time,
+                        'status': status
+                    };
+                    Model.set('response_data', response_data);
                     App.requestType = requestType;
 
                     // 显示参数

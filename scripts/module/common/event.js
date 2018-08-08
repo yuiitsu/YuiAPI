@@ -25,7 +25,7 @@ Event.extend('common', function() {
          * 响应类型数据切换
          */
         response_type_change: function() {
-            $('.response-type li').on('click', function() {
+            $('#output-content').on('click', '.response-type li', function() {
                 let id = $(this).attr('data-id');
                 $('.response-type li').removeClass('focus');
                 $(this).addClass('focus');

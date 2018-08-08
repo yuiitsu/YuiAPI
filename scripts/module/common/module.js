@@ -299,9 +299,8 @@ App.extend('common', function() {
      * 显示响应结果
      * @param result
      * @param response_content_type
-     * @param jqXHR
      */
-    this.display_response = function(result, response_content_type, jqXHR) {
+    this.display_response = function(result, response_content_type) {
         let target = $('#result'),
             target_textarea = $('#result-textarea');
 
@@ -324,13 +323,19 @@ App.extend('common', function() {
                     target_textarea.text('').addClass('hide');
                     break;
                 case "json":
-                    target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
-                        .css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
+                    return self.syntaxHighlight(JSON.stringify(result, undefined, 4));
+                    //target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
+                    //    .css('background-color', '#fff').removeClass('hide');
+                    //target_textarea.text('').addClass('hide');
+                    //break;
                 case "xml":
                     target.text('').addClass('hide');
                     target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
+                    break;
+                case "html":
+                    result = result.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    target.html(result).css('background-color', '#fff').removeClass('hide');
+                    target_textarea.text('').addClass('hide');
                     break;
                 default:
                     result = result ? result : 'Server error. Please check the api server.';
@@ -340,7 +345,7 @@ App.extend('common', function() {
             }
         });
         // 将显示数据类型重置为第一个tab
-        $('.response-type').find('li').eq(0).trigger('click');
+        //$('.response-type').find('li').eq(0).trigger('click');
 
         return result;
     };
@@ -359,6 +364,8 @@ App.extend('common', function() {
                 callback('img');
             } else if (content_type.indexOf('text/xml') !== -1) {
                 callback('xml');
+            } else if (content_type.indexOf('text/html') !== -1) {
+                callback('html');
             }
         } else {
             callback('');

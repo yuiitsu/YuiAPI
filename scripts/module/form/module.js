@@ -24,7 +24,8 @@ App.extend('form', function() {
 
         // 检查响应数据类型
         if (content_type.indexOf('application/json') !== -1) {
-            response_data['response'] = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+            response_data['response'] =
+                App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
         } else if (content_type.indexOf('image') !== -1) {
             let src = null;
             try {
@@ -57,7 +58,9 @@ App.extend('form', function() {
                         let value = element.childNodes[i].childNodes[0].nodeValue;
                         let value_color = !isNaN(Number(value)) ? 'code-number' : 'code-string';
                         let value_txt = '<span class="'+ value_color +'">' + value + '</span>';
-                        list.push(t + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-key">' + nodeName + '</span>&gt;' + value_txt + '&lt;/<span class="code-key">' + nodeName + '</span>&gt;\n');
+                        let item = t + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-key">' + nodeName +
+                            '</span>&gt;' + value_txt + '&lt;/<span class="code-key">' + nodeName + '</span>&gt;\n';
+                        list.push(item);
                     } else {
                         build_xml(++index, list, element.childNodes[i]);
                     }
@@ -74,6 +77,6 @@ App.extend('form', function() {
         }
 
         View.display('form', 'response_layout', response_data, '#output-content');
-    }
+    };
 });
 

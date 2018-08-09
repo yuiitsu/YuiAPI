@@ -362,7 +362,7 @@ App.extend('common', function() {
                 callback('json');
             } else if (content_type.indexOf('image') !== -1) {
                 callback('img');
-            } else if (content_type.indexOf('text/xml') !== -1) {
+            } else if (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1) {
                 callback('xml');
             } else if (content_type.indexOf('text/html') !== -1) {
                 callback('html');

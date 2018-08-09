@@ -123,6 +123,8 @@ App.extend('form', function() {
         if (content_type.indexOf('application/json') !== -1) {
             response =
                 App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+        } else if (content_type && content_type.indexOf('text/html') !== -1) {
+            response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
             response = self.parse_xml(response);
             if (!response) {

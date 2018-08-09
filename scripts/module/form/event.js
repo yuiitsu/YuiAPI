@@ -139,7 +139,7 @@ Event.extend('form', function() {
         host_select: function() {
             $('#host-select').on('click', function() {
                 let host_list = App.history.get_host_list(),
-                    content = ['<ul class="history-tips-list" id="host-select-item">'];
+                    content = ['<ul class="history-tips-list" id="host-select-item" style="height:300px;overflow-y:auto;">'];
                 if (host_list.length > 0) {
                     for (let i in host_list) {
                         content.push('<li style="text-align:left;">'+ host_list[i] +'</li>');

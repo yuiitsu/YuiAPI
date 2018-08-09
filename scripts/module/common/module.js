@@ -60,6 +60,11 @@ App.extend('common', function() {
             }));
             obj = $('#tips-box');
 
+            // 高度
+            if (opt.height) {
+                obj.css({'height': opt.height});
+            }
+
             if (this.timer) {
                 clearTimeout(this.timer);
             }
@@ -90,7 +95,7 @@ App.extend('common', function() {
                     break;
                 case "right":
                     arr_obj.removeClass('tips-array-right tips-array-top tips-array-bottom').addClass('tips-array-left');
-                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width;
+                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width + 8;
                     if (focus_top + target_height > client_height) {
                         focus_top = client_height - target_height;
                         arr_obj.css('top', target_height - 24);

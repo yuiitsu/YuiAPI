@@ -72,8 +72,8 @@ textarea{padding:10px;}
 
 /* button */
 .btn{border:0;cursor:pointer;border-radius: 3px;}
-.btn-primary{background-color:#a9fd00;border-color:#2e6da4;border-bottom:2px solid #87ca00;color:#222;}
-.btn-primary:hover{background-color:#AADF45;}
+.btn-primary{background-color:#000;border-color:#000;border-bottom:2px solid #000;color:#fff;}
+.btn-primary:hover{background-color:#222;}
 .btn-default{background-color:#eee;border-color:#eee;border-bottom:2px solid #87ca00;color:#222;}
 .btn-default:hover{background-color:#ddd;}
 
@@ -127,6 +127,7 @@ textarea{padding:10px;}
 #result-format span.focus:hover{background-color:#fff;}
 .result-box pre{width:100%;padding:10px;
     font-family:Consolas, PingFangSC-Regular, "Microsoft YaHei", sans-serif;overflow-y: auto;-webkit-flex: 1;}
+.result-box pre::-webkit-scrollbar {width: 1px;display: none;}
 .result-box pre.raw{overflow: hidden;word-wrap: break-word;white-space: pre-wrap;}
 #result-copy{width:60px;height:20px;margin-left:10px;vertical-align: top;padding-top:5px;}
 #result-copy button{font-size:12px;height:20px;}
@@ -299,11 +300,11 @@ textarea{padding:10px;}
 .form-value-data-type{margin-right:1px;}
 .form-request-data-type{margin-right:10px;}
 
-.code-string{color:#000066;}
-.code-number{color:#000033;}
+.code-string{color:#993300;}
+.code-number{color:#cc00cc;}
 .code-boolean{color:#000033;}
 .code-null{color:magenta;}
-.code-key{color:#A52A2A;}
+.code-key{color:#003377;font-weight:bold;}
 
 /* cookies */
 .cookies-table{width:100%;font-size: 14px;}
@@ -376,7 +377,7 @@ textarea{padding:10px;}
 .version-update-logs ul li{border-bottom: 1px dotted #ccc;}
 
 /* 设置滚动条的样式 */
-::-webkit-scrollbar {width:0;height:10px;}
+::-webkit-scrollbar {width:5px;height:10px;}
 /* 滚动槽 */
 ::-webkit-scrollbar-track {-webkit-box-shadow:rgba(0,0,0,0.3);border-radius:0;}
 /* 滚动条滑块 */

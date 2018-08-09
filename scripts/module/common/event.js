@@ -105,6 +105,9 @@ Event.extend('common', function() {
                     inputText.setSelectionRange(0, inputText.value.length);
                     document.execCommand('copy', true);
                     console.log('复制成功');
+                    App.common.tips.show($(this), '<span class="color-success">Copied</span>', {
+                        position: 'right'
+                    });
                 }
                 e.stopPropagation();
             });

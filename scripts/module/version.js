@@ -11,8 +11,9 @@ const Version = {
      */
     update_logs: {
         'v0.5.0': [
-            'Added user module.',
-            'Added the functions that resynchronize the history data.'
+            'Adjusted UI',
+            'Fixed some bugs.',
+            'Added format and raw type for response data.'
         ],
         'v0.4.0': [
             'Fixed an issue that response could not display when the the http status was not 200',

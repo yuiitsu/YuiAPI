@@ -155,7 +155,7 @@ Event.extend('history', function() {
                             break;
                     }
 
-                    View.display('form', 'form_header_line', request_headers, '#form-data-headers')
+                    View.display('form', 'form_header_line', request_headers, '#form-data-headers');
 
                     // assert
                     let assert_data = App.history.get_assert_data(),

@@ -86,6 +86,7 @@ Event.extend('form', function() {
                         //
                         $this.attr('disabled', false).html('Send');
                         //
+                        let headers = jqXHR.getAllResponseHeaders();
                         let response_content_type = jqXHR.getResponseHeader('content-type');
                         // 时间
                         let end_timestamp = new Date().getTime();
@@ -94,7 +95,7 @@ Event.extend('form', function() {
                         let response_data = {
                             'headers': jqXHR.getAllResponseHeaders(),
                             'response': res,
-                            'response_content_type': response_content_type,
+                            'response_content_type': response_content_type ? response_content_type : '',
                             'use_time': use_time,
                             'status': jqXHR.status
                         };
@@ -219,6 +220,7 @@ Event.extend('form', function() {
                     // 创建新的一行
                     let _htmlItem = View.get_view('form', 'form_header_line', {});
                     target_obj.append(_htmlItem);
+                    $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
             })
         },
@@ -249,6 +251,7 @@ Event.extend('form', function() {
                     }
 
                     target_obj.append(_htmlItem);
+                    $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
             });
         },
@@ -271,12 +274,45 @@ Event.extend('form', function() {
                     $('#raw-content-type').hide();
                 }
 
-                $('.form-data-type').hide().each(function() {
-                    if (data_type === $(this).attr('data-type')) {
-                        $(this).show();
+                $('.form-data-type').each(function() {
+                    if (!$(this).hasClass('hide')) {
+                        $(this).addClass('hide');
                     }
-                })
+
+                    if (data_type === $(this).attr('data-type')) {
+                        $(this).removeClass('hide');
+                    }
+                });
+
+                //$('.form-data-type').hide().each(function() {
+                //    if (data_type === $(this).attr('data-type')) {
+                //        $(this).show();
+                //    }
+                //})
             });
+        },
+
+        /**
+         * 删除表单行
+         */
+        del_form_line: function() {
+            $('.form-data').on('click', '.form-line-del-box i', function(e) {
+                $(this).parent().parent().remove();
+                e.stopPropagation();
+            })
+        },
+
+        select_all: function() {
+            $('.form-select-all').on('click', function() {
+                let _this = $(this);
+                let target = $(this).parent().parent().parent().parent().find('tbody').each(function() {
+                    if (_this.prop("checked")) {
+                        $(this).find('.form-select').prop('checked', 'checked');
+                    } else {
+                        $(this).find('.form-select').prop('checked', false);
+                    }
+                });
+            })
         }
     };
 });

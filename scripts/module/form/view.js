@@ -46,19 +46,15 @@ View.extend('form', function() {
                     <table class="form-data-table hide" cellspacing="0">
                         <thead>
                             <tr>
-                                <td></td>
+                                <td><input type="checkbox" class="form-select-all" checked="checked" /></td>
                                 <td>Key</td>
                                 <td>Value</td>
                                 <td>description</td>
+                                <td></td>
                             </tr>
                         </thead>
                         <tbody id="form-data-headers" class="form-data-input">
-                            <tr>
-                                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
-                                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" /> </td>
-                                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" /> </td>
-                                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" /> </td>
-                            </tr>
+                            {{ this.get_view('form', 'form_header_line', {}) }}
                         </tbody>
                     </table>
                     <!-- form data body -->
@@ -81,7 +77,7 @@ View.extend('form', function() {
                         <tbody>
                             <tr>
                                 <td>
-                                    <textarea style="padding:10px;width:100%;height:500px;" id="form-data-assert"></textarea>
+                                    <textarea style="padding:10px;width:100%;height:300px;" id="form-data-assert"></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -125,10 +121,11 @@ View.extend('form', function() {
                         </td>
                     </tr>
                     <tr class="form-data-title">
-                        <td class="border-bottom-light"></td>
+                        <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
                         <td class="border-bottom-light">Key</td>
                         <td class="border-bottom-light">Value</td>
                         <td class="border-bottom-light">Description</td>
+                        <td class="border-bottom-light"></td>
                     </tr>
                 </thead>
                 <tbody id="form-data-true" class="form-data-input form-data-type hide" data-type="form-data-true">
@@ -173,6 +170,7 @@ View.extend('form', function() {
                     <input type="{{ value_type }}" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" value="{{ value_format }}" />
                 </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-true" value="{{ description }}" /> </td>
+                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
             </tr>
             {{ end }}
             <tr>
@@ -186,6 +184,7 @@ View.extend('form', function() {
                     <input type="text" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" />
                 </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-true" /> </td>
+                <td class="cursor-pointer form-line-del-box"></td>
             </tr>
         `;
     };
@@ -203,6 +202,7 @@ View.extend('form', function() {
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" value="{{ item_key }}" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" value="{{ value_format }}" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" value="{{ data[i]['description'] }}" /> </td>
+                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
             </tr>
             {{ end }}
             <tr>
@@ -210,6 +210,7 @@ View.extend('form', function() {
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" /> </td>
+                <td class="cursor-pointer form-line-del-box"></td>
             </tr>
         `;
     };
@@ -230,6 +231,7 @@ View.extend('form', function() {
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" value="{{ item_key }}" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" value="{{ value_format }}" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" value="{{ description }}" /> </td>
+                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
             </tr>
             {{ end }}
             <tr>
@@ -237,7 +239,51 @@ View.extend('form', function() {
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" /> </td>
+                <td class="cursor-pointer form-line-del-box"></td>
             </tr>
         `;
-    }
+    };
+
+    /**
+     * 响应结果
+     * @returns {string}
+     */
+    this.response_layout = function() {
+        return `
+            {{ var headers = data['headers'] ? data['headers'] : 'click the send button for a response' }}
+            {{ var status = (data['status'] || data['status'] === 0) ? data['status'] : 'None' }}
+            {{ var status_class = data['status'] ? (data['status'] === 200 ? 'color-success' : 'color-failed') : 'color-failed' }}
+            {{ var use_time = data['use_time'] ? data['use_time'] : 'None' }}
+            {{ var response = data['response'] ? data['response'] : 'click the send button for a response' }}
+            <div class="output-content">
+                <div class="tabs-bottom">
+                    <ul class="response-type">
+                        <li class="focus" data-id="result">body</li>
+                        <li data-id="response-headers">headers</li>
+                    </ul>
+                    
+                </div>
+                <div class="result-box">
+                    <div class="result-top">
+                        <div id="result-format">
+                            <span class="focus">format</span>          
+                            <span>raw</span>          
+                            <div class="display-inline hide" id="result-copy">
+                                <button class="btn btn-primary">copy</button>
+                            </div>
+                        </div>
+                        <div class="display-inline send-time">
+                            <label>status:</label> 
+                            <span id="response-status" class="{{ status_class }} font-bold">{{ status }}</span> 
+                            <label>time:</label> 
+                            <span id="send-time" class="font-bold">{{ use_time }}</span> ms
+                        </div>
+                    </div>
+                    <pre id="result" class="result-box-pre response-body">{{ response }}</pre>
+                    <pre id="response-headers" class="result-box-pre hide">{{ headers }}</pre>
+                    <input type="text" id="result-copy-input" />
+                </div>
+            </div>
+        `;
+    };
 });

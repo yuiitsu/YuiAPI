@@ -5,7 +5,6 @@
     <link href="style/materialdesignicons.min.css" rel="stylesheet" />
     <link href="style/common.css" rel="stylesheet" />
     <script src="scripts/lib/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="scripts/lib/jquery.format.js" type="text/javascript"></script>
     <script src="scripts/model.js" type="text/javascript"></script>
     <script src="scripts/view.js" type="text/javascript"></script>
     <script src="scripts/module/common/view.js" type="text/javascript"></script>
@@ -55,23 +54,11 @@
         <!-- History start -->
         <div class="left-content bg-dark font-color-white" id="history-content"></div>
         <!-- History end -->
-        <div class="left-content hide" id="output-content">
-            <div class="tabs-bottom">
-                <ul class="response-type">
-                    <li class="focus" data-id="result">body</li>
-                    <li data-id="response-headers">headers</li>
-                </ul>
-                <div class="display-inline send-time">
-                    <label>status:</label>
-                    <span id="response-status" class="color-success font-bold">none</span>
-                    <label>time:</label>
-                    <span id="send-time" class="font-bold"></span> ms
-                </div>
-            </div>
-            <textarea id="result-textarea" class="result-box response-body hide"></textarea>
-            <pre id="result" class="result-box response-body">click the send button for a response</pre>
-            <pre id="response-headers" class="result-box hide">click the send button for a response</pre>
-        </div>
+
+        <!-- Response start -->
+        <div class="left-content hide" id="output-content"></div>
+        <!-- Response end -->
+
         <div class="left-content hide" id="test-content">
             <!--
             <div class="test-count-line left-content-top fl">

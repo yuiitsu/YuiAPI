@@ -4,12 +4,17 @@
  */
 const Version = {
 
-    current_version: 'v0.4.0',
+    current_version: 'v0.5.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.5.0': [
+            'Adjusted UI',
+            'Fixed some bugs.',
+            'Added format and raw type for response data.'
+        ],
         'v0.4.0': [
             'Fixed an issue that response could not display when the the http status was not 200',
             'Fixed an issue that request headers not saved',

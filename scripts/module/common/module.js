@@ -60,6 +60,11 @@ App.extend('common', function() {
             }));
             obj = $('#tips-box');
 
+            // 高度
+            if (opt.height) {
+                obj.css({'height': opt.height});
+            }
+
             if (this.timer) {
                 clearTimeout(this.timer);
             }
@@ -90,7 +95,7 @@ App.extend('common', function() {
                     break;
                 case "right":
                     arr_obj.removeClass('tips-array-right tips-array-top tips-array-bottom').addClass('tips-array-left');
-                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width;
+                    focus_left = focus_left + target_width > client_width ? focus_left - focus_width - target_width : focus_left + focus_width + 8;
                     if (focus_top + target_height > client_height) {
                         focus_top = client_height - target_height;
                         arr_obj.css('top', target_height - 24);
@@ -296,56 +301,6 @@ App.extend('common', function() {
     };
 
     /**
-     * 显示响应结果
-     * @param result
-     * @param response_content_type
-     * @param jqXHR
-     */
-    this.display_response = function(result, response_content_type, jqXHR) {
-        let target = $('#result'),
-            target_textarea = $('#result-textarea');
-
-        self.get_response_content_type(response_content_type, function (type) {
-            switch (type) {
-                case "img":
-                    try {
-                        target.html('<img id="response-img" src="" />');
-                        let url = window.URL || window.webkitURL;
-                        let img = document.getElementById('response-img');
-                        img.src = url.createObjectURL(result);
-                    } catch (e) {
-                        if (typeof result === 'string') {
-                            target.html('<img src="'+ result +'" />');
-                        } else {
-                            target.html('Image Blob data cannot be displayed. Please send the request.');
-                        }
-                    }
-                    target.css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
-                case "json":
-                    target.html(self.syntaxHighlight(JSON.stringify(result, undefined, 4)))
-                        .css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
-                case "xml":
-                    target.text('').addClass('hide');
-                    target_textarea.text(result).format({method: 'xml'}).removeClass('hide');
-                    break;
-                default:
-                    result = result ? result : 'Server error. Please check the api server.';
-                    target.html(result).css('background-color', '#fff').removeClass('hide');
-                    target_textarea.text('').addClass('hide');
-                    break;
-            }
-        });
-        // 将显示数据类型重置为第一个tab
-        $('.response-type').find('li').eq(0).trigger('click');
-
-        return result;
-    };
-
-    /**
      * 检查response的content_type类型
      * @param content_type
      * @param callback
@@ -357,22 +312,14 @@ App.extend('common', function() {
                 callback('json');
             } else if (content_type.indexOf('image') !== -1) {
                 callback('img');
-            } else if (content_type.indexOf('text/xml') !== -1) {
+            } else if (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1) {
                 callback('xml');
+            } else if (content_type.indexOf('text/html') !== -1) {
+                callback('html');
             }
         } else {
             callback('');
         }
-    };
-
-    /**
-     * 高亮显示xml
-     * @param xml
-     * @returns {string | *}
-     */
-    this.syntaxHighlight_xml = function(xml) {
-        xml = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return xml;
     };
 
     /**

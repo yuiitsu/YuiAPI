@@ -83,60 +83,50 @@ Event.extend('form', function() {
                     let start_timestamp=new Date().getTime();
 
                     App.common.request(url, request_params, formData['data'], function(res, jqXHR) {
-
-                        // headers
-                        // let headers =jqXHR.getAllResponseHeaders();
-                        //$('#response-headers').html(headers);
-
-                        // response
-                        //let response_content_type = jqXHR.getResponseHeader('content-type');
-                        // check response content-type
-                        //res = App.common.display_response(res, response_content_type, jqXHR);
+                        //
                         $this.attr('disabled', false).html('Send');
-
+                        //
+                        let response_content_type = jqXHR.getResponseHeader('content-type');
                         // 时间
                         let end_timestamp = new Date().getTime();
                         let use_time = end_timestamp - start_timestamp;
-                        //$('#send-time').html(use_time);
-                        // 状态
-                        //$('#response-status').text(jqXHR.status);
 
                         let response_data = {
                             'headers': jqXHR.getAllResponseHeaders(),
                             'response': res,
-                            'response_content_type': jqXHR.getResponseHeader('content-type'),
+                            'response_content_type': response_content_type,
                             'use_time': use_time,
                             'status': jqXHR.status
                         };
                         Model.set('response_data', response_data);
 
                         // assert
-                        // let assert_type = $('input[name=form-data-assert-type]:checked').val();
-                        // let assert_content = $.trim($('#form-data-assert').val());
-                        // let assertion_data = '';
-                        // if (assert_type) {
-                        //     assertion_data = {
-                        //         type: assert_type,
-                        //         content: assert_content ? assert_content : ''
-                        //     };
-                        // }
-                        // App.form.selected_group_id = group_id;
-                        // // 写入History
-                        // App.history.add({
-                        //     url: url,
-                        //     type: App.requestType,
-                        //     name: apiName,
-                        //     headers: headers,
-                        //     data: formData['history_data'],
-                        //     data_type: form_data_type,
-                        //     request_headers: header_data['history_data'],
-                        //     response_content_type: response_content_type,
-                        //     result: res,
-                        //     time: use_time,
-                        //     status: jqXHR.status,
-                        //     assertion_data: assertion_data,
-                        //     group_id: group_id
-                        // });
+                        let assert_type = $('input[name=form-data-assert-type]:checked').val();
+                        let assert_content = $.trim($('#form-data-assert').val());
+                        let assertion_data = '';
+                        if (assert_type) {
+                            assertion_data = {
+                                type: assert_type,
+                                content: assert_content ? assert_content : ''
+                            };
+                        }
+                        App.form.selected_group_id = group_id;
+                        // 写入History
+                        App.history.add({
+                            url: url,
+                            type: App.requestType,
+                            name: apiName,
+                            headers: headers,
+                            data: formData['history_data'],
+                            data_type: form_data_type,
+                            request_headers: header_data['history_data'],
+                            response_content_type: response_content_type,
+                            result: res,
+                            time: use_time,
+                            status: jqXHR.status,
+                            assertion_data: assertion_data,
+                            group_id: group_id
+                        });
                     });
                 }
             });

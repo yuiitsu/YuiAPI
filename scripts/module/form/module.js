@@ -52,7 +52,12 @@ App.extend('form', function() {
             if (response_data['response']) {
                 response = self.parse_xml(response_data['response']);
                 if (!response) {
-                    response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    try {
+                        response = JSON.parse(response_data['response']);
+                        response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+                    } catch (e) {
+                        response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    }
                 }
             }
 
@@ -68,10 +73,13 @@ App.extend('form', function() {
      * @returns {*}
      */
     this.parse_xml = function(content) {
-        let xml_doc = null;
         try {
             xml_doc = (new DOMParser()).parseFromString(content.replace(/[\n\r]/g, ""), 'text/xml');
         } catch (e) {
+            return false;
+        }
+
+        if (xml_doc.documentElement.nodeName.toUpperCase() === 'HTML') {
             return false;
         }
 

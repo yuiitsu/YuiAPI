@@ -4,12 +4,13 @@
  */
 const Version = {
 
-    current_version: 'v0.5.0',
+    current_version: 'v0.6.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.6.0': [],
         'v0.5.0': [
             'Adjusted UI',
             'Fixed some bugs.',

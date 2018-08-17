@@ -127,8 +127,8 @@ textarea{padding:10px;}
 #result-format span.focus:hover{background-color:#fff;}
 .result-box pre{width:100%;padding:10px;
     font-family:Consolas, PingFangSC-Regular, "Microsoft YaHei", sans-serif;overflow-y: auto;-webkit-flex: 1;}
-.result-box pre::-webkit-scrollbar {width: 1px;display: none;}
-.result-box pre.raw{overflow: hidden;word-wrap: break-word;white-space: pre-wrap;}
+.result-box pre::-webkit-scrollbar {width: 1px;}
+.result-box pre.raw{overflow:auto;word-wrap: break-word;white-space: pre-wrap;}
 #result-copy{width:60px;height:20px;margin-left:10px;vertical-align: top;padding-top:5px;}
 #result-copy button{font-size:12px;height:20px;}
 #result-copy-input{height:0;border:0;}

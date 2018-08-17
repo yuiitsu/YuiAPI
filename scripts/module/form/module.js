@@ -79,7 +79,7 @@ App.extend('form', function() {
             return false;
         }
 
-        if (xml_doc.documentElement.nodeName.toUpperCase() === 'HTML') {
+        if (xml_doc.documentElement.nodeName.toUpperCase() !== 'XML') {
             return false;
         }
 

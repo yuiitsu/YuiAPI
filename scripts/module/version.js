@@ -10,7 +10,7 @@ const Version = {
      * 更新记录
      */
     update_logs: {
-        'v0.5.1': [],
+        'v0.5.1': ['Fixed some bugs'],
         'v0.5.0': [
             'Adjusted UI',
             'Fixed some bugs.',

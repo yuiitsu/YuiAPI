@@ -134,9 +134,17 @@ App.extend('form', function() {
         } else if (content_type && content_type.indexOf('text/html') !== -1) {
             response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
-            response = self.parse_xml(response);
-            if (!response) {
-                response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            response = 'Failed to load response data';
+            if (response_data['response']) {
+                response = self.parse_xml(response_data['response']);
+                if (!response) {
+                    try {
+                        response = JSON.parse(response_data['response']);
+                        response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+                    } catch (e) {
+                        response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    }
+                }
             }
         }
 

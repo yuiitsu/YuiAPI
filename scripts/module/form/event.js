@@ -195,12 +195,21 @@ Event.extend('form', function() {
                     return false;
                 }
 
-                let data = {},
-                    group_list = content.split('&');
-
-                for (let i in group_list) {
-                    let items = group_list[i].split('=');
-                    data[items[0]] = items[1];
+                let data = {};
+                if (content.indexOf('\n') !== -1) {
+                    let group_list = content.split('\n');
+                    for (let i in group_list) {
+                        let items = group_list[i].split(':');
+                        let key = $.trim(items.shift());
+                        let val = items.join("");
+                        data[key] = $.trim(val);
+                    }
+                } else {
+                    let group_list = content.split('&');
+                    for (let i in group_list) {
+                        let items = group_list[i].split('=');
+                        data[items[0]] = items[1];
+                    }
                 }
 
                 View.display('form', 'urlencoded_line', data, '#form-data');

@@ -8,7 +8,7 @@ View.extend('form', function() {
         return `
             <div class="tab-line">
                 <div class="api-name-line display-inline">
-                    <input type="text" class="input-text" placeholder="Enter api name" id="api-name" />
+                    <input type="text" class="input-text" placeholder="Enter API Name" id="api-name" />
                     <div class="form-group-selector group-selector" id="group-selector">
                     {{ App.group.get_select_view() }}
                     </div>
@@ -26,7 +26,7 @@ View.extend('form', function() {
                         </select>
                     </div>
                     <div class="url-box vertical-middle">
-                        <input type="text" id="url" class="input-text" placeholder="Enter api URL" />
+                        <input type="text" id="url" class="input-text" placeholder="Enter API URL" />
                         <i class="mdi mdi-format-list-bulleted font-color-dark" id="host-select" title="host history"></i>
                     </div>
                     <div class="display-inline request-button vertical-middle">
@@ -37,7 +37,9 @@ View.extend('form', function() {
                     <ul>
                         <li>headers</li>
                         <li class="focus">body</li>
+                        <!--
                         <li>assertion</li>
+                        -->
                         <li>format</li>
                     </ul>
                 </div>
@@ -60,17 +62,14 @@ View.extend('form', function() {
                     <!-- form data body -->
                     <form id="form-data-form">{{ this.get_view('form', 'form', {}) }}</form>
                     <!-- assert -->
+                    <!--
                     <table class="form-data-table hide" cellspacing="0">
                         <thead>
                             <tr>
                                 <td>
-                                    <!--
                                     <label><input type="radio" name="form-data-assert-type" value="String" /> String</label>
-                                    -->
                                     <label><input type="radio" name="form-data-assert-type" checked="checked" value="Json" /> Json</label>
-                                    <!--
                                     <label><input type="radio" name="form-data-assert-type" value="Xml" /> Xml</label>
-                                    -->
                                 </td>
                             </tr>
                         </thead>
@@ -82,12 +81,25 @@ View.extend('form', function() {
                             </tr>
                         </tbody>
                     </table>
+                    -->
                     <!-- format -->
                     <table class="form-data-table hide" cellspacing="0">
                         <tbody>
                             <tr>
                                 <td>
-                                    <textarea style="padding:10px;width:100%;height:300px;" id="form-data-format-content" placeholder="eg. key=some key&username=Yuiitsu"></textarea>
+                                    <textarea style="padding:10px;width:100%;height:200px;" id="form-data-format-content" placeholder=""></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>key=some key&username=Yuiitsu</li>
+                                        <li>or</li>
+                                        <li>
+                                            <p>key1: val1</p>
+                                            <p>key2: val2</p>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>

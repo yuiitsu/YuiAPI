@@ -45,8 +45,8 @@ App.extend('form', function() {
             }
         } else if (content_type && (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1)) {
             response_data['response'] = self.parse_xml(response_data['response']);
-        } else if (content_type && content_type.indexOf('text/html') !== -1) {
-            response_data['response'] = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        //} else if (content_type && content_type.indexOf('text/html') !== -1) {
+        //    response_data['response'] = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
             let response = 'Failed to load response data';
             if (response_data['response']) {
@@ -131,8 +131,8 @@ App.extend('form', function() {
         if (content_type.indexOf('application/json') !== -1) {
             response =
                 App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
-        } else if (content_type && content_type.indexOf('text/html') !== -1) {
-            response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        //} else if (content_type && content_type.indexOf('text/html') !== -1) {
+        //    response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
             response = 'Failed to load response data';
             if (response_data['response']) {

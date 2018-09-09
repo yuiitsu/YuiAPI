@@ -4,12 +4,17 @@
  */
 const Version = {
 
-    current_version: 'v0.5.1',
+    current_version: 'v0.6.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.6.0':[
+            'Added a second format.',
+            'Delete the record while deleting the host.',
+            'Fixed some bugs.'
+        ],
         'v0.5.1': ['Fixed some bugs'],
         'v0.5.0': [
             'Adjusted UI',

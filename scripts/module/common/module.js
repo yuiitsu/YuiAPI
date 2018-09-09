@@ -186,6 +186,11 @@ App.extend('common', function() {
             let module_id = $(this).attr('data-module-id');
             $('.module-box-' + module_id).remove();
         });
+
+        $('.module-mask').off('click').on('click', function() {
+            let module_id = $(this).attr('data-module-id');
+            $('.module-box-' + module_id).remove();
+        });
     };
 
     /**

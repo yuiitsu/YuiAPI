@@ -362,7 +362,8 @@ App.extend('common', function() {
     this.getHost = function(url) {
         let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
         let result = parse_Url.exec(url);
-        return result[1] + ':' + result[2] + result[3] + (result[4] ? ':' + result[4] : '');
+        let last = result[4] ? ':' + result[4] : '';
+        return result[1] + ':' + result[2] + result[3] + last;
     };
 
     /**

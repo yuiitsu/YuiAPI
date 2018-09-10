@@ -10,8 +10,13 @@ App.extend('form', function() {
      */
     this.init = function() {
         // 监听数据
+        // 请求表单类型，变化后，切换对应表单
+        Model.set('request_form_type', '').watch('request_form_type', this.change_form);
+        // 请求参数
+        Model.set('request_data', {}).watch('request_data', this.show_form);
         // 监听请求结果数据
         Model.set('response_data', '').watch('response_data', this.show_response);
+        // 渲染页面
         View.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '#form-box');
         View.display('form', 'response_layout', {}, '#output-content');
     };
@@ -65,6 +70,15 @@ App.extend('form', function() {
         }
 
         View.display('form', 'response_layout', response_data, '#output-content');
+    };
+
+    /**
+     * 渲染请求参数
+     */
+    this.show_form = function() {
+        let request_data = Model.get('request_data');
+        console.log(request_data);
+        View.display('form', 'layout', request_data, '#form-box');
     };
 
     /**

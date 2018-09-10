@@ -8,7 +8,8 @@ View.extend('form', function() {
         return `
             <div class="tab-line">
                 <div class="api-name-line display-inline">
-                    <input type="text" class="input-text" placeholder="Enter API Name" id="api-name" />
+                    {{ var api_name = data['name'] ? data['name'] : '' }}
+                    <input type="text" class="input-text" placeholder="Enter API Name" id="api-name" value="{{ api_name }}" />
                     <div class="form-group-selector group-selector" id="group-selector">
                     {{ App.group.get_select_view() }}
                     </div>
@@ -17,34 +18,68 @@ View.extend('form', function() {
             <div class="form">
                 <div class="form-line">
                     <div class="request-type-box display-inline vertical-middle">
+                        {{ var type_list = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }}
+                        {{ var type = data['type'] ? data['type'] : '' }}
                         <select id="request-type">
-                            <option value="GET">GET</option>
-                            <option value="POST">POST</option>
-                            <option value="PUT">PUT</option>
-                            <option value="DELETE">DELETE</option>
-                            <option value="OPTIONS">OPTIONS</option>
+                            {{ for var i in type_list }}
+                            {{ var selected = type_list[i] === type ? 'selected="selected"' : '' }}
+                            <option value="{{ type_list[i] }}" {{ selected }}>{{ type_list[i] }}</option>
+                            {{ end }}
                         </select>
                     </div>
                     <div class="url-box vertical-middle">
-                        <input type="text" id="url" class="input-text" placeholder="Enter API URL" />
+                        {{ var api_url = data['url'] ? data['url'] : '' }}
+                        <input type="text" id="url" class="input-text" placeholder="Enter API URL" value="{{ api_url }}" />
                         <i class="mdi mdi-format-list-bulleted font-color-dark" id="host-select" title="host history"></i>
                     </div>
                     <div class="display-inline request-button vertical-middle">
                         <button id="send" class="btn btn-primary">Send</button>
                     </div>
                 </div>
+                <!-- form data headers -->
+                {{ var request_headers = data['request_headers'] }}
+                {{ if request_headers }}
+                    {{ var headers_hide = '' }}
+                    {{ var headers_switch = 'rotate-right' }}
+                {{ else }}
+                    {{ var headers_hide = 'hide' }}
+                    {{ var headers_switch = '' }}
+                {{ end }}
+                <div class="form-data form-headers bg-light">
+                    <h2 id="js-form-headers-title">
+                        Headers
+                        <i class="mdi mdi-arrow-down fr {{ headers_switch }}" />
+                    </h2>
+                    <div class="form-headers-body">
+                        <table class="form-data-table {{ headers_hide }}" cellspacing="0" id="js-form-headers-body">
+                            <thead>
+                                <tr>
+                                    <td><input type="checkbox" class="form-select-all" checked="checked" /></td>
+                                    <td>Key</td>
+                                    <td>Value</td>
+                                    <td>description</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody id="form-data-headers" class="form-data-input">
+                                {{ this.get_view('form', 'form_header_line', request_headers) }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--
                 <div class="form-params-type">
                     <ul>
                         <li>headers</li>
                         <li class="focus">body</li>
-                        <!--
                         <li>assertion</li>
-                        -->
                         <li>format</li>
                     </ul>
                 </div>
-                <div class="form-data bg-light">
-                    <!-- form data headers -->
+                -->
+                <div class="form-data form-body bg-light">
+                    <h2>Body</h2>
+                    <!--
                     <table class="form-data-table hide" cellspacing="0">
                         <thead>
                             <tr>
@@ -59,8 +94,9 @@ View.extend('form', function() {
                             {{ this.get_view('form', 'form_header_line', {}) }}
                         </tbody>
                     </table>
+                    -->
                     <!-- form data body -->
-                    <form id="form-data-form">{{ this.get_view('form', 'form', {}) }}</form>
+                    <form id="form-data-form">{{ this.get_view('form', 'form', {'data': data['data'], 'data_type': data['data_type']}, '') }}</form>
                     <!-- assert -->
                     <!--
                     <table class="form-data-table hide" cellspacing="0">
@@ -117,21 +153,39 @@ View.extend('form', function() {
      */
     this.form = function() {
         return `
+            {{ var data_type = data['data_type'] ? data['data_type'] : 'form-data' }}
+            {{ var form_data_list = data['data_type'] === 'form-data-true' ? data['data'] : {} }}
+            {{ var form_data_hide = data['data_type'] === 'form-data-true' ? '' : 'hide' }}
+            {{ var raw_data = data['data_type'] === 'raw' ? data['data'] : '' }}
+            {{ var raw_hide = data['data_type'] === 'raw' ? '' : 'hide' }}
+            {{ var urlencoded_list = data['data_type'] === 'form-data' ? data['data'] : {} }}
+            {{ var urlencoded_hide = data['data_type'] === 'form-data' ? '' : (form_data_hide === 'hide' && raw_hide === 'hide' ? '' : 'hide') }}
             <table class="form-data-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
-                        <td colspan="4" class="border-bottom-light">
-                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="form-data-true" /> form-data</label>
-                            <label class="form-request-data-type"><input type="radio" name="form-data-type" checked="checked" value="form-data" /> x-www-form-urlencoded</label>
-                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="raw" /> raw</label>
-                            <select id="raw-content-type" class="hide">
-                                <option value="text/plain">Text(text/plain)</option>
-                                <option value="application/json">JSON(application/json)</option>
-                                <option value="application/xml">XML(application/xml)</option>
-                                <option value="text/html">HTML(text/html)</option>
+                        <td colspan="5" class="border-bottom-light">
+                            {{ var data_type_list = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}
+                            {{ for var i in data_type_list }}
+                            {{ var item = data_type_list[i] }}
+                            {{ var checked = item['key'] === data_type ? 'checked="checked"' : '' }}
+                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="{{ item['key'] }}" {{ checked }} /> {{ item['value'] }}</label>
+                            {{ end }}
+                            {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
+                            <select id="raw-content-type" class="{{ raw_hide }}">
+                                {{ var content_type = data['data'] ? data['data']['content_type'] : '' }}
+                                {{ for var i in raw_content_type_list }}
+                                {{ var item = raw_content_type_list[i] }}
+                                {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}
+                                <option value="{{ item['k'] }}" {{ selected }}>{{ item['v'] }}</option>
+                                {{ end }}
                             </select>
+                            <span class="fr form-edit-parameter" id="js-form-edit-parameter">
+                                <i class="mdi mdi-square-edit-outline" />
+                                Edit Parameter
+                            </span>
                         </td>
                     </tr>
+                    {{ if !raw_data }}
                     <tr class="form-data-title">
                         <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
                         <td class="border-bottom-light">Key</td>
@@ -139,17 +193,18 @@ View.extend('form', function() {
                         <td class="border-bottom-light">Description</td>
                         <td class="border-bottom-light"></td>
                     </tr>
+                    {{ end }}
                 </thead>
-                <tbody id="form-data-true" class="form-data-input form-data-type hide" data-type="form-data-true">
-                    {{ this.get_view('form', 'form_data_line', {}) }}
+                <tbody id="form-data-true" class="form-data-input form-data-type {{ form_data_hide }}" data-type="form-data-true">
+                    {{ this.get_view('form', 'form_data_line', form_data_list) }}
                 </tbody>
-                <tbody id="form-data" class="form-data-input form-data-type" data-type="form-data">
-                    {{ this.get_view('form', 'urlencoded_line', []) }}
+                <tbody id="form-data" class="form-data-input form-data-type {{ urlencoded_hide }}" data-type="form-data">
+                    {{ this.get_view('form', 'urlencoded_line', urlencoded_list) }}
                 </tbody>
-                <tbody id="form-data-raw" class="form-data-input form-data-type hide" data-type="raw">
+                <tbody id="form-data-raw" class="form-data-input form-data-type {{ raw_hide }}" data-type="raw">
                     <tr>
                         <td colspan="3">
-                            <textarea style="padding:10px;width:100%;height:300px;"></textarea>
+                            <textarea style="padding:10px;width:100%;height:300px;">{{ raw_data['data'] }}</textarea>
                         </td>
                     </tr>
                 </tbody>

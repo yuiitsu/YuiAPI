@@ -34,7 +34,7 @@ Event.extend('form', function() {
          */
         send: function() {
             // 提交
-            $('#send').on('click', function() {
+            $('#form-box').on('click', '#send', function(e) {
                 let $this = $(this),
                     url_obj = $('#url'),
                     url = $.trim(url_obj.val()),
@@ -54,7 +54,6 @@ Event.extend('form', function() {
                             type: App.requestType,
                             headers: header_data['data']
                         };
-
                     switch (form_data_type) {
                         case "form-data-true":
                             formData = App.common.getFormParams().form_data('form-data');
@@ -130,6 +129,7 @@ Event.extend('form', function() {
                         });
                     });
                 }
+                e.stopPropagation();
             });
         },
 
@@ -176,7 +176,7 @@ Event.extend('form', function() {
          * 选择参数TAB
          */
         change_params_type: function() {
-            $('.form-params-type li').on('click', function() {
+            $('#form-box').on('click', '.form-params-type li', function() {
                 $('.form-params-type li').removeClass('focus');
                 $(this).addClass('focus');
                 let index = $(this).index();
@@ -218,6 +218,23 @@ Event.extend('form', function() {
         },
 
         /**
+         * headers switch
+         */
+        form_header_switch: function() {
+            $('#form-box').on('click', '#js-form-headers-title', function(e) {
+                let target = $('#js-form-headers-body');
+                if (target.css('display') !== 'table') {
+                    target.show();
+                    $(this).find('i').addClass('rotate-right');
+                } else {
+                    target.hide();
+                    $(this).find('i').removeClass('rotate-right');
+                }
+                e.stopPropagation();
+            })
+        },
+
+        /**
          * headers自动增加行
          */
         form_header_input: function() {
@@ -238,8 +255,7 @@ Event.extend('form', function() {
          * 表单输入自动增加行，body部分
          */
         form_data_body_input: function() {
-            let form_data_obj = $('.form-data');
-            form_data_obj.on('input', '.form-data-item', function() {
+            $('#form-box').on('input', '.form-data-item', function() {
                 let data_type = $(this).attr('data-type');
                 let target_obj = $('#' + data_type);
                 let parent = $(this).parent().parent();
@@ -269,7 +285,7 @@ Event.extend('form', function() {
          * form data type
          */
         form_data_type_change: function() {
-            $('input[name=form-data-type]').on('click', function() {
+            $('#form-box').on('click', 'input[name=form-data-type]', function(e) {
                 let data_type = $(this).val();
                 if (data_type === 'form-data' || data_type === 'form-data-true') {
                     $('.form-data-title').show();
@@ -298,6 +314,7 @@ Event.extend('form', function() {
                 //        $(this).show();
                 //    }
                 //})
+                e.stopPropagation();
             });
         },
 
@@ -322,6 +339,21 @@ Event.extend('form', function() {
                     }
                 });
             })
+        },
+
+        edit_parameter: function() {
+            $('#js-form-edit-parameter').on('click', function() {
+                App.common.module('Edit Parameter', View.get_view('form', 'edit_parameter', ''), '');
+            });
+        },
+
+        /**
+         * 表单参数/值改变，重新获取表单数据并set model
+         */
+        parameter_change: function() {
+            $('#form-data-headers').on('change', '.form-data-item', function() {
+
+            });
         }
     };
 });

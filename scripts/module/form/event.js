@@ -322,7 +322,7 @@ Event.extend('form', function() {
          * 删除表单行
          */
         del_form_line: function() {
-            $('.form-data').on('click', '.form-line-del-box i', function(e) {
+            $('#form-box').on('click', '.form-line-del-box i', function(e) {
                 $(this).parent().parent().remove();
                 e.stopPropagation();
             })

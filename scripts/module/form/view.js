@@ -38,7 +38,7 @@ View.extend('form', function() {
                 </div>
                 <!-- form data headers -->
                 {{ var request_headers = data['request_headers'] }}
-                {{ if request_headers }}
+                {{ if request_headers && Object.keys(request_headers).length > 0 }}
                     {{ var headers_hide = '' }}
                     {{ var headers_switch = 'rotate-right' }}
                 {{ else }}

@@ -238,7 +238,7 @@ Event.extend('form', function() {
          * headers自动增加行
          */
         form_header_input: function() {
-            $('#form-data-headers').on('input', '.form-data-item', function() {
+            $('#form-box').on('input', '.form-data-item', function(e) {
                 let data_type = $(this).attr('data-type');
                 let target_obj = $('#' + data_type);
                 let parent = $(this).parent().parent();
@@ -248,6 +248,7 @@ Event.extend('form', function() {
                     target_obj.append(_htmlItem);
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
+                e.stopPropagation();
             })
         },
 

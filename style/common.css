@@ -142,7 +142,7 @@ textarea{padding:10px;}
 .history-search-label{width:60px;}
 .history-search-box input{-webkit-flex: 1;}
 .request-type{cursor: move;}
-.request-type span{display:inline-block;padding:10px;background-color: #000;color:#fff;font-size:12px;
+.request-type span{display:inline-block;padding:7px;background-color: #000;color:#fff;font-size:12px;
     border-radius: 3px;}
 
 /**/
@@ -224,7 +224,7 @@ textarea{padding:10px;}
 .history-table tbody tr.focus{background-color:#f5f5f5;}
 .history-table tbody tr:hover td.request-type span{transition:All 0.4s ease-in-out;}
 .history-table tbody tr:hover td.request-type span{transform:rotate(360deg);}
-.history-table tbody tr td{padding:8px;border-bottom: 1px solid #f1f1f1;}
+.history-table tbody tr td{padding:5px;border-bottom: 1px solid #f1f1f1;}
 .history-table tbody tr td.request-type-GET{}
 .history-table tbody tr td.request-type-GET span{background-color:#009900;}
 .history-table tbody tr td.request-type-PUT span{background-color:#CC6600;}

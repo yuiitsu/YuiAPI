@@ -137,7 +137,7 @@ Event.extend('form', function() {
          * 选择host
          */
         host_select: function() {
-            $('#host-select').on('click', function() {
+            $('#form-box').on('click', '#host-select', function() {
                 let host_list = App.history.get_host_list(),
                     content = ['<ul class="history-tips-list" id="host-select-item" style="height:300px;overflow-y:auto;">'];
                 if (host_list.length > 0) {
@@ -330,7 +330,7 @@ Event.extend('form', function() {
         },
 
         select_all: function() {
-            $('.form-select-all').on('click', function() {
+            $('#form-box').on('click', '.form-select-all', function(e) {
                 let _this = $(this);
                 let target = $(this).parent().parent().parent().parent().find('tbody').each(function() {
                     if (_this.prop("checked")) {
@@ -339,12 +339,14 @@ Event.extend('form', function() {
                         $(this).find('.form-select').prop('checked', false);
                     }
                 });
+                e.stopPropagation();
             })
         },
 
         edit_parameter: function() {
-            $('#js-form-edit-parameter').on('click', function() {
+            $('#form-box').on('click', '#js-form-edit-parameter', function(e) {
                 App.common.module('Edit Parameter', View.get_view('form', 'edit_parameter', ''), '');
+                e.stopPropagation();
             });
         },
 

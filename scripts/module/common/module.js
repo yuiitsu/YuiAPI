@@ -178,9 +178,9 @@ App.extend('common', function() {
         // 检查高度
         let target = $('.module-main');
         let target_height = target.outerHeight();
-        let conent_height = target_height + 90 > 600 ? '600px' : target_height + 100;
-        $('.module-content').css('height', conent_height);
-        target.css('height', target_height);
+        let content_height = target_height + 90 > 600 ? '600px' : target_height + 100;
+        //$('.module-content').css('height', content_height);
+        //target.css('height', target_height);
 
         $('.module-close').off('click').on('click', function() {
             let module_id = $(this).attr('data-module-id');

@@ -222,10 +222,10 @@ Event.extend('form', function() {
                 let target = $('#js-form-headers-body');
                 if (target.css('display') !== 'table') {
                     target.show();
-                    $(this).find('i').addClass('rotate-right');
+                    //$(this).find('i').addClass('mdi-arrow-collapse-vertical');
                 } else {
                     target.hide();
-                    $(this).find('i').removeClass('rotate-right');
+                    //$(this).find('i').removeClass('mdi-arrow-collapse-vertical');
                 }
                 e.stopPropagation();
             })

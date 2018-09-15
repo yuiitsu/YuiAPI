@@ -48,7 +48,7 @@ View.extend('form', function() {
                 <div class="form-data form-headers bg-light">
                     <h2 id="js-form-headers-title">
                         Headers
-                        <i class="mdi mdi-arrow-down fr {{ headers_switch }}" />
+                        <i class="mdi mdi-arrow-split-horizontal fr {{ headers_switch }}" />
                     </h2>
                     <div class="form-headers-body">
                         <table class="form-data-table {{ headers_hide }}" cellspacing="0" id="js-form-headers-body">

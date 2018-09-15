@@ -383,6 +383,9 @@ App.extend('common', function() {
      * @returns {string}
      */
     this.getHost = function(url) {
+        if (!url) {
+            return false;
+        }
         let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
         let result = parse_Url.exec(url);
         let last = result[4] ? ':' + result[4] : '';

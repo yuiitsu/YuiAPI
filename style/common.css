@@ -316,7 +316,7 @@ button{width:100%;height:100%;}
 .form-data h2{height:24px;line-height:24px;font-size:14px;font-weight:100;}
 .form-headers{margin-top:10px;}
 .form-headers h2{cursor: pointer;}
-.form-headers h2:hover i{transform: rotate(-90deg);transition:All 0.4s ease-in-out;}
+.form-headers h2 i{color:#212345;}
 .form-headers-body{max-height:144px;overflow-y:auto;}
 .form-body{width:100%;-webkit-flex: 1;margin-top:10px;}
 .form-data-table{border-top:1px solid #eaeaea;padding-top:5px;margin-top:5px;}

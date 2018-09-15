@@ -2,7 +2,7 @@
 YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端，您可以随意的使用它。
 
 ## 当前版本
-v0.5.1 [Update logs](https://www.yuiapi.com)
+v0.7.0 [Update logs](https://www.yuiapi.com)
 
 ## 安装
 ### 安全的线上版本

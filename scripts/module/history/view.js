@@ -116,7 +116,8 @@ View.extend('history', function() {
                         <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
                             <span>{{ request_type_icon }}</span>
                         </td>
-                        <td class="w-50">{{ App.common.get_response_content_type_text(data[i]['response_content_type']) }}</td>
+                        {{ var response_content_type = App.common.get_response_content_type_text(data[i]['response_content_type']) }}
+                        <td class="w-50"><span class="history-response-type history-response-type-{{ response_content_type }}">{{ response_content_type }}</span></td>
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         <td class="border-bottom-light">{{ data[i]['url'] }}</td>
                     </tr>
@@ -177,7 +178,7 @@ View.extend('history', function() {
      */
     this.drag_mask_line = function() {
         return `
-            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="4">Insert here</td></tr>
+            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="5">Insert here</td></tr>
         `;
     };
 

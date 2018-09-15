@@ -38,6 +38,7 @@ View.extend('history', function() {
             </div>
         `;
     };
+
     /**
      * 侧边栏
      * @returns {string}
@@ -100,6 +101,7 @@ View.extend('history', function() {
                             <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                         </th>
                         <th class="w-50 border-bottom-light">Type</th>
+                        <th class="w-50 border-bottom-light align-left">Status</th>
                         <th class="align-left history-list-name border-bottom-light">Name</th>
                         <th class="align-left border-bottom-light">URL</th>
                     </tr>
@@ -113,6 +115,14 @@ View.extend('history', function() {
                         </td>
                         <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
                             <span>{{ request_type_icon }}</span>
+                        </td>
+                        {{ var response_content_type = App.common.get_response_content_type_text(data[i]['response_content_type']) }}
+                        {{ var status_type = data[i]['status'] === 200 ? 'success' : 'failed' }}
+                        <td class="w-50 font-size-9">
+                            <!--
+                            <span class="history-response-type history-response-type-{{ response_content_type }}">{{ response_content_type }}</span>
+                            -->
+                            <p class="color-{{ status_type }} font-bold">{{ data[i]['status'] }}</p>
                         </td>
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         <td class="border-bottom-light">{{ data[i]['url'] }}</td>
@@ -174,7 +184,21 @@ View.extend('history', function() {
      */
     this.drag_mask_line = function() {
         return `
-            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="4">Insert here</td></tr>
+            <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="5">Insert here</td></tr>
         `;
     };
+
+    /**
+     * 下拉选择HOST
+     * @returns {string}
+     */
+    this.select_host_list = function() {
+        return `
+            <ul class="history-tips-list" id="host-select-item">
+                {{ for var i in data }}
+                <li style="text-align:left;">{{ data[i] }}</li>
+                {{ end }}
+            </ul>
+        `;
+    }
 });

@@ -83,23 +83,15 @@ Event.extend('history', function() {
                 // 从缓存中获取数据
                 let historyData = App.history.getData();
                 if (historyData[key]) {
-                    let url = historyData[key]['url'],
-                        requestType = historyData[key]['type'],
-                        form_data_type = historyData[key]['data_type'],
+                    let requestType = historyData[key]['type'],
+                        form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
                         headers = historyData[key]['headers'],
-                        data = historyData[key]['data'],
-                        request_headers = historyData[key]['request_headers'],
                         response_content_type = historyData[key]['response_content_type'],
                         result = historyData[key]['result'],
-                        apiName = historyData[key]['name'],
                         time = historyData[key]['time'],
-                        group_id = historyData[key]['group_id'],
                         status = historyData[key]['status'];
 
-                    $('#request-type').val(requestType);
-                    $('#url').val(url);
                     $('#response-headers').html(headers ? headers : '');
-                    $('#api-name').val(apiName);
                     $('#send-time').html(time);
                     $('#response-status').html(status);
                     $('.tabs li').eq(1).trigger('click');
@@ -112,71 +104,28 @@ Event.extend('history', function() {
                         'status': status
                     };
                     Model.set('response_data', response_data);
+                    //Model.set('request_data_' + form_data_type, historyData[key]['data']);
+                    Model.set('request_form_type', form_data_type);
+                    Model.set('request_form_type_tmp', form_data_type);
+                    Model.set('request_data', historyData[key]);
                     App.requestType = requestType;
 
-                    // 显示参数
-                    $('input[name=form-data-type]').each(function() {
-                        if ($(this).val() === form_data_type) {
-                            $(this).trigger('click');
-                        }
-                    });
-
-                    let raw_obj = $('#form-data-raw').find('textarea');
-                    switch (form_data_type) {
-                        case "form-data":
-                            View.display('form', 'urlencoded_line', data, '#form-data');
-                            View.display('form', 'form_data_line', [], '#form-data-true');
-                            raw_obj.val('');
-                            break;
-                        case "form-data-true":
-                            View.display('form', 'urlencoded_line', [], '#form-data');
-                            View.display('form', 'form_data_line', data, '#form-data-true');
-                            raw_obj.val('');
-                            break;
-                        case "raw":
-                            View.display('form', 'urlencoded_line', [], '#form-data');
-                            View.display('form', 'form_data_line', [], '#form-data-true');
-                            if (typeof data === "object") {
-                                if (data.hasOwnProperty('content_type') && data.hasOwnProperty('data')) {
-                                    let content_type = data['content_type'];
-                                    $('#raw-content-type').find('option').each(function() {
-                                        if (content_type === $(this).val()) {
-                                            $(this).attr('selected', true);
-                                        }
-                                    });
-                                    raw_obj.val(data['data']);
-                                }
-                            } else {
-                                raw_obj.val(data);
-                            }
-                            break;
-                        default:
-                            console.log('form-data-type error');
-                            break;
-                    }
-
-                    View.display('form', 'form_header_line', request_headers, '#form-data-headers');
-
                     // assert
-                    let assert_data = App.history.get_assert_data(),
-                        assert_content = '';
-                    if (assert_data.hasOwnProperty(key)) {
-                        let assert_type = assert_data[key]['type'];
-                        assert_content = assert_data[key]['content'];
-                        if (assert_type) {
-                            $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
-                                let value = $(this).val();
-                                if (value === assert_type) {
-                                    $(this).prop('checked', 'checked');
-                                }
-                            });
-                        }
-                    }
-
-                    $('#form-data-assert').text(assert_content);
-
-                    // group_id下拉菜单
-                    // App.group.display_selector(group_id);
+                    //let assert_data = App.history.get_assert_data(),
+                    //    assert_content = '';
+                    //if (assert_data.hasOwnProperty(key)) {
+                    //    let assert_type = assert_data[key]['type'];
+                    //    assert_content = assert_data[key]['content'];
+                    //    if (assert_type) {
+                    //        $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
+                    //            let value = $(this).val();
+                    //            if (value === assert_type) {
+                    //                $(this).prop('checked', 'checked');
+                    //            }
+                    //        });
+                    //    }
+                    //}
+                    //$('#form-data-assert').text(assert_content);
                 }
                 e.stopPropagation();
             });
@@ -225,7 +174,7 @@ Event.extend('history', function() {
                 }
             };
 
-            $('#history-content').on('mousedown', '#history-list-box tr', function(e) {
+            $('#history-content').on('mousedown', '#history-list-box tbody tr', function(e) {
                 let history_key = $(this).attr('data-key');
                 is_mouse_down = true;
                 selected_history_key = history_key;
@@ -238,7 +187,7 @@ Event.extend('history', function() {
                     }
                 }
                 // e.stopPropagation();
-            }).on('mousemove', '#history-list-box tr', function(e) {
+            }).on('mousemove', '#history-list-box tbody tr', function(e) {
                 if(!is_mouse_down) {
                     return false;
                 }
@@ -289,7 +238,7 @@ Event.extend('history', function() {
                 }
                 $('#history-drag-mask').remove();
                 e.stopPropagation();
-            }).on('mouseup', '#history-list-box tr', function(e) {
+            }).on('mouseup', '#history-list-box tbody tr', function(e) {
                 if(!is_mouse_down) {
                     return false;
                 }

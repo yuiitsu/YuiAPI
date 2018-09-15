@@ -383,6 +383,27 @@ App.extend('history', function() {
             }
         }
         this.setItem(this.hostCacheKey, host_list);
+
+        // 删除host对应数据
+        let delHistoryKey = [];
+        let historyData = this.getData();
+        for (let i in historyData) {
+            if (historyData[i]['host'] === host) {
+                delete historyData[i];
+                delHistoryKey.push(i);
+            }
+        }
+        this.setItem(this.dataKey, historyData);
+        // 删除数据list中对应的数据
+        let hashData = this.getListData(this.listKey);
+        for (let i in hashData) {
+            if (delHistoryKey.indexOf(hashData[i]) !== -1) {
+                hashData.splice(i, 1);
+            }
+        }
+        this.setItem(this.listKey, hashData);
+
+        this.refresh_history_list();
         this.refresh_host_list();
     };
 

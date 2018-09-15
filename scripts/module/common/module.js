@@ -178,11 +178,16 @@ App.extend('common', function() {
         // 检查高度
         let target = $('.module-main');
         let target_height = target.outerHeight();
-        let conent_height = target_height + 90 > 600 ? '600px' : target_height + 100;
-        $('.module-content').css('height', conent_height);
-        target.css('height', target_height);
+        let content_height = target_height + 90 > 600 ? '600px' : target_height + 100;
+        //$('.module-content').css('height', content_height);
+        //target.css('height', target_height);
 
         $('.module-close').off('click').on('click', function() {
+            let module_id = $(this).attr('data-module-id');
+            $('.module-box-' + module_id).remove();
+        });
+
+        $('.module-mask').off('click').on('click', function() {
             let module_id = $(this).attr('data-module-id');
             $('.module-box-' + module_id).remove();
         });
@@ -295,9 +300,32 @@ App.extend('common', function() {
                 return this.get_data($('#form-data'));
             },
             form_data: function() {
-                return this.get_data($('#form-data-true'), true);
+                return this.get_data($('#form-data'), true);
             }
         };
+    };
+
+    /**
+     *
+     * @param content_type
+     * @returns {string}
+     */
+    this.get_response_content_type_text = function(content_type) {
+        let result = 'UNKNOWN';
+        if (content_type) {
+            if (content_type.indexOf('application/json') !== -1) {
+                result = 'JSON';
+            } else if (content_type.indexOf('image') !== -1) {
+                result = 'IMG';
+            } else if (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1) {
+                result = 'XML';
+            } else if (content_type.indexOf('text/html') !== -1) {
+                result = 'HTML';
+            } else if (content_type.indexOf('text/plain') !== -1) {
+                result = 'TEXT';
+            }
+        }
+        return result;
     };
 
     /**
@@ -355,9 +383,13 @@ App.extend('common', function() {
      * @returns {string}
      */
     this.getHost = function(url) {
+        if (!url) {
+            return false;
+        }
         let parse_Url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
         let result = parse_Url.exec(url);
-        return result[1] + ':' + result[2] + result[3] + (result[4] ? ':' + result[4] : '');
+        let last = result[4] ? ':' + result[4] : '';
+        return result[1] + ':' + result[2] + result[3] + last;
     };
 
     /**

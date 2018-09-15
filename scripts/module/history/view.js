@@ -38,6 +38,7 @@ View.extend('history', function() {
             </div>
         `;
     };
+
     /**
      * 侧边栏
      * @returns {string}
@@ -100,6 +101,7 @@ View.extend('history', function() {
                             <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                         </th>
                         <th class="w-50 border-bottom-light">Type</th>
+                        <th class="w-50 border-bottom-light align-left">Result</th>
                         <th class="align-left history-list-name border-bottom-light">Name</th>
                         <th class="align-left border-bottom-light">URL</th>
                     </tr>
@@ -114,6 +116,7 @@ View.extend('history', function() {
                         <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
                             <span>{{ request_type_icon }}</span>
                         </td>
+                        <td class="w-50">{{ App.common.get_response_content_type_text(data[i]['response_content_type']) }}</td>
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         <td class="border-bottom-light">{{ data[i]['url'] }}</td>
                     </tr>
@@ -177,4 +180,18 @@ View.extend('history', function() {
             <tr id="history-drag-mask" data-drag-key="{{ data['key'] }}" data-position="{{ data['position'] }}"><td colspan="4">Insert here</td></tr>
         `;
     };
+
+    /**
+     * 下拉选择HOST
+     * @returns {string}
+     */
+    this.select_host_list = function() {
+        return `
+            <ul class="history-tips-list" id="host-select-item">
+                {{ for var i in data }}
+                <li style="text-align:left;">{{ data[i] }}</li>
+                {{ end }}
+            </ul>
+        `;
+    }
 });

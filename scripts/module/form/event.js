@@ -13,7 +13,7 @@ Event.extend('form', function() {
          * 如果是text，显示input，如果是file，显示文件选择按钮
          */
         form_value_type_change: function() {
-            $('#form-data-true').on('change', '.form-value-data-type', function() {
+            $('#form-box').on('change', '#form-data .form-value-data-type', function() {
                 let value = $(this).val();
                 switch (value) {
                     case "Text":
@@ -26,6 +26,7 @@ Event.extend('form', function() {
                         alert('type error.');
                         break;
                 }
+                //App.form.change_form();
             });
         },
 
@@ -56,7 +57,7 @@ Event.extend('form', function() {
                         };
                     switch (form_data_type) {
                         case "form-data-true":
-                            formData = App.common.getFormParams().form_data('form-data');
+                            formData = App.common.getFormParams().form_data();
                             request_params['processData'] = false;
                             request_params['contentType'] = false;
                             break;
@@ -66,7 +67,7 @@ Event.extend('form', function() {
                             break;
                         case "raw":
                             formData = {};
-                            formData['data'] = $.trim($('#form-data-raw').find('textarea').val());
+                            formData['data'] = $.trim($('#form-data').find('textarea').val());
                             let content_type = $('#raw-content-type').val();
                             formData['history_data'] = {
                                 'content_type': content_type,
@@ -138,15 +139,8 @@ Event.extend('form', function() {
          */
         host_select: function() {
             $('#form-box').on('click', '#host-select', function() {
-                let host_list = App.history.get_host_list(),
-                    content = ['<ul class="history-tips-list" id="host-select-item" style="height:300px;overflow-y:auto;">'];
-                if (host_list.length > 0) {
-                    for (let i in host_list) {
-                        content.push('<li style="text-align:left;">'+ host_list[i] +'</li>');
-                    }
-                }
-                content.push('</ul>');
-                App.common.tips.show($(this), content.join(''));
+                let host_list = App.history.get_host_list();
+                App.common.tips.show($(this), View.get_view('history', 'select_host_list', host_list));
             });
 
             $('body').on('click', '#host-select-item li', function(e) {
@@ -164,7 +158,7 @@ Event.extend('form', function() {
          * 请求类型选择
          */
         request_type_select: function() {
-            $('#request-type').on('change', function() {
+            $('#form-box').on('change', '#request-type', function() {
                 let key = $(this).val();
                 if (key) {
                     App.requestType = key;
@@ -189,31 +183,34 @@ Event.extend('form', function() {
          * 格式化参数
          */
         format_request_params: function() {
-            $('#form-data-format').on('click', function() {
-                let content = $.trim($('#form-data-format-content').val());
-                if (!content) {
-                    return false;
-                }
-
-                let data = {};
-                if (content.indexOf('\n') !== -1) {
-                    let group_list = content.split('\n');
-                    for (let i in group_list) {
-                        let items = group_list[i].split(':');
-                        let key = $.trim(items.shift());
-                        let val = items.join("");
-                        data[key] = $.trim(val);
+            $('body').on('click', '#form-data-format', function(e) {
+                let content = $.trim($('#form-data-format-content').val()),
+                    module_id = $(this).attr('data-module-id');
+                if (content) {
+                    let data = {};
+                    if (content.indexOf('\n') !== -1) {
+                        let group_list = content.split('\n');
+                        for (let i in group_list) {
+                            let items = group_list[i].split(':');
+                            let key = $.trim(items.shift());
+                            let val = items.join(":");
+                            data[key] = {value: $.trim(val), description: '', value_type: 'Text'};
+                        }
+                    } else {
+                        let group_list = content.split('&');
+                        for (let i in group_list) {
+                            let items = group_list[i].split('=');
+                            data[items[0]] = {value: items[1], description: '', value_type: 'Text'};
+                        }
                     }
-                } else {
-                    let group_list = content.split('&');
-                    for (let i in group_list) {
-                        let items = group_list[i].split('=');
-                        data[items[0]] = items[1];
-                    }
-                }
 
-                View.display('form', 'urlencoded_line', data, '#form-data');
-                $('.form-params-type li').eq(1).trigger('click');
+                    let request_form_type_tmp = Model.get('request_form_type_tmp');
+                    Model.set('request_data_' + request_form_type_tmp, data);
+                    App.form.change_form();
+                    //View.display('form', 'urlencoded_line', data, '#form-data');
+                    $('.module-box-' + module_id).remove();
+                }
+                e.stopPropagation();
             });
         },
 
@@ -238,7 +235,7 @@ Event.extend('form', function() {
          * headers自动增加行
          */
         form_header_input: function() {
-            $('#form-box').on('input', '.form-data-item', function(e) {
+            $('#form-box').on('input', '#form-data-headers .form-data-item', function(e) {
                 let data_type = $(this).attr('data-type');
                 let target_obj = $('#' + data_type);
                 let parent = $(this).parent().parent();
@@ -256,14 +253,13 @@ Event.extend('form', function() {
          * 表单输入自动增加行，body部分
          */
         form_data_body_input: function() {
-            $('#form-box').on('input', '.form-data-item', function() {
+            $('#form-box').on('input', '#form-data .form-data-item', function() {
                 let data_type = $(this).attr('data-type');
-                let target_obj = $('#' + data_type);
+                let target_obj = $('#form-data');
                 let parent = $(this).parent().parent();
                 if (parent.index() + 1 === target_obj.find('tr').length) {
                     // 创建新的一行
                     let _htmlItem = '';
-
                     // 根据类型不同，替换目标对象
                     switch (data_type)  {
                         case "form-data-true":
@@ -275,10 +271,12 @@ Event.extend('form', function() {
                         default:
                             break;
                     }
-
                     target_obj.append(_htmlItem);
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
+            }).on('change', '.form-data-item', function() {
+                // 保存到model
+                App.form.get_params();
             });
         },
 
@@ -288,33 +286,7 @@ Event.extend('form', function() {
         form_data_type_change: function() {
             $('#form-box').on('click', 'input[name=form-data-type]', function(e) {
                 let data_type = $(this).val();
-                if (data_type === 'form-data' || data_type === 'form-data-true') {
-                    $('.form-data-title').show();
-                } else {
-                    $('.form-data-title').hide();
-                }
-
-                if (data_type === 'raw') {
-                    $('#raw-content-type').show();
-                } else {
-                    $('#raw-content-type').hide();
-                }
-
-                $('.form-data-type').each(function() {
-                    if (!$(this).hasClass('hide')) {
-                        $(this).addClass('hide');
-                    }
-
-                    if (data_type === $(this).attr('data-type')) {
-                        $(this).removeClass('hide');
-                    }
-                });
-
-                //$('.form-data-type').hide().each(function() {
-                //    if (data_type === $(this).attr('data-type')) {
-                //        $(this).show();
-                //    }
-                //})
+                Model.set('request_form_type_tmp', data_type);
                 e.stopPropagation();
             });
         },
@@ -325,10 +297,14 @@ Event.extend('form', function() {
         del_form_line: function() {
             $('#form-box').on('click', '.form-line-del-box i', function(e) {
                 $(this).parent().parent().remove();
+                App.form.get_params();
                 e.stopPropagation();
             })
         },
 
+        /**
+         * 全选参数
+         */
         select_all: function() {
             $('#form-box').on('click', '.form-select-all', function(e) {
                 let _this = $(this);
@@ -339,13 +315,19 @@ Event.extend('form', function() {
                         $(this).find('.form-select').prop('checked', false);
                     }
                 });
+                App.form.get_params();
                 e.stopPropagation();
             })
         },
 
+        /**
+         * 打开编辑参数界面
+         */
         edit_parameter: function() {
             $('#form-box').on('click', '#js-form-edit-parameter', function(e) {
-                App.common.module('Edit Parameter', View.get_view('form', 'edit_parameter', ''), '');
+                let request_form_type = Model.get('request_form_type');
+                let request_data = Model.get('request_data_' + request_form_type);
+                App.common.module('Edit Parameter', View.get_view('form', 'edit_parameter', request_data), '');
                 e.stopPropagation();
             });
         },

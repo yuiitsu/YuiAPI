@@ -118,31 +118,6 @@ View.extend('form', function() {
                         </tbody>
                     </table>
                     -->
-                    <!-- format -->
-                    <table class="form-data-table hide" cellspacing="0">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <textarea style="padding:10px;width:100%;height:200px;" id="form-data-format-content" placeholder=""></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>key=some key&username=Yuiitsu</li>
-                                        <li>or</li>
-                                        <li>
-                                            <p>key1: val1</p>
-                                            <p>key2: val2</p>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="height:60px;"><button class="btn btn-primary" id="form-data-format">Format</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         `;
@@ -154,12 +129,8 @@ View.extend('form', function() {
     this.form = function() {
         return `
             {{ var data_type = data['data_type'] ? data['data_type'] : 'form-data' }}
-            {{ var form_data_list = data['data_type'] === 'form-data-true' ? data['data'] : {} }}
-            {{ var form_data_hide = data['data_type'] === 'form-data-true' ? '' : 'hide' }}
-            {{ var raw_data = data['data_type'] === 'raw' ? data['data'] : '' }}
-            {{ var raw_hide = data['data_type'] === 'raw' ? '' : 'hide' }}
-            {{ var urlencoded_list = data['data_type'] === 'form-data' ? data['data'] : {} }}
-            {{ var urlencoded_hide = data['data_type'] === 'form-data' ? '' : (form_data_hide === 'hide' && raw_hide === 'hide' ? '' : 'hide') }}
+            {{ var view_name = data_type === 'form-data-true' ? 'form_data_box' : (data_type === 'raw' ? 'raw' : 'urlencoded_box') }}
+            {{ var form_data_list = data['data'] }}
             <table class="form-data-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
@@ -170,45 +141,34 @@ View.extend('form', function() {
                             {{ var checked = item['key'] === data_type ? 'checked="checked"' : '' }}
                             <label class="form-request-data-type"><input type="radio" name="form-data-type" value="{{ item['key'] }}" {{ checked }} /> {{ item['value'] }}</label>
                             {{ end }}
-                            {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
-                            <select id="raw-content-type" class="{{ raw_hide }}">
-                                {{ var content_type = data['data'] ? data['data']['content_type'] : '' }}
-                                {{ for var i in raw_content_type_list }}
-                                {{ var item = raw_content_type_list[i] }}
-                                {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}
-                                <option value="{{ item['k'] }}" {{ selected }}>{{ item['v'] }}</option>
-                                {{ end }}
-                            </select>
                             <span class="fr form-edit-parameter" id="js-form-edit-parameter">
                                 <i class="mdi mdi-square-edit-outline" />
                                 Edit Parameter
                             </span>
                         </td>
                     </tr>
-                    {{ if !raw_data }}
-                    <tr class="form-data-title">
-                        <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
-                        <td class="border-bottom-light">Key</td>
-                        <td class="border-bottom-light">Value</td>
-                        <td class="border-bottom-light">Description</td>
-                        <td class="border-bottom-light"></td>
-                    </tr>
-                    {{ end }}
                 </thead>
-                <tbody id="form-data-true" class="form-data-input form-data-type {{ form_data_hide }}" data-type="form-data-true">
-                    {{ this.get_view('form', 'form_data_line', form_data_list) }}
-                </tbody>
-                <tbody id="form-data" class="form-data-input form-data-type {{ urlencoded_hide }}" data-type="form-data">
-                    {{ this.get_view('form', 'urlencoded_line', urlencoded_list) }}
-                </tbody>
-                <tbody id="form-data-raw" class="form-data-input form-data-type {{ raw_hide }}" data-type="raw">
-                    <tr>
-                        <td colspan="3">
-                            <textarea style="padding:10px;width:100%;height:300px;">{{ raw_data['data'] }}</textarea>
-                        </td>
-                    </tr>
+                <tbody id="form-data" class="form-data-input form-data-type" data-type="form-data">
+                    {{ this.get_view('form', view_name, form_data_list) }}
                 </tbody>
             </table>
+        `;
+    };
+
+    /**
+     *
+     * @returns {string}
+     */
+    this.form_data_box = function() {
+        return `
+            <tr class="form-data-title">
+                <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
+                <td class="border-bottom-light">Key</td>
+                <td class="border-bottom-light">Value</td>
+                <td class="border-bottom-light">Description</td>
+                <td class="border-bottom-light"></td>
+            </tr>
+            {{ View.get_view('form', 'form_data_line', data) }}
         `;
     };
 
@@ -283,6 +243,23 @@ View.extend('form', function() {
     };
 
     /**
+     *
+     * @returns {string}
+     */
+    this.urlencoded_box = function() {
+        return `
+            <tr class="form-data-title">
+                <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
+                <td class="border-bottom-light">Key</td>
+                <td class="border-bottom-light">Value</td>
+                <td class="border-bottom-light">Description</td>
+                <td class="border-bottom-light"></td>
+            </tr>
+            {{ View.get_view('form', 'urlencoded_line', data) }}
+        `;
+    };
+
+    /**
      * 表单一行 x-www-form-urlencoded
      * @returns {string}
      */
@@ -307,6 +284,34 @@ View.extend('form', function() {
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" /> </td>
                 <td class="cursor-pointer form-line-del-box"></td>
+            </tr>
+        `;
+    };
+
+    /**
+     * raw表单
+     * @returns {string}
+     */
+    this.raw = function() {
+        return `
+            <tr>
+                <td colspan="4">
+                    {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
+                    <select id="raw-content-type">
+                        {{ var content_type = data ? data['content_type'] : '' }}
+                        {{ for var i in raw_content_type_list }}
+                        {{ var item = raw_content_type_list[i] }}
+                        {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}
+                        <option value="{{ item['k'] }}" {{ selected }}>{{ item['v'] }}</option>
+                        {{ end }}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    {{ var raw_data = data['data'] ? data['data'] : '' }}
+                    <textarea style="padding:10px;width:100%;height:300px;">{{ raw_data }}</textarea>
+                </td>
             </tr>
         `;
     };
@@ -349,6 +354,29 @@ View.extend('form', function() {
                     <pre id="result" class="result-box-pre response-body">{{ response }}</pre>
                     <pre id="response-headers" class="result-box-pre hide">{{ headers }}</pre>
                     <input type="text" id="result-copy-input" />
+                </div>
+            </div>
+        `;
+    };
+
+    /**
+     * 编辑请求参数
+     * @returns {string}
+     */
+    this.edit_parameter = function() {
+        return `
+            <div class="form-edit-parameter-box">
+                <div class="form-edit-parameter-content">
+                    <textarea id="form-data-format-content" placeholder="Example:&#10;key=some key&username=Yuiitsu&#10;or&#10;key1: val1&#10;key2: val2">
+                        {{ if data }}
+                        {{ for var k in data }}
+                        {{ k }}: {{ data[k]['value'] }}&#10;
+                        {{ end }}
+                        {{ end }}
+                    </textarea>
+                </div>
+                <div class="h-30">
+                    <button class="btn btn-primary js-handler" id="form-data-format">OK</button>
                 </div>
             </div>
         `;

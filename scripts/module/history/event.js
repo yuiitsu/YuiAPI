@@ -83,23 +83,15 @@ Event.extend('history', function() {
                 // 从缓存中获取数据
                 let historyData = App.history.getData();
                 if (historyData[key]) {
-                    let url = historyData[key]['url'],
-                        requestType = historyData[key]['type'],
-                        //form_data_type = historyData[key]['data_type'],
+                    let requestType = historyData[key]['type'],
+                        form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
                         headers = historyData[key]['headers'],
-                        //data = historyData[key]['data'],
-                        //request_headers = historyData[key]['request_headers'],
                         response_content_type = historyData[key]['response_content_type'],
                         result = historyData[key]['result'],
-                        //apiName = historyData[key]['name'],
                         time = historyData[key]['time'],
-                        //group_id = historyData[key]['group_id'],
                         status = historyData[key]['status'];
 
-                    //$('#request-type').val(requestType);
-                    //$('#url').val(url);
                     $('#response-headers').html(headers ? headers : '');
-                    //$('#api-name').val(apiName);
                     $('#send-time').html(time);
                     $('#response-status').html(status);
                     $('.tabs li').eq(1).trigger('click');
@@ -112,6 +104,9 @@ Event.extend('history', function() {
                         'status': status
                     };
                     Model.set('response_data', response_data);
+                    //Model.set('request_data_' + form_data_type, historyData[key]['data']);
+                    Model.set('request_form_type', form_data_type);
+                    Model.set('request_form_type_tmp', form_data_type);
                     Model.set('request_data', historyData[key]);
                     App.requestType = requestType;
 

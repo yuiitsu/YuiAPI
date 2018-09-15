@@ -11,9 +11,15 @@ App.extend('form', function() {
     this.init = function() {
         // 监听数据
         // 请求表单类型，变化后，切换对应表单
-        Model.set('request_form_type', '').watch('request_form_type', this.change_form);
-        // 请求参数
+        Model.set('request_form_type', 'form-data');
+        // 切换解发事件用，值等于request_form_type
+        Model.set('request_form_type_tmp', 'form-data').watch('request_form_type_tmp', this.change_form);
+        // 整个请求数据对象，包括url，request type, params等
         Model.set('request_data', {}).watch('request_data', this.show_form);
+        // 请求参数,三种类型分别存储
+        Model.set('request_data_form-data', {});
+        Model.set('request_data_form-data-true', {});
+        Model.set('request_data_raw', '');
         // 监听请求结果数据
         Model.set('response_data', '').watch('response_data', this.show_response);
         // 渲染页面
@@ -77,8 +83,10 @@ App.extend('form', function() {
      */
     this.show_form = function() {
         let request_data = Model.get('request_data');
-        console.log(request_data);
         View.display('form', 'layout', request_data, '#form-box');
+        // 存储表单参数数据
+        let request_form_type = Model.get('request_form_type');
+        Model.set('request_data_' + request_form_type, request_data['data']);
     };
 
     /**
@@ -189,6 +197,108 @@ App.extend('form', function() {
         }
         $('#result').addClass('raw').text(response);
         return true;
-    }
+    };
+
+    /**
+     * 根据form类型，切换对应表单
+     */
+    this.change_form = function() {
+        let request_form_type_tmp = Model.get('request_form_type_tmp');
+        let request_data = Model.get('request_data_' + request_form_type_tmp);
+        let view_name = '';
+        switch (request_form_type_tmp) {
+            case 'form-data':
+                view_name = 'urlencoded_box';
+                break;
+            case 'form-data-true':
+                view_name = 'form_data_box';
+                break;
+            case 'raw':
+                view_name = 'raw';
+                break;
+            default:
+                view_name = 'urlencoded_line';
+                break;
+        }
+        Model.set('request_form_type', request_form_type_tmp);
+        View.display('form', view_name, request_data, '#form-data');
+    };
+
+    /**
+     * 获取页面请求参数，保存成model数据
+     */
+    this.get_params = function() {
+        let target = $('#form-data'),
+            request_form_type_tmp = Model.get('request_form_type_tmp'),
+            form_data = {},
+            i = 0;
+
+        if (request_form_type_tmp === 'raw') {
+
+        } else {
+            let select_obj = target.find('.form-select'),
+                key_obj = target.find('.form-key'),
+                value_type_obj = target.find('.form-value-data-type'),
+                value_obj = target.find('.form-value'),
+                description_obj = target.find('.form-description');
+
+            select_obj.each(function () {
+                if ($(this).is(":checked")) {
+                    let key = $.trim(key_obj.eq(i).val());
+                    if (key) {
+                        let value = $.trim(value_obj.eq(i).val()),
+                            value_type = 'Text';
+
+                        if (value_type_obj.eq(i).val() === 'File') {
+                            value_type = 'File';
+                        }
+
+                        form_data[key] = {
+                            value: value,
+                            value_type: value_type,
+                            description: $.trim(description_obj.eq(i).val())
+                        };
+                    }
+                }
+                i++;
+            });
+        }
+
+        Model.set('request_data_' + request_form_type_tmp, form_data);
+    };
+
+    /**
+     * 将数据对象中的数据转为请求参数
+     * form-data-true: new FormData()
+     */
+    this.build_request_data = function() {
+        let request_form_type_tmp = Model.get('request_form_type_tmp');
+        let request_data = Model.get('request_data_' + request_form_type_tmp);
+        let form_data = {},
+            is_form_data = false;
+        if (request_form_type_tmp === 'form-data-true') {
+            form_data = new FormData();
+            is_form_data = true;
+        }
+
+        for (let i in request_data) {
+            if (request_data.hasOwnProperty(i)) {
+                if (is_form_data) {
+                    if (request_data[i]['value_type'] === 'File') {
+                        form_data.push(i, request_data[i]['value']);
+                    } else {
+                        form_data.push(i, request_data[i]['value']);
+                    }
+                } else {
+
+                }
+            }
+        }
+
+        return {
+            data: request_data,
+            history_data: request_data
+        }
+    };
 });
 

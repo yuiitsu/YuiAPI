@@ -297,7 +297,7 @@ View.extend('form', function() {
             <tr>
                 <td colspan="4">
                     {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
-                    <select id="raw-content-type">
+                    <select id="raw-content-type" class="border-normal">
                         {{ var content_type = data ? data['content_type'] : '' }}
                         {{ for var i in raw_content_type_list }}
                         {{ var item = raw_content_type_list[i] }}
@@ -310,7 +310,7 @@ View.extend('form', function() {
             <tr>
                 <td colspan="4">
                     {{ var raw_data = data['data'] ? data['data'] : '' }}
-                    <textarea style="padding:10px;width:100%;height:300px;">{{ raw_data }}</textarea>
+                    <textarea style="padding:10px;width:100%;height:200px;">{{ raw_data }}</textarea>
                 </td>
             </tr>
         `;

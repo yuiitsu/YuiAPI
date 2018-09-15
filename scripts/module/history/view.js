@@ -101,7 +101,7 @@ View.extend('history', function() {
                             <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
                         </th>
                         <th class="w-50 border-bottom-light">Type</th>
-                        <th class="w-50 border-bottom-light align-left">Result</th>
+                        <th class="w-50 border-bottom-light align-left">Status</th>
                         <th class="align-left history-list-name border-bottom-light">Name</th>
                         <th class="align-left border-bottom-light">URL</th>
                     </tr>
@@ -117,7 +117,13 @@ View.extend('history', function() {
                             <span>{{ request_type_icon }}</span>
                         </td>
                         {{ var response_content_type = App.common.get_response_content_type_text(data[i]['response_content_type']) }}
-                        <td class="w-50"><span class="history-response-type history-response-type-{{ response_content_type }}">{{ response_content_type }}</span></td>
+                        {{ var status_type = data[i]['status'] === 200 ? 'success' : 'failed' }}
+                        <td class="w-50 font-size-9">
+                            <!--
+                            <span class="history-response-type history-response-type-{{ response_content_type }}">{{ response_content_type }}</span>
+                            -->
+                            <p class="color-{{ status_type }} font-bold">{{ data[i]['status'] }}</p>
+                        </td>
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         <td class="border-bottom-light">{{ data[i]['url'] }}</td>
                     </tr>

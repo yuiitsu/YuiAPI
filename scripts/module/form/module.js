@@ -67,7 +67,11 @@ App.extend('form', function() {
                         response = JSON.parse(response_data['response']);
                         response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
                     } catch (e) {
-                        response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        if (typeof response_data['response'] === 'object') {
+                            response = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+                        } else {
+                            response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        }
                     }
                 }
             }
@@ -164,7 +168,12 @@ App.extend('form', function() {
                         response = JSON.parse(response_data['response']);
                         response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
                     } catch (e) {
-                        response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        //response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        if (typeof response_data['response'] === 'object') {
+                            response = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+                        } else {
+                            response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        }
                     }
                 }
             }

@@ -8,7 +8,10 @@ App.extend('form', function() {
     // 
     let self = this;
     // default data
-    Model.default['url_params'] = [];
+    Model.default['url_params'] = {
+        display: true,
+        list: []
+    };
     Model.default['request_headers'] = {};
 
     Model.default['authentication'] = {
@@ -128,7 +131,7 @@ App.extend('form', function() {
         // 分析url参数
         let url = request_data.url;
         let params = App.common.get_url_params(url);
-        Model.set('url_params', params);
+        Model.set('url_params', {display: true, list: params});
         request_data['url_params'] = params;
         //
         View.display('form', 'layout', request_data, '#form-box');
@@ -144,7 +147,9 @@ App.extend('form', function() {
         // 检查url params form是否在页面上，如果在重新渲染，如果不在，不做处理
         if ($('#js-form-url-params').length > 0) {
             let url_params = Model.get('url_params');
-            View.display('form', 'headers_params', {url_params: url_params}, '.form-headers-body');
+            if (url_params.display) {
+                View.display('form', 'headers_params', {url_params: url_params}, '.form-headers-body');
+            }
         }
     };
 
@@ -375,7 +380,7 @@ App.extend('form', function() {
      */
     this.get_url_params = function() {
         let target = $('#js-url-params'),
-            form_data = {},
+            form_data = [],
             i = 0;
 
         let select_obj = target.find('.form-select'),
@@ -386,7 +391,10 @@ App.extend('form', function() {
             if ($(this).is(":checked")) {
                 let key = $.trim(key_obj.eq(i).val());
                 if (key) {
-                    form_data[key] = $.trim(value_obj.eq(i).val());
+                    form_data.push({
+                        key: key,
+                        val: $.trim(value_obj.eq(i).val())
+                    });
                 }
             }
             i++;

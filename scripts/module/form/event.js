@@ -342,9 +342,9 @@ Event.extend('form', function() {
                     request_headers = Model.get('request_headers'),
                     url_params = Model.get('url_params');
 
-                if (type === 'Params' && Object.keys(url_params).length <= 0) {
-                    return false;
-                }
+                //if (type === 'Params' && Object.keys(url_params).length <= 0) {
+                //    return false;
+                //}
                 request_data['headers_line_type'] = type;
                 request_data['authentication'] = authentication;
                 request_data['request_headers'] = request_headers;
@@ -423,7 +423,7 @@ Event.extend('form', function() {
                     let query_string_list = [];
                     for (var i in url_params) {
                         if (url_params.hasOwnProperty(i)) {
-                            query_string_list.push(i + '=' + encodeURIComponent(url_params[i]));
+                            query_string_list.push(url_params[i]['key'] + '=' + encodeURIComponent(url_params[i]['val']));
                         }
                     }
                     let query_string = query_string_list.join("&");
@@ -432,6 +432,7 @@ Event.extend('form', function() {
                     url = url.split('?')[0] + '?' + query_string;
                     target.val(url);
                 }
+                Model.set('url_params', {display: false, list: url_params});
             });
         }
     };

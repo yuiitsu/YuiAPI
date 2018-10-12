@@ -169,9 +169,9 @@ View.extend('form', function() {
 
     this.headers_params_line = function() {
         return `
-            {{ for var i in data }}
-            {{ var item_key = data[i]['key'].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
-            {{ var value_format = data[i]['val'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
+            {{ for var i in data['list'] }}
+            {{ var item_key = data['list'][i]['key'].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
+            {{ var value_format = data['list'][i]['val'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             <tr>
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="js-url-params" value="{{ item_key }}" /> </td>

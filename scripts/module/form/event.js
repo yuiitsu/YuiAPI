@@ -295,7 +295,12 @@ Event.extend('form', function() {
         del_form_line: function() {
             $('#form-box').on('click', '.form-line-del-box i', function(e) {
                 $(this).parent().parent().remove();
+                App.form.get_headers_params();
                 App.form.get_params();
+                // 检查是否删除url params，如果是，重新获取form data并设置url query string
+                if ($(this).attr('data-type') === 'url-params-line') {
+                    App.form.build_url_query_string();
+                }
                 e.stopPropagation();
             })
         },
@@ -401,7 +406,7 @@ Event.extend('form', function() {
             $('#form-box').on('change', '#url', function(e) {
                 let url = $.trim($(this).val());
                 let params = App.common.get_url_params(url);
-                Model.set('url_params', params);
+                Model.set('url_params', {display: true, list: params});
             });
         },
 
@@ -414,25 +419,26 @@ Event.extend('form', function() {
                     // 创建新的一行
                     let _htmlItem = View.get_view('form', 'headers_params_line', {});
                     target_obj.append(_htmlItem);
-                    $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
+                    $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close" data-type="url-params-line"></i>');
                 }
                 e.stopPropagation();
             }).on('change', '#js-url-params .form-data-item', function(e) {
-                let url_params = App.form.get_url_params();
-                if (Object.keys(url_params).length > 0) {
-                    let query_string_list = [];
-                    for (var i in url_params) {
-                        if (url_params.hasOwnProperty(i)) {
-                            query_string_list.push(url_params[i]['key'] + '=' + encodeURIComponent(url_params[i]['val']));
-                        }
-                    }
-                    let query_string = query_string_list.join("&");
-                    let target = $('#url');
-                    let url = $.trim(target.val());
-                    url = url.split('?')[0] + '?' + query_string;
-                    target.val(url);
-                }
-                Model.set('url_params', {display: false, list: url_params});
+                App.form.build_url_query_string();
+                //let url_params = App.form.get_url_params();
+                //if (Object.keys(url_params).length > 0) {
+                //    let query_string_list = [];
+                //    for (var i in url_params) {
+                //        if (url_params.hasOwnProperty(i)) {
+                //            query_string_list.push(url_params[i]['key'] + '=' + encodeURIComponent(url_params[i]['val']));
+                //        }
+                //    }
+                //    let query_string = query_string_list.join("&");
+                //    let target = $('#url');
+                //    let url = $.trim(target.val());
+                //    url = url.split('?')[0] + '?' + query_string;
+                //    target.val(url);
+                //}
+                //Model.set('url_params', {display: false, list: url_params});
             });
         }
     };

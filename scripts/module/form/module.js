@@ -132,7 +132,7 @@ App.extend('form', function() {
         let url = request_data.url;
         let params = App.common.get_url_params(url);
         Model.set('url_params', {display: true, list: params});
-        request_data['url_params'] = params;
+        request_data['url_params'] = {list: params};
         //
         View.display('form', 'layout', request_data, '#form-box');
         // 存储表单参数数据
@@ -461,6 +461,26 @@ App.extend('form', function() {
 
         Model.set('authentication', authentication);
         return authentication;
+    };
+
+    this.build_url_query_string = function() {
+        let url_params = App.form.get_url_params(),
+            query_string = '';
+        if (Object.keys(url_params).length > 0) {
+            let query_string_list = [];
+            for (var i in url_params) {
+                if (url_params.hasOwnProperty(i)) {
+                    query_string_list.push(url_params[i]['key'] + '=' + encodeURIComponent(url_params[i]['val']));
+                }
+            }
+            query_string = query_string_list.join("&");
+
+        }
+        let target = $('#url');
+        let url = $.trim(target.val());
+        url = url.split('?')[0] + '?' + query_string;
+        target.val(url);
+        Model.set('url_params', {display: false, list: url_params});
     };
 
     ///**

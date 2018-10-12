@@ -66,7 +66,7 @@ View.extend('form', function() {
                 {{ end }}
                 <!-- 检查params是否有值，有显示icon -->
                 {{ var params = data['url_params'] }}
-                {{ if params && Object.keys(params).length > 0 }}
+                {{ if params && params.list && params.list.length > 0 }}
                     {{ var has_params = true }}
                 {{ end }}
                 <!-- headers/authentication/params -->
@@ -176,7 +176,7 @@ View.extend('form', function() {
                 <td><input type="checkbox" class="form-select" checked="checked" /> </td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="js-url-params" value="{{ item_key }}" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="js-url-params" value="{{ value_format }}" /> </td>
-                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
+                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" data-type="url-params-line" /></td>
             </tr>
             {{ end }}
             <tr>

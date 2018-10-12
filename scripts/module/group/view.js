@@ -38,7 +38,7 @@ View.extend('group', function() {
             <div class="history-group-form">
                 {{ var name = data && data['name'] ? data['name'] : '' }}
                 {{ var group_id = data && data['group_id'] ? data['group_id'] : '' }}
-                <label>Group Name</label>       
+                <label>Name</label>       
                 <div class="h-30">
                     <input type="text" class="input-text" placeholder="Enter group name" id="history-group-name" value="{{ name }}" />
                     <input type="hidden" id="history-group-id" value="{{ group_id }}" />

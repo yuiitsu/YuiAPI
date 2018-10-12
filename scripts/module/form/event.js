@@ -348,6 +348,7 @@ Event.extend('form', function() {
                 request_data['headers_line_type'] = type;
                 request_data['authentication'] = authentication;
                 request_data['request_headers'] = request_headers;
+                request_data['url_params'] = url_params;
                 View.display('form', 'headers_layout', request_data, '#js-form-headers-box');
                 e.stopPropagation();
             });
@@ -401,6 +402,36 @@ Event.extend('form', function() {
                 let url = $.trim($(this).val());
                 let params = App.common.get_url_params(url);
                 Model.set('url_params', params);
+            });
+        },
+
+        url_params_change: function() {
+            $('#form-box').on('input', '#js-url-params .form-data-item', function(e) {
+                let data_type = $(this).attr('data-type');
+                let target_obj = $('#' + data_type);
+                let parent = $(this).parent().parent();
+                if (parent.index() + 1 === target_obj.find('tr').length) {
+                    // 创建新的一行
+                    let _htmlItem = View.get_view('form', 'headers_params_line', {});
+                    target_obj.append(_htmlItem);
+                    $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
+                }
+                e.stopPropagation();
+            }).on('change', '#js-url-params .form-data-item', function(e) {
+                let url_params = App.form.get_url_params();
+                if (Object.keys(url_params).length > 0) {
+                    let query_string_list = [];
+                    for (var i in url_params) {
+                        if (url_params.hasOwnProperty(i)) {
+                            query_string_list.push(i + '=' + encodeURIComponent(url_params[i]));
+                        }
+                    }
+                    let query_string = query_string_list.join("&");
+                    let target = $('#url');
+                    let url = $.trim(target.val());
+                    url = url.split('?')[0] + '?' + query_string;
+                    target.val(url);
+                }
             });
         }
     };

@@ -8,7 +8,7 @@ App.extend('form', function() {
     // 
     let self = this;
     // default data
-    Model.default['url_params'] = {};
+    Model.default['url_params'] = [];
     Model.default['request_headers'] = {};
 
     Model.default['authentication'] = {
@@ -45,7 +45,7 @@ App.extend('form', function() {
         // 切换解发事件用，值等于request_form_type
         Model.set('request_form_type_tmp', 'form-data').watch('request_form_type_tmp', this.change_form);
         // 整个请求数据对象，包括url，request type, params等
-        Model.set('url_params', Model.default.url_params);
+        Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
         Model.set('request_headers', Model.default.request_headers);
         Model.set('authentication', Model.default.authentication);
         Model.set('request_data', Model.default.request_data).watch('request_data', this.show_form);
@@ -129,11 +129,23 @@ App.extend('form', function() {
         let url = request_data.url;
         let params = App.common.get_url_params(url);
         Model.set('url_params', params);
+        request_data['url_params'] = params;
         //
         View.display('form', 'layout', request_data, '#form-box');
         // 存储表单参数数据
         let request_form_type = Model.get('request_form_type');
         Model.set('request_data_' + request_form_type, request_data['data']);
+    };
+
+    /**
+     * 渲染url params表单
+     */
+    this.show_url_params = function() {
+        // 检查url params form是否在页面上，如果在重新渲染，如果不在，不做处理
+        if ($('#js-form-url-params').length > 0) {
+            let url_params = Model.get('url_params');
+            View.display('form', 'headers_params', {url_params: url_params}, '.form-headers-body');
+        }
     };
 
     /**
@@ -359,6 +371,31 @@ App.extend('form', function() {
     };
 
     /**
+     * 获取url params，保存成model数据
+     */
+    this.get_url_params = function() {
+        let target = $('#js-url-params'),
+            form_data = {},
+            i = 0;
+
+        let select_obj = target.find('.form-select'),
+            key_obj = target.find('.form-key'),
+            value_obj = target.find('.form-value');
+
+        select_obj.each(function () {
+            if ($(this).is(":checked")) {
+                let key = $.trim(key_obj.eq(i).val());
+                if (key) {
+                    form_data[key] = $.trim(value_obj.eq(i).val());
+                }
+            }
+            i++;
+        });
+
+        return form_data;
+    };
+
+    /**
      * 将数据对象中的数据转为请求参数
      * form-data-true: new FormData()
      */
@@ -399,18 +436,22 @@ App.extend('form', function() {
      */
     this.build_authentication_to_request = function(request_params) {
         let authentication = Model.get('authentication');
-        let data = authentication.data;
+        if (authentication) {
+            let data = authentication.data;
 
-        switch (authentication.type) {
-            case "Basic":
-                let content = data['user'] + ':' + data['pass'];
-                request_params['headers']['Authorization'] = 'Basic ' + btoa(content);
-                break;
-            default:
-                break;
+            switch (authentication.type) {
+                case "Basic":
+                    let content = data['user'] + ':' + data['pass'];
+                    request_params['headers']['Authorization'] = 'Basic ' + btoa(content);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            authentication = {type: '', data: {}};
         }
-        Model.set('authentication', authentication);
 
+        Model.set('authentication', authentication);
         return authentication;
     };
 

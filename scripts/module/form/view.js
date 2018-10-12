@@ -65,7 +65,7 @@ View.extend('form', function() {
                     {{ var has_authentication = true }}
                 {{ end }}
                 <!-- 检查params是否有值，有显示icon -->
-                {{ var params = data['params'] }}
+                {{ var params = data['url_params'] }}
                 {{ if params && Object.keys(params).length > 0 }}
                     {{ var has_params = true }}
                 {{ end }}
@@ -112,7 +112,7 @@ View.extend('form', function() {
 
     this.headers_authentication = function() {
         return `
-            {{ var type = data['authentication']['type'] ? data['authentication']['type'] : '' }}
+            {{ var type = data['authentication'] && data['authentication']['type'] ? data['authentication']['type'] : '' }}
             <table cellspacing="0" id="js-form-authentication">
                 <thead>
                     <tr>
@@ -130,8 +130,8 @@ View.extend('form', function() {
                     </tr>
                 </thead>
                 {{ var basic_hide = type === 'Basic' ? '' : 'hide' }}
-                {{ var user = data['authentication']['data']['user'] ? data['authentication']['data']['user'] : '' }}
-                {{ var pass = data['authentication']['data']['pass'] ? data['authentication']['data']['pass'] : '' }}
+                {{ var user = data['authentication'] && data['authentication']['data']['user'] ? data['authentication']['data']['user'] : '' }}
+                {{ var pass = data['authentication'] && data['authentication']['data']['pass'] ? data['authentication']['data']['pass'] : '' }}
                 <tbody data-type="Basic" class="{{ basic_hide }}" id="js-form-authentication-basic">
                     <tr>
                         <td>User</td>
@@ -157,14 +157,34 @@ View.extend('form', function() {
                         <td><input type="checkbox" class="form-select-all" checked="checked" /></td>
                         <td>Key</td>
                         <td>Value</td>
-                        <td>Description</td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody id="js-url-params" class="form-data-input">
-                    {{ this.get_view('form', 'form_header_line', data['request_headers']) }}
+                    {{ this.get_view('form', 'headers_params_line', data['url_params']) }}
                 </tbody>
             </table>
+        `;
+    };
+
+    this.headers_params_line = function() {
+        return `
+            {{ for var i in data }}
+            {{ var item_key = data[i]['key'].replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
+            {{ var value_format = data[i]['val'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
+            <tr>
+                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><input type="text" class="form-key form-data-item input-text" data-type="js-url-params" value="{{ item_key }}" /> </td>
+                <td><input type="text" class="form-value form-data-item input-text" data-type="js-url-params" value="{{ value_format }}" /> </td>
+                <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
+            </tr>
+            {{ end }}
+            <tr>
+                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><input type="text" class="form-key form-data-item input-text" data-type="js-url-params" /> </td>
+                <td><input type="text" class="form-value form-data-item input-text" data-type="js-url-params" /> </td>
+                <td class="cursor-pointer form-line-del-box"></td>
+            </tr>
         `;
     };
 

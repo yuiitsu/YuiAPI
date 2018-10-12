@@ -47,14 +47,17 @@ App.extend('common', function() {
      */
     this.get_url_params = function(url) {
         let query_string = url.split('?')[1],
-            result = {};
+            result = [];
 
         if (query_string) {
             let params = query_string.split('&');
             let params_len = params.length;
             for (let i = 0; i < params_len; i++) {
                 let items = params[i].split('=');
-                result[items[0]] = decodeURI(items[1]);
+                result.push({
+                    key: items[0],
+                    val: decodeURIComponent(items[1])
+                });
             }
         }
 

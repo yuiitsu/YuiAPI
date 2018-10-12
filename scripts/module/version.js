@@ -10,6 +10,10 @@ const Version = {
      * 更新记录
      */
     update_logs: {
+        'v0.8.0': [
+            'Added Authentication and url params edit',
+            'Adjusted UI'
+        ],
         'v0.7.0': [
             'Adjusted UI',
             'Added new function, Edit Parameter',

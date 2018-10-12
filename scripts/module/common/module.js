@@ -42,6 +42,26 @@ App.extend('common', function() {
     };
 
     /**
+     * 从链接地址上获取参数，并返回一个参数对象
+     * @param url
+     */
+    this.get_url_params = function(url) {
+        let query_string = url.split('?')[1],
+            result = {};
+
+        if (query_string) {
+            let params = query_string.split('&');
+            let params_len = params.length;
+            for (let i = 0; i < params_len; i++) {
+                let items = params[i].split('=');
+                result[items[0]] = decodeURI(items[1]);
+            }
+        }
+
+        return result;
+    };
+
+    /**
      * 提示
      * @param focus
      * @param content

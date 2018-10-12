@@ -5,7 +5,6 @@
 Event.extend('history', function() {
     /**
      * 事件
-      * @type {{select_host_to_search: event.select_host_to_search, history_switch: event.history_switch, list_control: event.list_control, tips_control: event.tips_control, search: event.search, group_tab: event.group_tab}}
      */
     this.event = {
         /**
@@ -108,6 +107,8 @@ Event.extend('history', function() {
                     Model.set('request_form_type', form_data_type);
                     Model.set('request_form_type_tmp', form_data_type);
                     Model.set('request_data', historyData[key]);
+                    Model.set('request_headers', historyData[key]['request_headers']);
+                    Model.set('authentication', historyData[key]['authentication']);
                     App.requestType = requestType;
 
                     // assert

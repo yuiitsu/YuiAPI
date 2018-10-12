@@ -77,10 +77,18 @@ Event.extend('form', function() {
                             break;
                     }
 
+                    // authentication
+                    let authentication = App.form.build_authentication_to_request(request_params);
+
                     $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
                     let result_obj = $('#result');
                     result_obj.css('background-color', '#efefef');
                     let start_timestamp=new Date().getTime();
+
+                    //App.form.send(url, request_params, formData['data'], function() {
+                    //    $this.attr('disabled', false).html('Send');
+                    //});
+                    console.log(request_params);
 
                     App.common.request(url, request_params, formData['data'], function(res, jqXHR) {
                         //
@@ -126,7 +134,8 @@ Event.extend('form', function() {
                             time: use_time,
                             status: jqXHR.status,
                             assertion_data: assertion_data,
-                            group_id: group_id
+                            group_id: group_id,
+                            authentication: authentication
                         });
                     });
                 }
@@ -215,23 +224,6 @@ Event.extend('form', function() {
         },
 
         /**
-         * headers switch
-         */
-        form_header_switch: function() {
-            $('#form-box').on('click', '#js-form-headers-title', function(e) {
-                let target = $('#js-form-headers-body');
-                if (target.css('display') !== 'table') {
-                    target.show();
-                    //$(this).find('i').addClass('mdi-arrow-collapse-vertical');
-                } else {
-                    target.hide();
-                    //$(this).find('i').removeClass('mdi-arrow-collapse-vertical');
-                }
-                e.stopPropagation();
-            })
-        },
-
-        /**
          * headers自动增加行
          */
         form_header_input: function() {
@@ -246,6 +238,10 @@ Event.extend('form', function() {
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
                 e.stopPropagation();
+            }).on('change', '#form-data-headers .form-data-item', function(e) {
+                // save to model
+                App.form.get_headers_params();
+                e.stopPropagation();
             })
         },
 
@@ -253,7 +249,7 @@ Event.extend('form', function() {
          * 表单输入自动增加行，body部分
          */
         form_data_body_input: function() {
-            $('#form-box').on('input', '#form-data .form-data-item', function() {
+            $('#form-box').on('input', '#form-data .form-data-item', function(e) {
                 let data_type = $(this).attr('data-type');
                 let target_obj = $('#form-data');
                 let parent = $(this).parent().parent();
@@ -274,9 +270,11 @@ Event.extend('form', function() {
                     target_obj.append(_htmlItem);
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
                 }
-            }).on('change', '.form-data-item', function() {
+                e.stopPropagation();
+            }).on('change', '#form-data .form-data-item', function(e) {
                 // 保存到model
                 App.form.get_params();
+                e.stopPropagation();
             });
         },
 
@@ -308,13 +306,14 @@ Event.extend('form', function() {
         select_all: function() {
             $('#form-box').on('click', '.form-select-all', function(e) {
                 let _this = $(this);
-                let target = $(this).parent().parent().parent().parent().find('tbody').each(function() {
+                $(this).parent().parent().parent().parent().find('tbody').each(function() {
                     if (_this.prop("checked")) {
                         $(this).find('.form-select').prop('checked', 'checked');
                     } else {
                         $(this).find('.form-select').prop('checked', false);
                     }
                 });
+
                 App.form.get_params();
                 e.stopPropagation();
             })
@@ -333,11 +332,75 @@ Event.extend('form', function() {
         },
 
         /**
-         * 表单参数/值改变，重新获取表单数据并set model
+         * Header
          */
-        parameter_change: function() {
-            $('#form-data-headers').on('change', '.form-data-item', function() {
+        header_line_change: function() {
+            $('#form-box').on('click', '.js-form-headers-title span', function(e) {
+                let type = $(this).text();
+                let request_data = Model.get('request_data'),
+                    authentication = Model.get('authentication'),
+                    request_headers = Model.get('request_headers'),
+                    url_params = Model.get('url_params');
 
+                if (type === 'Params' && Object.keys(url_params).length <= 0) {
+                    return false;
+                }
+                request_data['headers_line_type'] = type;
+                request_data['authentication'] = authentication;
+                request_data['request_headers'] = request_headers;
+                View.display('form', 'headers_layout', request_data, '#js-form-headers-box');
+                e.stopPropagation();
+            });
+        },
+
+        authentication_selector: function() {
+            $('#form-box').on('change', '#js-form-authentication-type-selector', function(e) {
+                let type = $(this).val();
+                $('#js-form-authentication').find('tbody').each(function() {
+                    let data_type = $(this).attr('data-type');
+                    if (data_type === type) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // 置空，重置model, authentication数据
+                if (type === 'None') {
+                    Model.set('authentication', {type: '', data: {}});
+                }
+
+                e.stopPropagation();
+                //// 设置model
+                //Model.set('authentication', {
+                //    type: type
+                //});
+            });
+        },
+
+        authentication_basic: function() {
+            $('#form-box').on('change', '#js-form-authentication-basic input', function(e) {
+                // 获取值
+                let authentication = {
+                    type: 'Basic',
+                    data: {}
+                };
+                $('#js-form-authentication-basic').find('input').each(function() {
+                    let data_type = $(this).attr('data-type');
+                    authentication['data'][data_type] = $.trim($(this).val());
+                });
+                // set data to model
+                Model.set('authentication', authentication);
+
+                e.stopPropagation();
+            })
+        },
+
+        url_change: function() {
+            $('#form-box').on('change', '#url', function(e) {
+                let url = $.trim($(this).val());
+                let params = App.common.get_url_params(url);
+                Model.set('url_params', params);
             });
         }
     };

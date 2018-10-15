@@ -4,12 +4,13 @@
  */
 const Version = {
 
-    current_version: 'v0.8.0',
+    current_version: 'v0.8.1',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.8.1': [],
         'v0.8.0': [
             'Added Authentication and url params edit',
             'Adjusted UI'

@@ -80,8 +80,8 @@ App.extend('form', function() {
                 let url = window.URL || window.webkitURL;
                 src = url.createObjectURL(response_data['response']);
             } catch (e) {
-                if (typeof result === 'string') {
-                    src = result;
+                if (typeof response_data['response'] === 'string') {
+                    src = response_data['response'];
                 }
             }
 
@@ -90,7 +90,8 @@ App.extend('form', function() {
             } else {
                 response_data['response'] = 'Image Blob data cannot be displayed. Please send the request.';
             }
-        } else if (content_type && (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1)) {
+        } else if (content_type && (content_type.indexOf('text/xml') !== -1 ||
+            content_type.indexOf('application/xml') !== -1)) {
             response_data['response'] = self.parse_xml(response_data['response']);
         //} else if (content_type && content_type.indexOf('text/html') !== -1) {
         //    response_data['response'] = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");

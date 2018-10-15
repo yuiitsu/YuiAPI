@@ -1,5 +1,5 @@
 # YuiAPI
-YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端，您可以随意的使用它。
+YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端，你可以随意的使用它。
 
 ## 目录
 1. [当前版本](#当前版本)
@@ -13,7 +13,7 @@ YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端�
 
     3.1 [根据HOST筛选历史记录](#根据host筛选历史记录)
     
-    3.2 [快递切换API的HOST](#快递切换api的host)
+    3.2 [快速切换API的HOST](#快递切换api的host)
     
     3.3 [快速获取/编辑请求参数](#快速获取/编辑请求参数)
     

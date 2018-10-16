@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.8.0',
+    current_version: 'v0.8.1',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.8.1': [
+            'Fixed an issue that request data display error when the request headers not in request data.'
+        ],
         'v0.8.0': [
             'Added Authentication and url params edit',
             'Adjusted UI'

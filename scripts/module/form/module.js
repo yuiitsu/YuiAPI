@@ -126,7 +126,7 @@ App.extend('form', function() {
         let request_data = Model.get('request_data');
         // 处理headers的显示，即有数据时，默认打开headers表单
         let request_headers = request_data['request_headers'];
-        if (Object.keys(request_headers).length > 0) {
+        if (request_headers && Object.keys(request_headers).length > 0) {
             request_data['headers_line_type'] = 'Headers';
         }
         // 分析url参数

@@ -107,7 +107,7 @@ Event.extend('history', function() {
                     Model.set('request_form_type', form_data_type);
                     Model.set('request_form_type_tmp', form_data_type);
                     Model.set('request_data', historyData[key]);
-                    Model.set('request_headers', historyData[key]['request_headers']);
+                    Model.set('request_headers', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
                     Model.set('authentication', historyData[key]['authentication']);
                     App.requestType = requestType;
 

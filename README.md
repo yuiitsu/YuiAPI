@@ -20,7 +20,7 @@ YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端�
     3.4 [编辑URL PARAMS](#编辑url-params)
 
 ## 当前版本
-v0.8.1 [Update logs](https://www.yuiapi.com)
+v0.9.1 [Update logs](https://www.yuiapi.com)
 
 1 调整UI
 - 调整了表单的背景颜色

@@ -88,7 +88,6 @@ Event.extend('form', function() {
                     //App.form.send(url, request_params, formData['data'], function() {
                     //    $this.attr('disabled', false).html('Send');
                     //});
-                    console.log(request_params);
 
                     App.common.request(url, request_params, formData['data'], function(res, jqXHR) {
                         //

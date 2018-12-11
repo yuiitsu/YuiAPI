@@ -1,3 +1,4 @@
+![](https://github.com/yuiitsu/YuiAPI/blob/master/images/logo128.png?raw=true)
 # YuiAPI
 YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端，你可以随意的使用它。
 

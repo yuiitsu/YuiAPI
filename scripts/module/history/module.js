@@ -295,6 +295,8 @@ App.extend('history', function() {
         for (let i = 0; i < history_tab_list_len; i++) {
             let hash = history_tab_list[i]['hash'];
             if (hash === this.common.md5(history_data['url'])) {
+                history_tab_list[i]['name'] = history_data['name'];
+                history_tab_list[i]['url'] = history_data['url'];
                 history_tab_list[i]['focus'] = 1;
                 is_exist = true;
             } else {
@@ -323,7 +325,6 @@ App.extend('history', function() {
 
     this.remove_history_tab = function(hash) {
         let history_tab_list = this.common.cache.getListData(this.history_tab_key);
-        console.log(history_tab_list);
         let history_tab_list_len = history_tab_list.length, remove_item_index = -1;
         for (let i = 0; i < history_tab_list_len; i++) {
             if (hash === history_tab_list[i]['hash']) {

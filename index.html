@@ -113,12 +113,8 @@
     </div>
     <!-- 右侧 -->
     <div class="content-right">
-        <div class="left-top-line display-flex-row">
-            <!-- History tab start -->
-            <div class="history-tab-container display-flex-auto display-flex-row radius-small-all" id="history-tab">
-            </div>
-            <!-- History tab end -->
-            <div class="login-action">
+        <div class="left-top-line">
+            <div class="login-action fr">
                 <!--
                 <a href="javascript:void(0)">Sign in</a> or <a href="javascript:void(0)">Sign up</a>
                 -->
@@ -126,7 +122,13 @@
             </div>
         </div>
         <!-- 表单 -->
-        <div class="content-box bg-dark font-color-white" id="form-box"></div>
+        <div class="content-box bg-dark font-color-white">
+            <!-- History tab start -->
+            <div class="history-tab-container display-flex-row radius-small-all" id="history-tab">
+            </div>
+            <!-- History tab end -->
+            <div class="display-flex-auto display-flex-column" id="form-box"></div>
+        </div>
     </div>
 </div>
 </body>

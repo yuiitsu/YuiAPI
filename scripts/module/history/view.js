@@ -209,7 +209,7 @@ View.extend('history', function() {
             {{ var focus = data[i]['focus'] === 1 ? 'focus' : '' }}
             <div class="history-tab-item display-flex-auto {{ focus }}" data-hash="{{ data[i]['hash'] }}" title="{{ data[i]['url'] }}">
                 <em></em>
-                {{ data[i]['name'] }}{{ data[i]['url'] }}
+                {{ data[i]['name'] }} {{ data[i]['url'] }}
                 <span data-hash="{{ data[i]['hash'] }}"><i class="mdi mdi-close"></i></span>
             </div>
             {{ end }}

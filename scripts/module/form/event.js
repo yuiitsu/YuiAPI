@@ -136,6 +136,11 @@ Event.extend('form', function() {
                             group_id: group_id,
                             authentication: authentication
                         });
+
+                        App.history.set_history_tab({
+                            name: apiName,
+                            url: url
+                        });
                     });
                 }
                 e.stopPropagation();

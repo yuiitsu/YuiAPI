@@ -105,7 +105,7 @@ button{width:100%;height:100%;}
 .tabs ul li.focus{background-color:#fff;border-top-left-radius: 3px;border-top-right-radius: 3px;color:#000;
     text-shadow: none;}
 
-.login-action{height:40px;line-height:40px;color:#bbb;}
+.login-action{height:30px;line-height:30px;color:#bbb;padding-left:10px;}
 .login-action a{font-weight:bold;color:#fff;}
 .login-action i{font-weight:bold;color:#fff;font-size:20px;vertical-align: middle;}
 
@@ -212,6 +212,25 @@ button{width:100%;height:100%;}
     display: inline-block;padding:10px 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;}
 .history-switch i.hover{background-color:#f5f5f5;}
 
+/* history tab */
+.history-tab-container{width:0;height:30px;line-height:30px;}
+.history-tab-container .history-tab-item{display: inline-block;background-color:#f1f1f1;padding:0 5px;
+    border-right:1px solid #efefef;border-left:1px solid #fff;overflow:hidden;color:#666;cursor:pointer;
+    position:relative;}
+.history-tab-container .history-tab-item span{position:absolute;top:0;right:0;
+    background-color:#fff;border-left:1px solid #f1f1f1;display: none;}
+.history-tab-container .history-tab-item span:hover{color:#ff0000;}
+.history-tab-container .history-tab-item i{}
+.history-tab-container .history-tab-item:hover{background-color:#fff;}
+.history-tab-container .history-tab-item:hover span{display: inline-block;}
+.history-tab-container .history-tab-item:first-child{border-bottom-left-radius: 3px;border-top-left-radius: 3px;
+    border-left:0;}
+.history-tab-container .history-tab-item:last-child{border-bottom-right-radius: 3px;border-top-right-radius: 3px;
+    border-right:0;}
+.history-tab-container div.focus{background-color:#fff;border-right:0;color:#000;}
+.history-tab-container div.focus:hover{background-color:#fff;}
+.history-tab-container div.focus em{display:inline-block;width:5px;height:5px;border-radius:50%;background-color:#ff0000;
+    position:absolute;left:1px;top:1px;}
 /* history-list */
 .history-list-box{flex: 1;overflow: auto;-webkit-touch-callout: none;user-select: none;}
 .history-list-box::-webkit-scrollbar {width: 5px;height:5px;}

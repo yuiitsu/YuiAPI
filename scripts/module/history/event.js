@@ -79,55 +79,58 @@ Event.extend('history', function() {
             $('#history-content').on('click', '#history-list-box tr', function(e) {
                 // 选中数据
                 let key = $(this).attr('data-key');
-                // 从缓存中获取数据
-                let historyData = App.history.getData();
-                if (historyData[key]) {
-                    let requestType = historyData[key]['type'],
-                        form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
-                        headers = historyData[key]['headers'],
-                        response_content_type = historyData[key]['response_content_type'],
-                        result = historyData[key]['result'],
-                        time = historyData[key]['time'],
-                        status = historyData[key]['status'];
+                App.history.open_data(key);
+                // // 从缓存中获取数据
+                // let historyData = App.history.getData();
+                // if (historyData[key]) {
+                //     let requestType = historyData[key]['type'],
+                //         form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
+                //         headers = historyData[key]['headers'],
+                //         response_content_type = historyData[key]['response_content_type'],
+                //         result = historyData[key]['result'],
+                //         time = historyData[key]['time'],
+                //         status = historyData[key]['status'];
 
-                    $('#response-headers').html(headers ? headers : '');
-                    $('#send-time').html(time);
-                    $('#response-status').html(status);
-                    $('.tabs li').eq(1).trigger('click');
+                //     $('#response-headers').html(headers ? headers : '');
+                //     $('#send-time').html(time);
+                //     $('#response-status').html(status);
+                //     $('.tabs li').eq(1).trigger('click');
 
-                    let response_data = {
-                        'headers': headers ? headers : '',
-                        'response': result,
-                        'response_content_type': response_content_type,
-                        'use_time': time,
-                        'status': status
-                    };
-                    Model.set('response_data', response_data);
-                    //Model.set('request_data_' + form_data_type, historyData[key]['data']);
-                    Model.set('request_form_type', form_data_type);
-                    Model.set('request_form_type_tmp', form_data_type);
-                    Model.set('request_data', historyData[key]);
-                    Model.set('request_headers', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
-                    Model.set('authentication', historyData[key]['authentication']);
-                    App.requestType = requestType;
+                //     let response_data = {
+                //         'headers': headers ? headers : '',
+                //         'response': result,
+                //         'response_content_type': response_content_type,
+                //         'use_time': time,
+                //         'status': status
+                //     };
+                //     Model.set('response_data', response_data);
+                //     //Model.set('request_data_' + form_data_type, historyData[key]['data']);
+                //     Model.set('request_form_type', form_data_type);
+                //     Model.set('request_form_type_tmp', form_data_type);
+                //     Model.set('request_data', historyData[key]);
+                //     Model.set('request_headers', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
+                //     Model.set('authentication', historyData[key]['authentication']);
+                //     App.requestType = requestType;
 
-                    // assert
-                    //let assert_data = App.history.get_assert_data(),
-                    //    assert_content = '';
-                    //if (assert_data.hasOwnProperty(key)) {
-                    //    let assert_type = assert_data[key]['type'];
-                    //    assert_content = assert_data[key]['content'];
-                    //    if (assert_type) {
-                    //        $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
-                    //            let value = $(this).val();
-                    //            if (value === assert_type) {
-                    //                $(this).prop('checked', 'checked');
-                    //            }
-                    //        });
-                    //    }
-                    //}
-                    //$('#form-data-assert').text(assert_content);
-                }
+                //     App.history.set_history_tab(historyData[key]);
+
+                //     // assert
+                //     //let assert_data = App.history.get_assert_data(),
+                //     //    assert_content = '';
+                //     //if (assert_data.hasOwnProperty(key)) {
+                //     //    let assert_type = assert_data[key]['type'];
+                //     //    assert_content = assert_data[key]['content'];
+                //     //    if (assert_type) {
+                //     //        $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
+                //     //            let value = $(this).val();
+                //     //            if (value === assert_type) {
+                //     //                $(this).prop('checked', 'checked');
+                //     //            }
+                //     //        });
+                //     //    }
+                //     //}
+                //     //$('#form-data-assert').text(assert_content);
+                // }
                 e.stopPropagation();
             });
         },
@@ -376,6 +379,26 @@ Event.extend('history', function() {
                 target_parent.find('.history-group-tab li').removeClass('focus').eq(index).addClass('focus');
                 target_parent.find('.history-host').addClass('hide').eq(index).removeClass('hide');
             });
+        },
+
+        switch_history_tab: function() {
+            $('#history-tab').on('click', '.history-tab-item', function(e) {
+                let hash = $(this).attr('data-hash');
+                if (!hash) {
+                    return false;
+                }
+
+                App.history.open_data(hash);
+                e.stopPropagation();
+            })
+        },
+
+        remove_history_tab: function() {
+            $('#history-tab').on('click', '.history-tab-item span', function(e) {
+                let hash = $(this).attr('data-hash');
+                App.history.remove_history_tab(hash);
+                e.stopPropagation();
+            })
         }
     };
 });

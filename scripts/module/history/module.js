@@ -10,8 +10,11 @@ App.extend('history', function() {
     this.assert_key = 'assert_data';
     this.assert_default_key = 'assert_default_data';
     this.search_key = '';
+    this.history_tab_key = 'history_tab';
 
     this.init = function() {
+        Model.set('history_tab_list', [])
+            .watch('history_tab_list', this.show_history_tab);
         this.init_interface();
     };
 
@@ -133,6 +136,16 @@ App.extend('history', function() {
         };
         View.display('history', 'main', data, '#history-content');
         this.show_history_count(history_list);
+        //
+        this.init_history_tab();
+    };
+
+    this.init_history_tab = function() {
+        let history_tab_list = this.common.cache.getListData(this.history_tab_key);
+        for (let i in history_tab_list) {
+            history_tab_list[i]['focus'] = 0;
+        }
+        Model.set('history_tab_list', history_tab_list);
     };
 
     /**
@@ -268,6 +281,69 @@ App.extend('history', function() {
                 }
             });
         }
+    };
+
+    /**
+     * 设置history tab
+     * @param history_data 选中的history data
+     */
+    this.set_history_tab = function(history_data) {
+        let history_tab_list = this.common.cache.getListData(this.history_tab_key);
+        let history_tab_list_len = history_tab_list.length,
+            is_exist = false;
+
+        for (let i = 0; i < history_tab_list_len; i++) {
+            let hash = history_tab_list[i]['hash'];
+            if (hash === this.common.md5(history_data['url'])) {
+                history_tab_list[i]['focus'] = 1;
+                is_exist = true;
+            } else {
+                history_tab_list[i]['focus'] = 0;
+            }
+        }
+
+        if (!is_exist) {
+            history_tab_list.push({
+                name: history_data['name'],
+                url: history_data['url'],
+                hash: this.common.md5(history_data['url']),
+                focus: 1
+            });
+
+            if (history_tab_list.length > 8) {
+                history_tab_list.splice(0, 1);
+            }
+        }
+
+        //
+        this.common.cache.save(this.history_tab_key, history_tab_list);
+        //
+        Model.set('history_tab_list', history_tab_list);
+    };
+
+    this.remove_history_tab = function(hash) {
+        let history_tab_list = this.common.cache.getListData(this.history_tab_key);
+        console.log(history_tab_list);
+        let history_tab_list_len = history_tab_list.length, remove_item_index = -1;
+        for (let i = 0; i < history_tab_list_len; i++) {
+            if (hash === history_tab_list[i]['hash']) {
+                remove_item_index = i;
+            }
+        }
+
+        if (remove_item_index >= 0) {
+            history_tab_list.splice(remove_item_index, 1);
+        }
+
+        //
+        this.common.cache.save(this.history_tab_key, history_tab_list);
+        //
+        Model.set('history_tab_list', history_tab_list);
+    };
+
+    this.show_history_tab = function() {
+        let history_tab_list = Model.get('history_tab_list');
+        View.display('history', 'history_tab', history_tab_list, '#history-tab');
     };
 
     /**
@@ -545,5 +621,58 @@ App.extend('history', function() {
 
         this.setItem(this.listKey, hashData);
         this.refresh_history_list();
-    }
+    };
+
+    this.open_data = function(key) {
+        let historyData = App.history.getData();
+        if (historyData[key]) {
+            let requestType = historyData[key]['type'],
+                form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
+                headers = historyData[key]['headers'],
+                response_content_type = historyData[key]['response_content_type'],
+                result = historyData[key]['result'],
+                time = historyData[key]['time'],
+                status = historyData[key]['status'];
+
+            $('#response-headers').html(headers ? headers : '');
+            $('#send-time').html(time);
+            $('#response-status').html(status);
+            $('.tabs li').eq(1).trigger('click');
+
+            let response_data = {
+                'headers': headers ? headers : '',
+                'response': result,
+                'response_content_type': response_content_type,
+                'use_time': time,
+                'status': status
+            };
+            Model.set('response_data', response_data);
+            //Model.set('request_data_' + form_data_type, historyData[key]['data']);
+            Model.set('request_form_type', form_data_type);
+            Model.set('request_form_type_tmp', form_data_type);
+            Model.set('request_data', historyData[key]);
+            Model.set('request_headers', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
+            Model.set('authentication', historyData[key]['authentication']);
+            App.requestType = requestType;
+
+            App.history.set_history_tab(historyData[key]);
+
+            // assert
+            //let assert_data = App.history.get_assert_data(),
+            //    assert_content = '';
+            //if (assert_data.hasOwnProperty(key)) {
+            //    let assert_type = assert_data[key]['type'];
+            //    assert_content = assert_data[key]['content'];
+            //    if (assert_type) {
+            //        $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
+            //            let value = $(this).val();
+            //            if (value === assert_type) {
+            //                $(this).prop('checked', 'checked');
+            //            }
+            //        });
+            //    }
+            //}
+            //$('#form-data-assert').text(assert_content);
+        }
+    };
 });

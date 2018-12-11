@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.8.1',
+    current_version: 'v0.9.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.9.0': [
+            'Supported history tab.'
+        ],
         'v0.8.1': [
             'Fixed an issue that request data display error when the request headers not in request data.'
         ],

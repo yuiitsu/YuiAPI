@@ -436,9 +436,9 @@ App.extend('common', function() {
                                 xhr.responseType = 'json';
                                 break;
                             case 'img':
-                                if (xhr.getResponseHeader('accept-ranges') === 'bytes') {
+                                //if (xhr.getResponseHeader('accept-ranges') === 'bytes') {
                                     xhr.responseType = 'blob';
-                                }
+                                //}
                         }
                     });
                     break;

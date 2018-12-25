@@ -247,7 +247,7 @@ button{width:100%;height:100%;}
 .history-table tbody tr td.request-type-PUT span{background-color:#CC6600;}
 .history-table tbody tr td.request-type-DELETE span{background-color:#990000;}
 .history-table span.history-response-type{background-color:#efefef;padding:2px 3px;border-radius: 3px;}
-.history-name{font-style: italic;color:#666;}
+.history-name{font-style: italic;color:#666;display: inline-block;background-color:#f1f1f1;padding:2px 5px;}
 .history-tips-list{max-height:300px;overflow-y:auto;}
 .history-tips-list li{height:30px;line-height:30px;border-bottom:1px solid #eaeaea;cursor:pointer;padding: 0 10px;
     text-align: center;}

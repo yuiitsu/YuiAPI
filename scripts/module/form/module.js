@@ -67,6 +67,7 @@ App.extend('form', function() {
      * 渲染响应结果到页面
      */
     this.show_response = function() {
+        let request_data = Model.get('request_data');
         let response_data = Model.get('response_data');
         let content_type = response_data['response_content_type'];
 
@@ -81,7 +82,9 @@ App.extend('form', function() {
                 src = url.createObjectURL(response_data['response']);
             } catch (e) {
                 if (typeof response_data['response'] === 'string') {
-                    src = response_data['response'];
+                    // src = window.btoa(response_data['response']);
+                    //src = 'data:image/png;base64,' + response_data['response'];
+                    src = request_data.url;
                 }
             }
 

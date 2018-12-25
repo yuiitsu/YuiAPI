@@ -100,7 +100,7 @@ Event.extend('common', function() {
             $('#output-content').on('click', '#result-copy button', function(e) {
                 $('#result-copy-input').val($('#result').text());
                 if (document.execCommand('copy')) {
-                    var inputText = document.getElementById('result-copy-input');
+                    let inputText = document.getElementById('result-copy-input');
                     inputText.focus();
                     inputText.setSelectionRange(0, inputText.value.length);
                     document.execCommand('copy', true);
@@ -111,6 +111,16 @@ Event.extend('common', function() {
                 }
                 e.stopPropagation();
             });
+        },
+
+        open_login_window: function() {
+            chrome.tabs.getCurrent(function(tab) {
+                console.log(tab);
+            });
+            //$('.login-action').on('click', '#login', function(e) {
+            //    window.open('https://www.yuiapi.com/api/v1/third_part/github/auth', '',
+            //        'width=500,height=800');
+            //})
         }
     };
 });

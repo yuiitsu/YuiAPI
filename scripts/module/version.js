@@ -4,12 +4,13 @@
  */
 const Version = {
 
-    current_version: 'v0.9.1',
+    current_version: 'v0.10.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.10.0': [],
         'v0.9.1': [
             'Adjusted history tab.'
         ],

@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.9.1',
+    current_version: 'v0.9.2',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.9.2': [
+            'Fixed display error when the response type is img.'
+        ],
         'v0.9.1': [
             'Adjusted history tab.'
         ],

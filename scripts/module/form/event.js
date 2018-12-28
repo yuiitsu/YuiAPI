@@ -63,7 +63,9 @@ Event.extend('form', function() {
                             break;
                         case "form-data":
                             formData = App.common.getFormParams().form();
-                            request_params['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
+                            if (!request_params['headers'].hasOwnProperty('content-type')) {
+                                request_params['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
+                            }
                             break;
                         case "raw":
                             formData = {};
@@ -73,7 +75,9 @@ Event.extend('form', function() {
                                 'content_type': content_type,
                                 'data': formData['data']
                             };
-                            request_params.headers['Content-Type'] = content_type;
+                            if (!request_params['headers'].hasOwnProperty('content-type')) {
+                                request_params.headers['Content-Type'] = content_type;
+                            }
                             break;
                     }
 

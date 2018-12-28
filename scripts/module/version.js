@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.9.2',
+    current_version: 'v0.9.3',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v0.9.3': [
+            'Fixed headers content-type does not work.'
+        ],
         'v0.9.2': [
             'Fixed display error when the response type is img.'
         ],

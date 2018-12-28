@@ -11,6 +11,9 @@ const Version = {
      */
     update_logs: {
         'v0.10.0': [],
+        'v0.9.3': [
+            'Fixed headers content-type does not work.'
+        ],
         'v0.9.2': [
             'Fixed display error when the response type is img.'
         ],

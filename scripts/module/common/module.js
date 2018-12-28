@@ -287,7 +287,7 @@ App.extend('common', function() {
 
                 select_obj.each(function () {
                     if ($(this).is(":checked")) {
-                        let key = $.trim(key_obj.eq(i).val());
+                        let key = $.trim(key_obj.eq(i).val()).toLowerCase();
                         if (key) {
                             let value = $.trim(value_obj.eq(i).val()),
                                 value_type = 'Text';

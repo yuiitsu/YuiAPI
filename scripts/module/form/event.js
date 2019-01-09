@@ -214,10 +214,21 @@ Event.extend('form', function() {
                             data[key] = {value: $.trim(val), description: '', value_type: 'Text'};
                         }
                     } else {
-                        let group_list = content.split('&');
-                        for (let i in group_list) {
-                            let items = group_list[i].split('=');
-                            data[items[0]] = {value: items[1], description: '', value_type: 'Text'};
+                        if (content.indexOf('&') !== -1) {
+                            let group_list = content.split('&');
+                            for (let i in group_list) {
+                                let items = group_list[i].split('=');
+                                if (items[1] !== undefined) {
+                                    data[items[0]] = {value: items[1], description: '', value_type: 'Text'};
+                                }
+                            }
+                        } else {
+                            let items = content.split(':');
+                            let key = $.trim(items.shift());
+                            let val = items.join(":");
+                            if (val !== undefined) {
+                                data[key] = {value: $.trim(val), description: '', value_type: 'Text'};
+                            }
                         }
                     }
 

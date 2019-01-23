@@ -54,7 +54,9 @@ Event.extend('form', function() {
                         request_params = {
                             type: App.requestType,
                             headers: header_data['data']
-                        };
+                        },
+                        is_form_data = true;
+
                     switch (form_data_type) {
                         case "form-data-true":
                             formData = App.common.getFormParams().form_data();
@@ -63,9 +65,10 @@ Event.extend('form', function() {
                             break;
                         case "form-data":
                             formData = App.common.getFormParams().form();
-                            if (!request_params['headers'].hasOwnProperty('content-type')) {
+                            //if (!request_params['headers'].hasOwnProperty('content-type')) {
                                 request_params['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
-                            }
+                            //}
+                            is_form_data = false;
                             break;
                         case "raw":
                             formData = {};
@@ -80,6 +83,8 @@ Event.extend('form', function() {
                             }
                             break;
                     }
+                    //request_params['headers'] = header_data['data'];
+                    //Object.assign(request_params['headers'], header_data['data']);
 
                     // authentication
                     let authentication = App.form.build_authentication_to_request(request_params);
@@ -145,7 +150,7 @@ Event.extend('form', function() {
                             name: apiName,
                             url: url
                         });
-                    });
+                    }, is_form_data);
                 }
                 e.stopPropagation();
             });

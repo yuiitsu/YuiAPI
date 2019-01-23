@@ -11,6 +11,9 @@ const Version = {
      */
     update_logs: {
         'v0.10.0': [],
+        'v0.9.5': [
+            'Fixed some bugs.'
+        ],
         'v0.9.4': [
             'Fixed some bugs.'
         ],

@@ -53,7 +53,7 @@ Event.extend('form', function() {
                         header_data = App.common.getFormParams().header(),
                         request_params = {
                             type: App.requestType,
-                            headers: {}
+                            headers: header_data['data']
                         },
                         is_form_data = true;
 
@@ -84,7 +84,7 @@ Event.extend('form', function() {
                             break;
                     }
                     //request_params['headers'] = header_data['data'];
-                    Object.assign(request_params['headers'], header_data['data']);
+                    //Object.assign(request_params['headers'], header_data['data']);
 
                     // authentication
                     let authentication = App.form.build_authentication_to_request(request_params);

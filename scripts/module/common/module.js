@@ -483,9 +483,15 @@ App.extend('common', function() {
         xhr.open(request_type, url, params.async !== 'false');
         // set headers
         if (params.headers) {
+            let headers_tmp = [];
             for (let i in params.headers) {
                 if (params.headers.hasOwnProperty(i)) {
-                    xhr.setRequestHeader(i, params.headers[i]);
+                    let header_key = i;
+                    header_key = header_key.toLowerCase();
+                    if (headers_tmp.indexOf(header_key) === -1) {
+                        xhr.setRequestHeader(i, params.headers[i]);
+                        headers_tmp.push(header_key);
+                    }
                 }
             }
         }

@@ -287,7 +287,7 @@ App.extend('common', function() {
 
                 select_obj.each(function () {
                     if ($(this).is(":checked")) {
-                        let key = $.trim(key_obj.eq(i).val()).toLowerCase();
+                        let key = $.trim(key_obj.eq(i).val());
                         if (key) {
                             let value = $.trim(value_obj.eq(i).val()),
                                 value_type = 'Text';
@@ -421,8 +421,9 @@ App.extend('common', function() {
      * @param params 请求类型
      * @param data 请求数据
      * @param callBack 回调函数
+     * @param is_form_data
      */
-    this.request = function(url, params, data, callBack){
+    this.request = function(url, params, data, callBack, is_form_data){
         let request_type = params.type ? params.type : "GET";
         let xhr = new XMLHttpRequest();
         xhr.addEventListener('readystatechange', function() {
@@ -466,19 +467,16 @@ App.extend('common', function() {
                 url += encodeURI(send_data.join('&'))
             }
         } else {
-            switch (params.headers['Content-Type']) {
-                case 'application/x-www-form-urlencoded':
-                    send_data = [];
-                    for (let i in data) {
-                        if (data.hasOwnProperty(i)) {
-                            send_data.push(i + '=' + data[i])
-                        }
+            if (!is_form_data) {
+                send_data = [];
+                for (let i in data) {
+                    if (data.hasOwnProperty(i)) {
+                        send_data.push(i + '=' + data[i])
                     }
-                    send_data = encodeURI(send_data.join('&'));
-                    break;
-                default:
-                    send_data = data;
-                    break;
+                }
+                send_data = encodeURI(send_data.join('&'));
+            } else {
+                send_data = data;
             }
         }
 

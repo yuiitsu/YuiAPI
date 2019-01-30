@@ -111,16 +111,6 @@ Event.extend('common', function() {
                 }
                 e.stopPropagation();
             });
-        },
-
-        open_login_window: function() {
-            chrome.tabs.getCurrent(function(tab) {
-                console.log(tab);
-            });
-            //$('.login-action').on('click', '#login', function(e) {
-            //    window.open('https://www.yuiapi.com/api/v1/third_part/github/auth', '',
-            //        'width=500,height=800');
-            //})
         }
     };
 });

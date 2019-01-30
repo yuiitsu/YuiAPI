@@ -108,6 +108,8 @@ button{width:100%;height:100%;}
 .login-action{height:30px;line-height:30px;color:#bbb;padding-left:10px;}
 .login-action a{font-weight:bold;color:#fff;}
 .login-action i{font-weight:bold;color:#fff;font-size:20px;vertical-align: middle;}
+.user-login-bar{display: inline-block;margin-right:10px;}
+.user-login-bar .user-avatar{height:30px;vertical-align: middle;margin-right:10px;border-radius: 50%;}
 
 .left-content{background-color:#fff;padding:10px;flex: 1;display: flex;flex-direction: column;
     border-radius: 3px;}
@@ -392,6 +394,9 @@ button{width:100%;height:100%;}
 /* notification */
 #notification-box {position: fixed;width:300px;height:40px;padding:10px;border-radius: 3px;top:50px;left:50%;
     margin-left:-150px;color:#fff;text-align: center;}
+.notification{color:#fff;height:30px;line-height:30px;padding:0 10px;border-radius: 3px;}
+.notification-warring{background-color:#FFAA33;}
+.notification-warring i{color:#ff0000;}
 
 /* dialog */
 .dialog{position: relative;left:0;top:0;}

@@ -21,7 +21,9 @@
             "https://www.yuiapi.com/*"
         ],
         "js": [
-            "scripts/app.js"
+            "scripts/lib/jquery-1.11.0.min.js",
+            "scripts/app.js",
+            "scripts/module/content/module.js"
         ]
     }],
     "browser_action": {

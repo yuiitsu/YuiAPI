@@ -97,8 +97,7 @@ View.extend('history', function() {
             <table class="history-table font-color-white" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="w-30 border-bottom-light" style="cursor: pointer">
-                            <i class="mdi mdi-dots-horizontal font-size-20 history-all-action"></i>
+                        <th class="w-30 border-bottom-light">
                         </th>
                         <th class="w-50 border-bottom-light">Type</th>
                         <!--

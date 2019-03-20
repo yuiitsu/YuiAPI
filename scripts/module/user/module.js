@@ -17,7 +17,7 @@ App.extend('user', function() {
         });
 
         //
-        this.check_login();
+        // this.check_login();
         //
     };
 

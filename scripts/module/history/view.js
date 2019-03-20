@@ -120,7 +120,8 @@ View.extend('history', function() {
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         -->
                         <td class="border-bottom-light">
-                            <p class="history-name radius-small-all">{{ data[i]['name'] }}</p>
+                            <div></div>
+                            <p class="history-name radius-small-all"><span>{{ data[i]['status'] }}</span>{{ data[i]['name'] }}</p>
                             <p>{{ data[i]['url'] }}</p>
                         </td>
                     </tr>

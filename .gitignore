@@ -3,3 +3,6 @@
 .project
 /.settings
 /.vs
+/dist
+/node_modules
+package-lock.json

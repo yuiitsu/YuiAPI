@@ -73,8 +73,9 @@ App.extend('form', function() {
 
         // 检查响应数据类型
         if (content_type && content_type.indexOf('application/json') !== -1) {
-            response_data['response'] =
-                App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+            // response_data['response'] =
+            //     App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+            response_data['response'] = App.common.syntaxHighlightPro(response_data['response']);
         } else if (content_type && content_type.indexOf('image') !== -1) {
             let src = null;
             try {
@@ -105,10 +106,11 @@ App.extend('form', function() {
                 if (!response) {
                     try {
                         response = JSON.parse(response_data['response']);
-                        response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+                        response = App.common.syntaxHighlightPro(response);
                     } catch (e) {
                         if (typeof response_data['response'] === 'object') {
                             response = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+                            response = App.common.syntaxHighlightPro(response_data['response']);
                         } else {
                             response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         }
@@ -220,8 +222,7 @@ App.extend('form', function() {
         }
 
         if (content_type.indexOf('application/json') !== -1) {
-            response =
-                App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+            response = App.common.syntaxHighlightPro(response);
         //} else if (content_type && content_type.indexOf('text/html') !== -1) {
         //    response = response.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
@@ -231,11 +232,11 @@ App.extend('form', function() {
                 if (!response) {
                     try {
                         response = JSON.parse(response_data['response']);
-                        response = App.common.syntaxHighlight(JSON.stringify(response, undefined, 4));
+                        response = App.common.syntaxHighlightPro(response);
                     } catch (e) {
                         //response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         if (typeof response_data['response'] === 'object') {
-                            response = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
+                            response = App.common.syntaxHighlightPro(response_data['response']);
                         } else {
                             response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         }

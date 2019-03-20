@@ -1,0 +1,22 @@
+{
+  "name": "cef",
+  "version": "1.0.0",
+  "description": "",
+  "main": "builder.js",
+  "scripts": {
+    "dev": "node builder.js",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "onlyfu",
+  "license": "ISC",
+  "dependencies": {
+    "clean-css": "^4.1.2",
+    "uglify-js": "^3.0.4",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}

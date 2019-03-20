@@ -4,12 +4,15 @@
  */
 const Version = {
 
-    current_version: 'v0.10.0',
+    current_version: 'v1.0.0',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v1.0.0': [
+            'Added user account sync data'
+        ],
         'v0.10.0': [
             'Added code theme.',
             'Added code folding.',

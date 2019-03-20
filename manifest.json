@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "YuiAPI - A REST Client, Api Test and document",
+    "name": "YuiAPI - An easy-to-use REST client that helps you test the API",
     "short_name": "YuiAPI",
-    "version": "0.10.0",
-    "description":"REST Client, Api Test and document",
+    "version": "1.0.0",
+    "description":"An easy-to-use REST client that helps you test the API",
     "homepage_url": "https://www.yuiapi.com",
     "author":"Yuiitsu",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -27,7 +27,7 @@
         ]
     }],
     "browser_action": {
-        "default_title": "YuiAPI REST Client Test Document",
+        "default_title": "YuiAPI",
         "default_icon": "images/logo48.png"
     },
     "permissions": [

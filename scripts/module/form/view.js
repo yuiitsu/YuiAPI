@@ -457,15 +457,19 @@ View.extend('form', function() {
             {{ var status_class = data['status'] ? (data['status'] === 200 ? 'color-success' : 'color-failed') : 'color-failed' }}
             {{ var use_time = data['use_time'] ? data['use_time'] : 'None' }}
             {{ var response = data['response'] ? data['response'] : 'click the send button for a response' }}
+            {{ var codeThemeClass = 'code-theme-' + data['codeTheme'] }}
             <div class="output-content">
-                <div class="tabs-bottom">
+                <div class="tabs-bottom display-flex-row">
                     <ul class="response-type">
                         <li class="focus" data-id="result">body</li>
                         <li data-id="response-headers">headers</li>
                     </ul>
-                    
+                    <div class="display-flex-auto response-code-theme-selector">
+                        <span class="light"></span>
+                        <span class="dark"></span>
+                    </div>
                 </div>
-                <div class="result-box">
+                <div class="result-box {{ codeThemeClass }}">
                     <div class="result-top">
                         <div id="result-format">
                             <span class="focus">format</span>          
@@ -481,9 +485,11 @@ View.extend('form', function() {
                             <span id="send-time" class="font-bold">{{ use_time }}</span> ms
                         </div>
                     </div>
-                    <pre id="result" class="result-box-pre response-body">{{ response }}</pre>
-                    <pre id="response-headers" class="result-box-pre hide">{{ headers }}</pre>
-                    <input type="text" id="result-copy-input" />
+                    <div class="response-box display-flex-auto display-flex-column">
+                        <pre id="result" class="result-box-pre response-body">{{ response }}</pre>
+                        <pre id="response-headers" class="result-box-pre hide">{{ headers }}</pre>
+                        <input type="text" id="result-copy-input" />
+                    </div>
                 </div>
             </div>
         `;

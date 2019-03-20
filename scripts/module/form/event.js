@@ -91,6 +91,7 @@ Event.extend('form', function() {
 
                     $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
                     let result_obj = $('#result');
+                    result_obj.addClass('sending');
                     result_obj.css('background-color', '#efefef');
                     let start_timestamp=new Date().getTime();
 
@@ -448,21 +449,6 @@ Event.extend('form', function() {
                 e.stopPropagation();
             }).on('change', '#js-url-params .form-data-item', function(e) {
                 App.form.build_url_query_string();
-                //let url_params = App.form.get_url_params();
-                //if (Object.keys(url_params).length > 0) {
-                //    let query_string_list = [];
-                //    for (var i in url_params) {
-                //        if (url_params.hasOwnProperty(i)) {
-                //            query_string_list.push(url_params[i]['key'] + '=' + encodeURIComponent(url_params[i]['val']));
-                //        }
-                //    }
-                //    let query_string = query_string_list.join("&");
-                //    let target = $('#url');
-                //    let url = $.trim(target.val());
-                //    url = url.split('?')[0] + '?' + query_string;
-                //    target.val(url);
-                //}
-                //Model.set('url_params', {display: false, list: url_params});
             });
         },
         codeSwitch: function() {
@@ -473,10 +459,12 @@ Event.extend('form', function() {
 
                 if (parent.hasClass('row-root')) {
                     target = $('.row-child');
-                    if (parent.hasClass('row-close')) {
+                    if (parent.hasClass('row-root-close')) {
                         display = 'block';
+                        parent.removeClass('row-root-close');
                     } else {
                         display = 'none';
+                        parent.addClass('row-root-close');
                     }
                 }
 
@@ -506,6 +494,13 @@ Event.extend('form', function() {
                 });
                 e.stopPropagation();
             })
+        },
+        switchCodeTheme: function() {
+            $('#output-content').on('click', '.response-code-theme-selector span', function() {
+                let className = $(this).attr('class');
+                Model.set('codeTheme', className);
+                localStorage.setItem('codeTheme', className);
+            });
         }
     };
 });

@@ -14,7 +14,7 @@ let excludes = {
     'copy': [
         '.gitignore',
         '.DS_Store',
-        'builder.js',
+        'deploy.js',
         'package.json',
         'package-lock.json',
         'README.md',

@@ -38,6 +38,9 @@ App.extend('form', function() {
         assertion_data: ''
     };
 
+    Model.default['codeTheme'] = localStorage.getItem('codeTheme') ?
+        localStorage.getItem('codeTheme') : 'dark';
+
     /**
      * 初始化
      */
@@ -58,8 +61,10 @@ App.extend('form', function() {
         Model.set('request_data_raw', '');
         // 监听请求结果数据
         Model.set('response_data', '').watch('response_data', this.show_response);
+        Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
         // 渲染页面
         View.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '#form-box');
+        //
         View.display('form', 'response_layout', {}, '#output-content');
     };
 
@@ -67,10 +72,11 @@ App.extend('form', function() {
      * 渲染响应结果到页面
      */
     this.show_response = function() {
-        let request_data = Model.get('request_data');
-        let response_data = Model.get('response_data');
-        let content_type = response_data['response_content_type'];
+        let request_data = Model.get('request_data'),
+            response_data = Model.get('response_data'),
+            content_type = response_data['response_content_type'];
 
+        response_data['codeTheme'] = Model.get('codeTheme');
         // 检查响应数据类型
         if (content_type && content_type.indexOf('application/json') !== -1) {
             // response_data['response'] =
@@ -109,7 +115,6 @@ App.extend('form', function() {
                         response = App.common.syntaxHighlightPro(response);
                     } catch (e) {
                         if (typeof response_data['response'] === 'object') {
-                            response = App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
                             response = App.common.syntaxHighlightPro(response_data['response']);
                         } else {
                             response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -486,6 +491,12 @@ App.extend('form', function() {
         url = url.split('?')[0] + '?' + query_string;
         target.val(url);
         Model.set('url_params', {display: false, list: url_params});
+    };
+
+    this.renderCodeTheme = function() {
+        let codeTheme = Model.get('codeTheme');
+        $('#result').removeClass('code-theme-light')
+            .removeClass('code-theme-dark').addClass('code-theme-' + codeTheme);
     };
 
     ///**

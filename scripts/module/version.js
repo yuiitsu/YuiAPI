@@ -11,6 +11,7 @@ const Version = {
      */
     update_logs: {
         'v0.10.0': [
+            'Added code theme.',
             'Added code folding.',
             'Adjusted history tab.'
         ],

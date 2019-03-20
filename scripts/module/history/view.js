@@ -120,8 +120,15 @@ View.extend('history', function() {
                         <td class="border-bottom-light">{{ data[i]['name'] }}</td>
                         -->
                         <td class="border-bottom-light">
-                            <div></div>
-                            <p class="history-name radius-small-all"><span>{{ data[i]['status'] }}</span>{{ data[i]['name'] }}</p>
+                            <div class="display-flex-row">
+                                {{ var statusClass = data[i]['status'] === 200 ? 'color-success' : 'color-failed' }}
+                                <div class="{{ statusClass }} font-bold history-item-status">{{ data[i]['status'] }}</div>
+                                <div class="display-flex-auto">
+                                    {{ if data[i]['name'] }}
+                                    <span class=" history-name radius-small-all">{{ data[i]['name'] }}</span>
+                                    {{ end }}
+                                </div>
+                            </div>
                             <p>{{ data[i]['url'] }}</p>
                         </td>
                     </tr>

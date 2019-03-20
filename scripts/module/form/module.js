@@ -495,7 +495,7 @@ App.extend('form', function() {
 
     this.renderCodeTheme = function() {
         let codeTheme = Model.get('codeTheme');
-        $('#result').removeClass('code-theme-light')
+        $('.result-box').removeClass('code-theme-light')
             .removeClass('code-theme-dark').addClass('code-theme-' + codeTheme);
     };
 

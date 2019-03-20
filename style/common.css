@@ -4,7 +4,8 @@ Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Mi
 a{text-decoration: none;color:#444;}
 ul{list-style: none;}
 select{background-color:#fff;border-color: #eaeaea;}
-textarea{outline: none;border:1px solid #eaeaea;padding:10px;}
+textarea{outline: none;border:1px solid #eaeaea;padding:10px;font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,
+Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;}
 textarea:focus{border:1px solid #d5d5d5;}
 button{width:100%;height:100%;}
 
@@ -95,7 +96,7 @@ button{width:100%;height:100%;}
     display: flex;flex-direction: column;}
 .left-top-line{height:40px;}
 .logo{height:40px;line-height:40px;color:#fff;vertical-align: top;font-size:18px;font-weight:700;}
-.logo img{height:30px;float:left;margin-right:10px;}
+.logo img{height:31px;float:left;margin-right:10px;}
 .logo a{color:#fff;text-shadow: 2px 2px 2px #000;}
 .logo em{font-size:12px;margin-left:5px;font-weight:100;}
 
@@ -246,7 +247,7 @@ button{width:100%;height:100%;}
     border-right:0;}
 .history-tab-container div.focus{background-color:#fff;border-right:0;color:#000;}
 .history-tab-container div.focus:hover{background-color:#fff;}
-.history-tab-container div.focus em{display:inline-block;width:5px;height:5px;border-radius:50%;background-color:#ff0000;
+.history-tab-container div.focus em{display:inline-block;width:5px;height:5px;border-radius:50%;background-color:#009900;
     position:absolute;left:1px;top:1px;}
 /* history-list */
 .history-list-box{flex: 1;overflow: auto;-webkit-touch-callout: none;user-select: none;}
@@ -359,7 +360,6 @@ button{width:100%;height:100%;}
 /* code theme */
 .response-box{}
 .response-box pre::-webkit-scrollbar {width: 1px;height:5px;}
-.response-box pre.sending{}
 .code-theme-light pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);background-color:#fff;color:#222;}
 .code-theme-light .code-string{color:#993300;}
 .code-theme-light .code-number{color:#cc00cc;}
@@ -367,6 +367,7 @@ button{width:100%;height:100%;}
 .code-theme-light .code-null{color:magenta;}
 .code-theme-light .code-key{color:#003377;font-weight:bold;}
 .code-theme-light #result-format span.focus{background-color:#fff;color:#000;}
+.code-theme-light .sending pre{background-color:#efefef;}
 
 .response-box pre.code-theme-dark::-webkit-scrollbar-thumb {border-radius:0;background:#828281;box-shadow:rgba(0,0,0,0.5);}
 .code-theme-dark pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);background-color:#272822;color:#fff;}
@@ -376,6 +377,7 @@ button{width:100%;height:100%;}
 .code-theme-dark .code-null{color:magenta;}
 .code-theme-dark .code-key{color:#A6E22E;font-weight:bold;}
 .code-theme-dark #result-format span.focus{background-color:#272822;color:#fff;}
+.code-theme-dark .sending pre{background-color:#333;}
 
 /* cookies */
 .cookies-table{width:100%;font-size: 14px;}

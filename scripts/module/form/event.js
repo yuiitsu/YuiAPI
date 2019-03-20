@@ -91,8 +91,8 @@ Event.extend('form', function() {
 
                     $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
                     let result_obj = $('#result');
-                    result_obj.addClass('sending');
-                    result_obj.css('background-color', '#efefef');
+                    result_obj.parent().addClass('sending');
+                    // result_obj.css('background-color', '#efefef');
                     let start_timestamp=new Date().getTime();
 
                     //App.form.send(url, request_params, formData['data'], function() {

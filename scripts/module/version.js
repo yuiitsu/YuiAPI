@@ -11,7 +11,8 @@ const Version = {
      */
     update_logs: {
         'v1.0.0': [
-            'Added user account sync data'
+            'Added user account sync data',
+            'Added theme selection'
         ],
         'v0.10.0': [
             'Added code theme.',

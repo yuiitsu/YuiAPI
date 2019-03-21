@@ -1,7 +1,7 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-App.extend('common', function() {
+App.module.extend('common', function() {
     let self = this;
     this.cache = {
         /**
@@ -466,6 +466,7 @@ App.extend('common', function() {
                         if (typeof data[i] === 'string') {
                             classValue = 'code-string';
                             value = '"'+ value + '"';
+                            value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                         }
                         result.push('<div class="child row-node">'+ key +
                             '<span class="code-value '+ classValue +'">'+ value +'</span></div>');

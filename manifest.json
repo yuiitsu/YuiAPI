@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "YuiAPI - An easy-to-use REST client that helps you test the API",
+    "name": "YuiAPI - An easy-to-use rest client that helps you test the api",
     "short_name": "YuiAPI",
     "version": "1.0.0",
-    "description":"An easy-to-use REST client that helps you test the API",
+    "description":"An easy-to-use rest client that helps you test the api",
     "homepage_url": "https://www.yuiapi.com",
     "author":"Yuiitsu",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -12,7 +12,7 @@
         "scripts": [
             "scripts/lib/jquery-1.11.0.min.js",
             "scripts/app.js",
-            "scripts/background.js"
+            "scripts/module/background/module.js"
         ]
     },
     "content_scripts": [{

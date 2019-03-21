@@ -1,7 +1,7 @@
 /**
  * Created by onlyfu on 2017/9/6.
  */
-App.extend('history', function() {
+App.module.extend('history', function() {
 
     this.host =  '';
     this.listKey = 'history_list';
@@ -13,8 +13,7 @@ App.extend('history', function() {
     this.history_tab_key = 'history_tab';
 
     this.init = function() {
-        Model.set('history_tab_list', [])
-            .watch('history_tab_list', this.show_history_tab);
+        Model.set('history_tab_list', []).watch('history_tab_list', this.show_history_tab);
         this.init_interface();
     };
 
@@ -128,16 +127,44 @@ App.extend('history', function() {
      */
     this.init_interface = function() {
         // host列表
-        let host_list = this.get_host_list();
-        let history_list = this.get_history_list(null, null);
-        let data = {
-            host_list: host_list,
-            history_list: history_list
-        };
-        View.display('history', 'main', data, '#history-content');
-        this.show_history_count(history_list);
+        let hostList = this.get_host_list(),
+            historyList = this.get_history_list(null, null),
+            groupList = this.module.group.group_list,
+            data = {
+                hostList: hostList,
+                groupHistoryList: {}
+            };
+
+        // 根据group分组
+        let groupListLen = groupList.length,
+            historyListLen = historyList.length,
+            groupObject = {};
+
+        for (let i = 0; i < groupListLen; i++) {
+            groupObject[groupList[i]['group_id']] = groupList[i];
+        }
         //
-        this.init_history_tab();
+        for (let i = 0; i < historyListLen; i++) {
+            let groupId = historyList[i]['group_id'];
+            groupId = groupId ? groupId : 'default';
+            if (!data.groupHistoryList.hasOwnProperty(groupId)) {
+                let groupName = 'default';
+                if (groupObject.hasOwnProperty(groupId)) {
+                    groupName = groupObject[groupId]['name']
+                }
+                data.groupHistoryList[groupId] = {
+                    groupName: groupName,
+                    historyList: []
+                };
+            } else {
+                data.groupHistoryList[groupId]['historyList'].push(historyList[i]);
+            }
+        }
+
+        this.view.display('history', 'main', data, '.history-container');
+        // this.show_history_count(history_list);
+        //
+        // this.init_history_tab();
     };
 
     this.init_history_tab = function() {
@@ -389,6 +416,7 @@ App.extend('history', function() {
         try {
             result =  JSON.parse(localStorage.getItem(this.dataKey));
         } catch (e) {
+            console.error(e);
         }
 
         return result ? result : {};

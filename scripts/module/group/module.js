@@ -2,22 +2,22 @@
  * group module
  * Created by onlyfu on 2018/05/25.
  */
-App.extend('group', function() {
+App.module.extend('group', function() {
 
     let self = this;
     // 列表存储key
     this.history_group_key = 'group_history';
     this.list_key = 'group_list';
-    this.group_list = self.common.cache.getListData(this.list_key);
-    this.group_history = self.common.cache.getListData(this.history_group_key, {});
+    this.group_list = this.module.common.cache.getListData(this.list_key);
+    this.group_history = this.module.common.cache.getListData(this.history_group_key, {});
 
     /**
      * 初始化
      */
     this.init = function() {
-        Model.set('group_list', this.group_list).watch('group_list', this.display);
-        Model.set('group_history', this.group_history).watch('group_history', this.display);
-        View.display('group', 'list', this.group_list, '#history-group');
+        // Model.set('group_list', this.group_list).watch('group_list', this.display);
+        // Model.set('group_history', this.group_history).watch('group_history', this.display);
+        // View.display('group', 'list', this.group_list, '#history-group');
     };
 
     /**
@@ -118,6 +118,10 @@ App.extend('group', function() {
         }
         self.common.cache.save(this.history_group_key, this.group_history);
         Model.set('group_list', this.group_list);
+    };
+
+    this.getGroupList = function() {
+        return this.group_list;
     };
 
     /**

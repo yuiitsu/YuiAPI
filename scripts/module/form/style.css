@@ -1,0 +1,57 @@
+.form-container {
+    padding: 10px;
+}
+.form-header {
+
+}
+.form-name {
+    padding: 3px 10px;
+    border-radius: 25px;
+}
+.form-host-selector {
+    font-size: 24px;
+    cursor: pointer;
+}
+.form-url-line {
+    padding: 5px 0;
+}
+.form-request-type select {
+    height:32px;
+}
+.form-request-url-container {
+    padding: 0 2px;
+    margin: 0 2px;
+    border-radius: 3px;
+    align-items: center;
+}
+.form-request-url-container input {
+    border-radius: 3px;
+    border:0;
+}
+.form-request-send-container {
+    width:100px;
+}
+
+.form-request-headers-line {
+    padding: 10px 4px;
+}
+.form-request-headers-line nav {
+    padding-bottom: 15px;
+}
+.form-request-headers-line nav a{
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 25px;
+    height: 25px;
+    line-height: 25px;
+}
+.form-request-data-type-container {
+    padding: 10px 0;
+}
+.form-data-table {
+    width:100%;
+    font-size: 13px;
+}
+.form-data-table td {
+    padding: 5px 0;
+}

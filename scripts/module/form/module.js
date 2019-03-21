@@ -2,7 +2,7 @@
  * form module
  * Created by onlyfu on 2018/05/25.
  */
-App.extend('form', function() {
+App.module.extend('form', function() {
     // 已选择group id
     this.selected_group_id = '';
     // 
@@ -63,9 +63,9 @@ App.extend('form', function() {
         Model.set('response_data', '').watch('response_data', this.show_response);
         Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
         // 渲染页面
-        View.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '#form-box');
+        this.view.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '.form-container');
         //
-        View.display('form', 'response_layout', {}, '#output-content');
+        // View.display('form', 'response_layout', {}, '#output-content');
     };
 
     /**
@@ -498,54 +498,5 @@ App.extend('form', function() {
         $('.result-box').removeClass('code-theme-light')
             .removeClass('code-theme-dark').addClass('code-theme-' + codeTheme);
     };
-
-    ///**
-    // * 发送请求
-    // * @param url
-    // * @param request_params
-    // * @param form_data
-    // * @param callback
-    // */
-    //this.send = function(request_data, group_id, start_timestamp, callback) {
-    //    let url = request_data['url'],
-    //        params = request_data['params'],
-    //        form_data = request_data['form_data'];
-    //    App.common.request(url, params, form_data, function(res, jqXHR) {
-    //        callback();
-
-    //        //
-    //        let headers = jqXHR.getAllResponseHeaders();
-    //        let response_content_type = jqXHR.getResponseHeader('content-type');
-    //        // 时间
-    //        let end_timestamp = new Date().getTime();
-    //        let use_time = end_timestamp - start_timestamp;
-
-    //        let response_data = {
-    //            'headers': jqXHR.getAllResponseHeaders(),
-    //            'response': res,
-    //            'response_content_type': response_content_type ? response_content_type : '',
-    //            'use_time': use_time,
-    //            'status': jqXHR.status
-    //        };
-    //        Model.set('response_data', response_data);
-
-    //        App.form.selected_group_id = group_id;
-    //        // 写入History
-    //        App.history.add({
-    //            url: url,
-    //            type: App.requestType,
-    //            name: apiName,
-    //            headers: headers,
-    //            data: formData['history_data'],
-    //            data_type: form_data_type,
-    //            request_headers: header_data['history_data'],
-    //            response_content_type: response_content_type,
-    //            result: res,
-    //            time: use_time,
-    //            status: jqXHR.status,
-    //            group_id: group_id
-    //        });
-    //    });
-    //};
 });
 

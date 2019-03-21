@@ -1,0 +1,9 @@
+.user-container {
+    text-align:right;
+    height:45px;
+    line-height:45px;
+    padding: 0 10px;
+}
+.user-container .mdi {
+    font-size: 20px;
+}

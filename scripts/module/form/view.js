@@ -2,7 +2,7 @@
  * 表单View
  * Created by Yuiitsu on 2018/05/22.
  */
-View.extend('form', function() {
+App.view.extend('form', function() {
 
     /**
      * 
@@ -193,62 +193,110 @@ View.extend('form', function() {
      */
     this.layout = function() {
         return `
-            <!-- form api name line start -->
-            {{ this.get_view('form', 'form_api_name_line', data) }}
-            <!-- form api name line end -->
+            <div class="form-header display-flex-row">
+                <input type="text" class="input-text form-name bg-level-3 border-level-0 display-flex-auto" placeholder="API Name" />
+            </div>
 
-            <div class="form">
-                <!-- form api url line start -->
-                {{ this.get_view('form', 'form_api_url_line', data) }}
-                <!-- form api url line end -->
-                
-                <!-- form data headers -->
-                <div class="form-data form-headers" id="js-form-headers-box">
-                    {{ this.get_view('form', 'headers_layout', data) }}
+            <div class="form-url-line display-flex-row">
+                <div class="form-request-type">
+                    <select id="request-type" class="bg-level-3 border-level-0">
+                        <option value="GET" selected="selected">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                        <option value="OPTIONS">OPTIONS</option>
+                    </select>
                 </div>
-                
-                <div class="form-data form-body bg-light">
-                    <h2>Body</h2>
-                    <!--
-                    <table class="form-data-table hide" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <td><input type="checkbox" class="form-select-all" checked="checked" /></td>
-                                <td>Key</td>
-                                <td>Value</td>
-                                <td>description</td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody id="form-data-headers" class="form-data-input">
-                            {{ this.get_view('form', 'form_header_line', {}) }}
-                        </tbody>
-                    </table>
-                    -->
-                    <!-- form data body -->
-                    <form id="form-data-form">{{ this.get_view('form', 'form', {'data': data['data'], 'data_type': data['data_type']}, '') }}</form>
-                    <!-- assert -->
-                    <!--
-                    <table class="form-data-table hide" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <td>
-                                    <label><input type="radio" name="form-data-assert-type" value="String" /> String</label>
-                                    <label><input type="radio" name="form-data-assert-type" checked="checked" value="Json" /> Json</label>
-                                    <label><input type="radio" name="form-data-assert-type" value="Xml" /> Xml</label>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <textarea style="padding:10px;width:100%;height:300px;" id="form-data-assert"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    -->
+                <div class="display-flex-auto form-request-url-container display-flex-row bg-level-3 border-level-0">
+                    <div class="display-flex">
+                        <i class="mdi mdi-alpha-h-box form-host-selector"></i>
+                    </div>
+                    <input type="text" class="input-text form-name bg-level-3 display-flex-auto" placeholder="API URL" />
                 </div>
+                <div class="form-request-send-container">
+                    <button id="send" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+
+            <div class="form-request-headers-line">
+                <nav>
+                    <a href="#" class="bg-level-0"><strong>Headers</strong></a>
+                    <a href="#"><strong>Authentication</strong></a>
+                    <a href="#"><strong>Params</strong></a>
+                </nav>
+                <table class="form-data-table border-top-level-1" cellspacing="0" id="js-form-headers-body">
+                    <thead>
+                    <tr>
+                        <td class="border-bottom-level-1"><input type="checkbox" class="form-select-all" checked="checked"></td>
+                        <td class="border-bottom-level-1">Key</td>
+                        <td class="border-bottom-level-1">Value</td>
+                        <td class="border-bottom-level-1">Description</td>
+                        <td class="border-bottom-level-1"></td>
+                    </tr>
+                    </thead>
+                    <tbody id="form-data-headers" class="form-data-input">
+                    <tr>
+                        <td><input type="checkbox" class="form-select" checked="checked" /></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-value form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-description form-data-item input-text" data-type="form-data-headers"></td>
+                        <td class="cursor-pointer form-line-del-box">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-request-headers-line">
+                <nav>
+                    <a href="#" class="bg-level-0"><strong>Body</strong></a>
+                </nav>
+                <div class="form-request-data-type-container display-flex-row border-top-level-1">
+                    <div class="display-flex-auto">
+                        <label class="form-request-data-type">
+                            <input type="radio" name="form-data-type" value="form-data-true"> form-data
+                        </label>
+                        <label class="form-request-data-type">
+                            <input type="radio" name="form-data-type" value="form-data" checked="checked"> x-www-form-urlencoded
+                        </label>
+                        <label class="form-request-data-type">
+                            <input type="radio" name="form-data-type" value="raw"> raw
+                        </label>
+                    </div>
+                    <a href="#">
+                        <i class="mdi mdi-square-edit-outline"></i> Edit Parameter
+                    </a>
+                </div>
+                <table class="form-data-table border-top-level-1" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <td class="border-bottom-level-1"><input type="checkbox" class="form-select-all" checked="checked"></td>
+                        <td class="border-bottom-level-1">Key</td>
+                        <td class="border-bottom-level-1">Value</td>
+                        <td class="border-bottom-level-1">Description</td>
+                        <td class="border-bottom-level-1"></td>
+                    </tr>
+                    </thead>
+                    <tbody class="form-data-input">
+                    <tr>
+                        <td><input type="checkbox" class="form-select" checked="checked" /></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-value form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-description form-data-item input-text" data-type="form-data-headers"></td>
+                        <td class="cursor-pointer form-line-del-box">
+                            <i class="mdi mdi-close"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-select" checked="checked" /></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-value form-data-item input-text" data-type="form-data-headers"></td>
+                        <td><input type="text" class="bg-level-3 border-level-0 form-description form-data-item input-text" data-type="form-data-headers"></td>
+                        <td class="cursor-pointer form-line-del-box">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         `;
     };

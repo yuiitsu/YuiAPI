@@ -49,84 +49,23 @@ App.module.extend('form', function() {
         // 请求表单类型，变化后，切换对应表单
         Model.set('request_form_type', 'form-data');
         // 切换解发事件用，值等于request_form_type
-        Model.set('request_form_type_tmp', 'form-data').watch('request_form_type_tmp', this.change_form);
+        // Model.set('request_form_type_tmp', 'form-data').watch('request_form_type_tmp', this.change_form);
         // 整个请求数据对象，包括url，request type, params等
-        Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
+        // Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
         Model.set('request_headers', Model.default.request_headers);
         Model.set('authentication', Model.default.authentication);
-        Model.set('request_data', Model.default.request_data).watch('request_data', this.show_form);
+        // Model.set('request_data', Model.default.request_data).watch('request_data', this.show_form);
         // 请求参数,三种类型分别存储
         Model.set('request_data_form-data', {});
         Model.set('request_data_form-data-true', {});
         Model.set('request_data_raw', '');
         // 监听请求结果数据
-        Model.set('response_data', '').watch('response_data', this.show_response);
-        Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
+        //Model.set('response_data', '').watch('response_data', this.show_response);
+        // Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
         // 渲染页面
         this.view.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '.form-container');
         //
         // View.display('form', 'response_layout', {}, '#output-content');
-    };
-
-    /**
-     * 渲染响应结果到页面
-     */
-    this.show_response = function() {
-        let request_data = Model.get('request_data'),
-            response_data = Model.get('response_data'),
-            content_type = response_data['response_content_type'];
-
-        response_data['codeTheme'] = Model.get('codeTheme');
-        // 检查响应数据类型
-        if (content_type && content_type.indexOf('application/json') !== -1) {
-            // response_data['response'] =
-            //     App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
-            response_data['response'] = App.common.syntaxHighlightPro(response_data['response']);
-        } else if (content_type && content_type.indexOf('image') !== -1) {
-            let src = null;
-            try {
-                let url = window.URL || window.webkitURL;
-                src = url.createObjectURL(response_data['response']);
-            } catch (e) {
-                if (typeof response_data['response'] === 'string') {
-                    // src = window.btoa(response_data['response']);
-                    //src = 'data:image/png;base64,' + response_data['response'];
-                    src = request_data.url;
-                }
-            }
-
-            if (src) {
-                response_data['response'] = '<img src="'+ src +'" />';
-            } else {
-                response_data['response'] = 'Image Blob data cannot be displayed. Please send the request.';
-            }
-        } else if (content_type && (content_type.indexOf('text/xml') !== -1 ||
-            content_type.indexOf('application/xml') !== -1)) {
-            response_data['response'] = self.parse_xml(response_data['response']);
-        //} else if (content_type && content_type.indexOf('text/html') !== -1) {
-        //    response_data['response'] = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        } else {
-            let response = 'Failed to load response data';
-            if (response_data['response']) {
-                response = self.parse_xml(response_data['response']);
-                if (!response) {
-                    try {
-                        response = JSON.parse(response_data['response']);
-                        response = App.common.syntaxHighlightPro(response);
-                    } catch (e) {
-                        if (typeof response_data['response'] === 'object') {
-                            response = App.common.syntaxHighlightPro(response_data['response']);
-                        } else {
-                            response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                        }
-                    }
-                }
-            }
-
-            response_data['response'] = response;
-        }
-
-        View.display('form', 'response_layout', response_data, '#output-content');
     };
 
     /**

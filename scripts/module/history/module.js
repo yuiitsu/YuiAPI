@@ -3,6 +3,7 @@
  */
 App.module.extend('history', function() {
 
+    let self = this;
     this.host =  '';
     this.listKey = 'history_list';
     this.dataKey = 'history_data';
@@ -315,13 +316,13 @@ App.module.extend('history', function() {
      * @param history_data 选中的history data
      */
     this.set_history_tab = function(history_data) {
-        let history_tab_list = this.common.cache.getListData(this.history_tab_key);
+        let history_tab_list = this.module.common.cache.getListData(this.history_tab_key);
         let history_tab_list_len = history_tab_list.length,
             is_exist = false;
 
         for (let i = 0; i < history_tab_list_len; i++) {
             let hash = history_tab_list[i]['hash'];
-            if (hash === this.common.md5(history_data['url'])) {
+            if (hash === this.module.common.md5(history_data['url'])) {
                 history_tab_list[i]['name'] = history_data['name'];
                 history_tab_list[i]['url'] = history_data['url'];
                 history_tab_list[i]['focus'] = 1;
@@ -335,7 +336,7 @@ App.module.extend('history', function() {
             history_tab_list.push({
                 name: history_data['name'],
                 url: history_data['url'],
-                hash: this.common.md5(history_data['url']),
+                hash: this.module.common.md5(history_data['url']),
                 focus: 1
             });
 
@@ -345,7 +346,7 @@ App.module.extend('history', function() {
         }
 
         //
-        this.common.cache.save(this.history_tab_key, history_tab_list);
+        this.module.common.cache.save(this.history_tab_key, history_tab_list);
         //
         Model.set('history_tab_list', history_tab_list);
     };
@@ -371,7 +372,7 @@ App.module.extend('history', function() {
 
     this.show_history_tab = function() {
         let history_tab_list = Model.get('history_tab_list');
-        View.display('history', 'history_tab', history_tab_list, '#history-tab');
+        self.view.display('history', 'history_tab', history_tab_list, '#history-tab');
     };
 
     /**
@@ -653,7 +654,7 @@ App.module.extend('history', function() {
     };
 
     this.open_data = function(key) {
-        let historyData = App.history.getData();
+        let historyData = self.getData();
         if (historyData[key]) {
             let requestType = historyData[key]['type'],
                 form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
@@ -684,7 +685,7 @@ App.module.extend('history', function() {
             Model.set('authentication', historyData[key]['authentication']);
             App.requestType = requestType;
 
-            App.history.set_history_tab(historyData[key]);
+            this.set_history_tab(historyData[key]);
 
             // assert
             //let assert_data = App.history.get_assert_data(),

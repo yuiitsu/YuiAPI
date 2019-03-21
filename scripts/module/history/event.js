@@ -2,7 +2,9 @@
  * 历史记录的事件监听
  * Created by Yuiitsu on 2018/05/21.
  */
-Event.extend('history', function() {
+App.event.extend('history', function() {
+    //
+    let self = this;
     /**
      * 事件
      */
@@ -20,6 +22,21 @@ Event.extend('history', function() {
                 App.history.build_ui_list(null, host);
                 e.stopPropagation();
             });
+        },
+
+        groupSwitch: function() {
+            $('.history-container').on('click', '.history-group-switch', function(e) {
+                let target = $(this).parent().next(),
+                    icon = $(this).find('i:first-child');
+
+                if (target.css('display') === 'none') {
+                    target.show();
+                    icon.removeClass('folder');
+                } else {
+                    target.hide();
+                    icon.addClass('folder');
+                }
+            })
         },
 
         /**
@@ -76,10 +93,10 @@ Event.extend('history', function() {
          * 打开一个history
          */
         history_item_select: function() {
-            $('#history-content').on('click', '#history-list-box tr', function(e) {
+            $('.history-container').on('click', '.history-item', function(e) {
                 // 选中数据
                 let key = $(this).attr('data-key');
-                App.history.open_data(key);
+                self.module.history.open_data(key);
                 // // 从缓存中获取数据
                 // let historyData = App.history.getData();
                 // if (historyData[key]) {

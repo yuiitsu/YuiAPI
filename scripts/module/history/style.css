@@ -1,3 +1,9 @@
+@keyframes rotate{
+    0%{ transform: rotate(0deg);}
+    50%{ transform: rotate(45deg);}
+    100%{ transform: rotate(90deg);}
+}
+
 .history-container {
     max-width: 300px;
 }
@@ -36,6 +42,16 @@
 .history-group-item i {
     font-size:16px;
 }
+.history-group-switch {
+    cursor: pointer;
+}
+.history-group-switch i.folder {
+    transform:rotate(9deg);
+    -ms-transform:rotate(9deg); /* Internet Explorer */
+    -moz-transform:rotate(9deg); /* Firefox */
+    -webkit-transform:rotate(9deg); /* Safari 和 Chrome */
+    -o-transform:rotate(9deg); /* Opera */
+}
 
 .history-list-container ul li {
     padding: 10px;
@@ -61,3 +77,4 @@
 .history-type-GET {
     background-color:#009900;
 }
+

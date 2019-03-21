@@ -19,7 +19,7 @@ App.view.extend('history', function() {
                 {{ var groupHistory = data['groupHistoryList'][i] }}
                 <div class="history-group-item">
                     <div class="display-flex-row">
-                        <div class="display-flex-auto">
+                        <div class="display-flex-auto history-group-switch">
                             <i class="mdi mdi-menu-down"></i>
                             <i class="mdi mdi-folder"></i>
                             {{ groupHistory['groupName'] }}
@@ -30,7 +30,7 @@ App.view.extend('history', function() {
                         {{ for var j in groupHistory['historyList'] }}
                         {{ var history = groupHistory['historyList'][j] }}
                         {{ var statusClass = history['status'] === 200 ? 'color-success' : 'color-danger' }}
-                        <li class="border-bottom-level-1">
+                        <li class="border-bottom-level-1 history-item" data-key="{{ history['key'] }}">
                             <div class="history-list-status-line">
                                 <span class="bg-level-0 history-type history-type-{{ history['type'] }}">{{ history['type'] }}</span>
                                 <span class="{{ statusClass }}">{{ history['status'] }}</span>

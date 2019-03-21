@@ -16,6 +16,8 @@
 }
 .response-body pre {
     overflow-y: auto;
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,
+    Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;
 }
 /* code theme */
 .response-body{}

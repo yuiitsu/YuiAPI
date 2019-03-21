@@ -1,0 +1,50 @@
+.response-container{
+    min-width: 500px;
+}
+.response-header {
+    padding: 10px;
+}
+.response-header-tab a {
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 25px;
+    height:25px;
+    line-height:25px;
+}
+.response-body {
+    padding: 10px;
+}
+.response-body pre {
+    overflow-y: auto;
+}
+/* code theme */
+.response-body{}
+.response-body pre div{position:relative;padding-left:20px;font-size:14px;}
+.response-body pre div i{position:absolute;left: 0;top:0;font-size:16px;display: inline-block;
+    width:13px;height:13px;cursor:pointer;}
+.response-body pre div.child{padding-left:25px;background: url('../../../images/line.png') repeat-y 0 0;
+    background-size: 16px 22px;}
+.response-body pre div.row-root{background: url('../../../images/open_root.png') no-repeat 0 -5px;background-size: 16px 22px;}
+.response-body pre div.row-child{background: url('../../../images/open.png') no-repeat 0 -5px;background-size: 16px 22px;}
+.response-body pre div.row-node{background: url('../../../images/node.png') no-repeat 0 -5px;background-size: 16px 22px;}
+.response-body pre div.row-close{background: url('../../../images/folder.png') no-repeat 0 -5px;background-size: 16px 22px;}
+.response-body pre div.row-root-close{background: url('../../../images/folder_root.png') no-repeat 0 -5px;background-size: 16px 22px;}
+
+.code-theme-light pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);background-color:#fff;color:#222;}
+.code-theme-light .code-string{color:#993300;}
+.code-theme-light .code-number{color:#cc00cc;}
+.code-theme-light .code-boolean{color:#000033;}
+.code-theme-light .code-null{color:magenta;}
+.code-theme-light .code-key{color:#003377;font-weight:bold;}
+.code-theme-light #result-format span.focus{background-color:#fff;color:#000;}
+.code-theme-light .sending pre{background-color:#efefef;}
+
+.response-body pre.code-theme-dark::-webkit-scrollbar-thumb {border-radius:0;background:#828281;box-shadow:rgba(0,0,0,0.5);}
+.code-theme-dark pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);background-color:rgb(50, 54, 57);color:#fff;}
+.code-theme-dark .code-string{color:#66D9EF;}
+.code-theme-dark .code-number{color:#F92672;}
+.code-theme-dark .code-boolean{color:#000033;}
+.code-theme-dark .code-null{color:magenta;}
+.code-theme-dark .code-key{color:#A6E22E;font-weight:bold;}
+.code-theme-dark #result-format span.focus{background-color:rgb(50, 54, 57);color:#fff;}
+.code-theme-dark .sending pre{background-color:#333;}

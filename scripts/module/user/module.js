@@ -1,7 +1,7 @@
 /**
  * User Module
  */
-App.extend('user', function() {
+App.module.extend('user', function() {
     //
     let self = this;
 
@@ -17,7 +17,7 @@ App.extend('user', function() {
         });
 
         //
-        // this.check_login();
+        this.check_login();
         //
     };
 

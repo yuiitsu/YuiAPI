@@ -1,7 +1,7 @@
 /**
  * background js
  */
-App.extend('background', function() {
+App.module.extend('background', function() {
 
     let self = this;
 

@@ -2,60 +2,47 @@
  * 历史记录View
  * Created by Yuiitsu on 2018/05/21.
  */
-View.extend('history', function() {
+App.view.extend('history', function() {
     /**
      * 主界面
      */
     this.main = function() {
         return `
-            <!-- History search start -->
-            <div class="test-count-line left-content-top">
-                <div class="test-count-data history-search-box">
-                    <label class="history-search-label">Search:</label>
-                    <input type="text" class="input-text" id="history-search" placeholder="name or url keywords. press enter" />
+            <div class="history-host-selector-container">
+                <div class="history-host-selector bg-level-3 display-flex-row">
+                    <div class="display-flex-auto">All host</div>
+                    <i class="mdi mdi-chevron-down"></i>
                 </div>
             </div>
-            <!-- History search end -->
-            <div class="left-content-main">
-                {{ if (data['host_list'] && data['host_list'].length > 0) || (data['history_list'] && data['history_list'].length > 0) }}
-                <!-- History host start -->
-                <div class="history-group-box" id="history-sidebar">{{ View.get_view('history', 'sidebar', data['host_list']) }}</div>
-                <div class="history-switch" id="history-switch-button" title="Hide the sidebar">
-                    <i class="mdi mdi-chevron-left vertical-middle"></i>
-                </div>
-                <!-- History host end -->
-                <!-- History list-box start -->
-                <div class="history-list-box" id="history-list-box">{{ View.get_view('history', 'main_list', data['history_list']) }}</div>
-                <!-- History list-box end -->
-                {{ else }}
-                <div class="history-empty">
-                    <div class="history-empty-box">
-                        <h2><i class="mdi mdi-numeric-0-box-multiple-outline"></i></h2>
-                        <p>Nothing in your history box. Requests that you send will be saved here.</p>
+            <div class="history-list-container display-flex-auto">
+                {{ for var i in data['groupHistoryList'] }}
+                {{ var groupHistory = data['groupHistoryList'][i] }}
+                <div class="history-group-item">
+                    <div class="display-flex-row">
+                        <div class="display-flex-auto">
+                            <i class="mdi mdi-menu-down"></i>
+                            <i class="mdi mdi-folder"></i>
+                            {{ groupHistory['groupName'] }}
+                        </div>
+                        <i class="mdi mdi-dots-vertical"></i>
                     </div>
+                    <ul>
+                        {{ for var j in groupHistory['historyList'] }}
+                        {{ var history = groupHistory['historyList'][j] }}
+                        {{ var statusClass = history['status'] === 200 ? 'color-success' : 'color-danger' }}
+                        <li class="border-bottom-level-1">
+                            <div class="history-list-status-line">
+                                <span class="bg-level-0 history-type history-type-{{ history['type'] }}">{{ history['type'] }}</span>
+                                <span class="{{ statusClass }}">{{ history['status'] }}</span>
+                            </div>
+                            <h3>{{ history['name'] }}</h3>
+                            <p>{{ history['url'] }}</p>
+                        </li>
+                        {{ end }}
+                    </ul>
                 </div>
                 {{ end }}
             </div>
-        `;
-    };
-
-    /**
-     * 侧边栏
-     * @returns {string}
-     */
-    this.sidebar = function() {
-        return `
-            <ul class="history-group-tab">
-                <li class="focus">Host</li>
-                <li>Group</li>
-            </ul>
-            <div class="history-host radius-small-all">
-                <ul id="history-host" class="radius-small-all history-host-list">
-                    {{ View.get_view('history', 'host_list', {'list': data}) }}
-                </ul>
-            </div>
-            <!-- history group -->
-            <div class="history-host history-group-list hide" id="history-group">{{ View.get_view('group', 'list', {}) }}</div>
         `;
     };
 

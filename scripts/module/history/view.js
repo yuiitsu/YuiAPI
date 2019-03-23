@@ -8,29 +8,50 @@ App.view.extend('history', function() {
      */
     this.main = function() {
         return `
+            <!-- Search start -->
+            <div class="history-search-container">
+                <input type="text" 
+                    class="input-text bg-level-3 border-level-0 history-search-key" 
+                    placeholder="Search Key, Press Enter" 
+                    value="{{ data['searchKey'] }}" />
+                {{ if data['searchKey'] }}
+                <i class="mdi mdi-close-circle-outline history-search-key-clear"></i>
+                {{ end }}
+            </div>
+            <!-- Search end -->
+            <!-- History host start -->
             <div class="history-host-selector-container">
                 <div class="history-host-selector bg-level-3 display-flex-row">
-                    <div class="display-flex-auto">All host</div>
+                    <div class="display-flex-auto">{{ data['selectHost'] }}</div>
                     <i class="mdi mdi-chevron-down"></i>
                 </div>
             </div>
+            <!-- History host end -->
             <div class="history-list-container display-flex-auto">
                 {{ for var i in data['groupHistoryList'] }}
                 {{ var groupHistory = data['groupHistoryList'][i] }}
+                {{ var groupHistoryCount = groupHistory['historyList'].length }}
+                {{ var hideClass = data['folderGroup'].indexOf(groupHistory['groupId']) !== -1 ? 'hide' : '' }}
                 <div class="history-group-item">
                     <div class="display-flex-row">
-                        <div class="display-flex-auto history-group-switch">
-                            <i class="mdi mdi-menu-down"></i>
+                        <div class="display-flex-auto history-group-switch" data-group-id="{{ groupHistory['groupId'] }}">
+                            {{ var arrowClass = hideClass === 'hide' ? 'menu-right' : 'menu-down' }}
+                            <i class="mdi mdi-{{ arrowClass }}"></i>
                             <i class="mdi mdi-folder"></i>
-                            {{ groupHistory['groupName'] }}
+                            {{ groupHistory['groupName'] }} ({{ groupHistoryCount }})
                         </div>
+                        {{ if groupHistory['groupName'] === 'default' }}
+                        <i class="mdi mdi-folder-plus-outline history-group-add-button"></i>
+                        {{ else }}
                         <i class="mdi mdi-dots-vertical"></i>
+                        {{ end }}
                     </div>
-                    <ul>
+                    <ul class="{{ hideClass }}">
                         {{ for var j in groupHistory['historyList'] }}
                         {{ var history = groupHistory['historyList'][j] }}
                         {{ var statusClass = history['status'] === 200 ? 'color-success' : 'color-danger' }}
-                        <li class="border-bottom-level-1 history-item" data-key="{{ history['key'] }}">
+                        {{ var originUrl = history['originUrl'] ? history['originUrl'] : history['url'] }}
+                        <li class="border-bottom-level-1 history-item" data-key="{{ history['key'] }}" title="{{ originUrl }}">
                             <div class="history-list-status-line">
                                 <span class="bg-level-0 history-type history-type-{{ history['type'] }}">{{ history['type'] }}</span>
                                 <span class="{{ statusClass }}">{{ history['status'] }}</span>
@@ -50,16 +71,14 @@ App.view.extend('history', function() {
      * host list
      * @returns {string}
      */
-    this.host_list = function() {
+    this.hostList = function() {
         return `
-            <li class="focus"><span class="radius-small-all">All (<em id="history-count-all">...</em>)</span></li>
-            {{ for var i in data['list'] }}
-            {{ var focus = data['selected_host'] === data['list'][i] ? 'focus' : '' }}
-            <li data-host="{{ data['list'][i] }}" class="{{ focus }}">
-                <span>{{ data['list'][i] }}</span>
-                <i class="mdi mdi-close"></i>
-            </li>
-            {{ end }}
+            <ul class="history-host-list-container">
+                <li data-host="">All host</li>       
+                {{ for var i in data }}
+                <li data-host="{{ data[i] }}">{{ data[i] }}</li>       
+                {{ end }}
+            </ul>
         `;
     };
 

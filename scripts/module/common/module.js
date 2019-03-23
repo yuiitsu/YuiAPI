@@ -78,11 +78,15 @@ App.module.extend('common', function() {
             let obj = $('#tips-box');
 
             obj.remove();
-            $('body').append(View.get_view('common', 'tips', {
+            $('body').append(self.view.getView('common', 'tips', {
                 content: content
             }));
             obj = $('#tips-box');
 
+            // 宽度
+            if (opt.width) {
+                obj.css({'width': opt.width});
+            }
             // 高度
             if (opt.height) {
                 obj.css({'height': opt.height});

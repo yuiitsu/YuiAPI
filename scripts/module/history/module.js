@@ -13,9 +13,182 @@ App.module.extend('history', function() {
     this.search_key = '';
     this.history_tab_key = 'history_tab';
 
+    // 默认数据
+    Model.default['historyList'] = [];
+    Model.default['hostList'] = [];
+    Model.default['selectHost'] = 'All host';
+    Model.default['searchKey'] = '';
+    Model.default['folderGroup'] = '[]';
+
+    /**
+     * 模块初始化. 入口方法，加载模块时会立即执行
+     */
     this.init = function() {
-        Model.set('history_tab_list', []).watch('history_tab_list', this.show_history_tab);
-        this.init_interface();
+        // 数据监听
+        Model.set('historyList', Model.default.historyList).watch('historyList', this.renderHistoryList);
+        Model.set('selectHost', Model.default.selectHost).watch('selectHost', this.filterHistoryListByHost);
+        Model.set('searchKey', Model.default.searchKey).watch('searchKey', this.renderHistoryList);
+        Model.set('folderGroup', Model.default.folderGroup).watch('folderGroup', this.renderHistoryList);
+        // 初始化数据
+        this.initData();
+
+    };
+
+    /**
+     * 初始化数据，从缓存中获取数据，放入数据对象
+     */
+    this.initData = function() {
+        let hostList = this.get_host_list(),
+            historyList = this.getHistoryList(null, null);
+
+        // Set Data
+        Model.set('hostList', hostList);
+        Model.set('historyList', historyList);
+    };
+
+    /**
+     * 渲染History List
+     */
+    this.renderHistoryList = function() {
+        // host列表
+        let selectHost = Model.get('selectHost'),
+            historyList = Model.get('historyList'),
+            historyListLen = historyList.length,
+            searchKey = Model.get('searchKey'),
+            searchKeyList = searchKey.split(' '),
+            searchKeyListLen = searchKeyList.length,
+            groupList = self.module.group.group_list,
+            folderGroup = JSON.parse(Model.get('folderGroup')),
+            resultList = [],
+            groupHistoryList = ['default'],
+            groupHistory = {},
+            data = {
+                groupHistoryList: [],
+                searchKey: searchKey,
+                selectHost: selectHost,
+                folderGroup: folderGroup
+            };
+
+        //
+
+        // Search
+        if (searchKey && historyList.length > 0) {
+            for (let i = 0; i < historyListLen; i++) {
+                let name = historyList[i]['name'],
+                    url = historyList[i]['url'];
+
+                for (let j = 0; j < searchKeyListLen; j++) {
+                    let key = searchKeyList[j],
+                        isSearched = '';
+
+                    if (name.indexOf(key) !== -1) {
+                        isSearched = 'name';
+                    }
+
+                    if (url.indexOf(key) !== -1) {
+                        isSearched = 'url';
+                    }
+
+                    if (isSearched) {
+                        resultList.push(historyList[i]);
+                        switch (isSearched) {
+                            case 'name':
+                                resultList[resultList.length - 1]['name'] =
+                                    resultList[resultList.length - 1]['name']
+                                        .replace(key, '<span class="history-search-block">' + key + '</span>');
+                                break;
+                            case 'url':
+                                resultList[resultList.length - 1]['originUrl'] =
+                                    resultList[resultList.length - 1]['url'];
+                                resultList[resultList.length - 1]['url'] =
+                                    resultList[resultList.length - 1]['url']
+                                        .replace(key, '<span class="history-search-block">' + key + '</span>');
+                                break;
+                        }
+                    }
+                }
+            }
+        } else {
+            resultList = historyList;
+        }
+
+        // 根据group分组
+        let groupListLen = groupList.length,
+            resultListLen = resultList.length,
+            groupObject = {};
+
+        for (let i = 0; i < groupListLen; i++) {
+            groupObject[groupList[i]['group_id']] = groupList[i];
+        }
+        //
+        for (let i = 0; i < resultListLen; i++) {
+            let groupId = resultList[i]['group_id'];
+            groupId = groupId ? groupId : 'default';
+            if (groupHistoryList.indexOf(groupId) === -1) {
+                groupHistoryList.push(groupId);
+            }
+            if (!groupHistory.hasOwnProperty(groupId)) {
+                let groupName = 'default';
+                if (groupObject.hasOwnProperty(groupId)) {
+                    groupName = groupObject[groupId]['name'];
+                    //
+                    for (let g = 0; g < groupListLen; g++) {
+                        if (groupList[g]['group_id'] === groupId) {
+                            groupList.splice(g, 1);
+                        }
+                    }
+                }
+                groupHistory[groupId] = {
+                    groupName: groupName,
+                    groupId: groupId,
+                    historyList: []
+                };
+            }
+            groupHistory[groupId]['historyList'].push(resultList[i]);
+        }
+
+        let groupHistoryListLen = groupHistoryList.length;
+        for (let i = 0; i < groupHistoryListLen; i++) {
+            if (groupHistory.hasOwnProperty(groupHistoryList[i])) {
+                data.groupHistoryList.push(groupHistory[groupHistoryList[i]]);
+            }
+        }
+
+        //
+        if (groupList.length > 0) {
+            let notUseGroupListLen = groupList.length;
+            for (let i = 0; i < notUseGroupListLen; i++) {
+                data.groupHistoryList.push({
+                    groupName: groupList[i]['name'],
+                    groupId: groupList[i]['group_id'],
+                    historyList: []
+                });
+            }
+        }
+
+        self.view.display('history', 'main', data, '.history-container');
+    };
+
+    /**
+     * 渲染host下拉菜单
+     */
+    this.renderHostList = function($target) {
+        let hostList = Model.get('hostList');
+        let _html = self.view.getView('history', 'hostList', hostList);
+        self.module.common.tips.show($target, _html, {
+            width: '279px',
+            height: '200px'
+        });
+    };
+
+    /**
+     * 根据host过滤history list
+     */
+    this.filterHistoryListByHost = function() {
+        let selectHost = Model.get('selectHost'),
+            historyList = self.getHistoryList(null, selectHost);
+
+        Model.set('historyList', historyList);
     };
 
     /**
@@ -123,51 +296,6 @@ App.module.extend('history', function() {
         }
     };
 
-    /**
-     * 初始化界面
-     */
-    this.init_interface = function() {
-        // host列表
-        let hostList = this.get_host_list(),
-            historyList = this.get_history_list(null, null),
-            groupList = this.module.group.group_list,
-            data = {
-                hostList: hostList,
-                groupHistoryList: {}
-            };
-
-        // 根据group分组
-        let groupListLen = groupList.length,
-            historyListLen = historyList.length,
-            groupObject = {};
-
-        for (let i = 0; i < groupListLen; i++) {
-            groupObject[groupList[i]['group_id']] = groupList[i];
-        }
-        //
-        for (let i = 0; i < historyListLen; i++) {
-            let groupId = historyList[i]['group_id'];
-            groupId = groupId ? groupId : 'default';
-            if (!data.groupHistoryList.hasOwnProperty(groupId)) {
-                let groupName = 'default';
-                if (groupObject.hasOwnProperty(groupId)) {
-                    groupName = groupObject[groupId]['name']
-                }
-                data.groupHistoryList[groupId] = {
-                    groupName: groupName,
-                    historyList: []
-                };
-            } else {
-                data.groupHistoryList[groupId]['historyList'].push(historyList[i]);
-            }
-        }
-
-        this.view.display('history', 'main', data, '.history-container');
-        // this.show_history_count(history_list);
-        //
-        // this.init_history_tab();
-    };
-
     this.init_history_tab = function() {
         let history_tab_list = this.common.cache.getListData(this.history_tab_key);
         for (let i in history_tab_list) {
@@ -201,32 +329,6 @@ App.module.extend('history', function() {
     };
 
     /**
-     * 刷新history list界面
-     * @param host
-     * @param group_id
-     * @param key
-     * @param callback
-     */
-    this.refresh_history_list = function(host, group_id, key, callback) {
-        if (!key) {
-            if (this.selected_object['type'] === 'host') {
-                host = this.selected_object['key']
-            } else if (this.selected_object['type'] === 'group') {
-                group_id = this.selected_object['key']
-            }
-        }
-        if (group_id) {
-            App.group.load_history(group_id);
-        } else {
-            let history_list = this.get_history_list(null, host, group_id, key);
-            View.display('history', 'main_list', history_list, '#history-list-box');
-            if ($.isFunction(callback)) {
-                callback(history_list);
-            }
-        }
-    };
-
-    /**
      * 获取历史记录数，可根据host筛选
      * @param data
      * @param host
@@ -234,7 +336,7 @@ App.module.extend('history', function() {
      * @param search_key
      * @returns {Array}
      */
-    this.get_history_list = function(data, host, group_id, search_key) {
+    this.getHistoryList = function(data, host, group_id, search_key) {
         let hashData = this.getListData(this.listKey),
             historyData = data ? data : this.getData(),
             list = [];
@@ -259,31 +361,6 @@ App.module.extend('history', function() {
             }
         }
         return list;
-    };
-
-    /**
-     * 构建界面List
-     * @param data 数据，没有值使用所有数据
-     * @param host 指定host数据
-     */
-    this.build_ui_list = function(data, host) {
-        if (host) {
-            //this.selected_host = host;
-            App.selected_object = {
-                type: 'host',
-                key: host
-            }
-        } else {
-            App.selected_object = {
-                type: '',
-                key: ''
-            }
-        }
-        let list = this.get_history_list(data, host);
-        View.display('history', 'main_list', list, '#history-list-box');
-
-        // 显示历史数据条数，有host的情况下，显示到对应的host位置，没有，则显示在all位置
-        this.show_history_count(list, host);
     };
 
     /**
@@ -541,54 +618,12 @@ App.module.extend('history', function() {
         localStorage.removeItem(this.listKey);
         localStorage.removeItem(this.hostCacheKey);
     };
+
     /**
-     * 搜索
-     * @param _obj
-     * @param e
+     * Search
+     * @param key
      */
-    this.search = function(_obj, e) {
-        let search_key = $.trim(_obj.val()),
-            result_data = {};
 
-        if (search_key) {
-            this.search_key = search_key;
-            let search_key_list = search_key.split(' '),
-                history_list = this.getData();
-
-            if (history_list) {
-                for (let i in history_list) {
-                    let name = history_list[i]['name'],
-                        url = history_list[i]['url'];
-
-                    for (let j in search_key_list) {
-                        let key = search_key_list[j],
-                            is_searched = false;
-
-                        if (name.indexOf(key) !== -1) {
-                            history_list[i]['name'] = name.replace(key, '<span class="search-block">' + key + '</span>');
-                            is_searched = true;
-                        }
-
-                        if (url.indexOf(key) !== -1) {
-                            history_list[i]['url'] = url.replace(key, '<span class="search-block">' + key + '</span>');
-                            is_searched = true;
-                        }
-
-                        if (is_searched) {
-                            result_data[i] = history_list[i];
-                        }
-                    }
-                }
-            }
-
-            App.selected_object = {
-                'type': '',
-                'key': ''
-            }
-        }
-
-        this.build_ui_list(result_data);
-    };
 
     /**
      * 添加到分组

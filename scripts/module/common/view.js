@@ -2,7 +2,7 @@
  * 通用View
  * Created by Yuiitsu on 2018/06/05.
  */
-View.extend('common', function() {
+App.view.extend('common', function() {
 
     this.module = function() {
         return `
@@ -21,7 +21,7 @@ View.extend('common', function() {
 
     this.tips = function() {
         return `
-            <div id="tips-box">
+            <div id="tips-box" class="bg-level-4 border-level-2">
                 <div class="tips-array">
                     <span class="tips-array-out"></span>
                     <span class="tips-array-in"></span>

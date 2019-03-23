@@ -1,0 +1,48 @@
+/* tips */
+#tips-box{border-radius: 8px;padding: 10px;position: absolute;
+    left:0;top:0;}
+.tips-array{position: absolute;width:8px;height:8px;}
+
+.tips-array-top{top:-8px;}
+.tips-array-top .tips-array-out{position:absolute;border-bottom:8px solid rgb(24, 26, 27);border-right:8px solid transparent;
+    border-left:8px solid transparent;left:0;top:0;}
+.tips-array-top .tips-array-in{position:absolute;border-bottom:8px solid rgb(41, 42, 45);border-right:8px solid transparent;
+    border-left:8px solid transparent;left:0;top:1px;}
+
+.tips-array-left{left:-8px;}
+.tips-array-left .tips-array-out{position:absolute;border-top:8px solid transparent;border-right:8px solid #bbb;
+    border-bottom:8px solid transparent;left:0;top:0;}
+.tips-array-left .tips-array-in{position:absolute;border-top:8px solid transparent;border-right:8px solid #fff;
+    border-bottom:8px solid transparent;left:1px;top:0;}
+
+.tips-array-bottom{bottom:-8px;}
+.tips-array-bottom .tips-array-out{position:absolute;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:8px solid #bbb;left:0;top:0;}
+.tips-array-bottom .tips-array-in{position:absolute;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:8px solid #fff;left:0;top:-1px;}
+
+/* module */
+.module-box{position: relative;left:0;top:0;}
+.module-mask{position: fixed;left:0;top:0;width:100%;height:100%;background-color:#000;opacity: 0.5;}
+.module-content{position: fixed;left:50%;top:50%;width:700px;transform: translate(-50%, -50%);
+    background-color:#fff;border: 1px solid #ddd;border-radius: 5px;padding: 10px;}
+.module-header{height:40px;line-height:30px;border-bottom:1px solid #eaeaea;font-size:20px;font-weight:bold;}
+.module-header i{font-size:20px;}
+.module-main{word-wrap: break-word;word-break: normal;overflow-y:auto;max-height:500px;}
+.module-actions button{height:30px;}
+
+/* notification */
+#notification-box {position: fixed;width:300px;height:40px;padding:10px;border-radius: 3px;top:50px;left:50%;
+    margin-left:-150px;color:#fff;text-align: center;}
+.notification{color:#fff;height:30px;line-height:30px;padding:0 10px;border-radius: 3px;}
+.notification-warring{background-color:#FFAA33;}
+.notification-warring i{color:#ff0000;}
+
+/* dialog */
+.dialog{position: relative;left:0;top:0;}
+.dialog-content{position: fixed;left:50%;top:50%;transform: translate(-50%, -50%);width:450px;background-color:#fff;
+    border: 1px solid #ddd;border-radius: 5px;padding: 10px;}
+.dialog-header{height:30px;}
+.dialog-msg{line-height:1.6;margin-bottom:20px;}
+.dialog-action{height:30px;text-align: center;}
+.dialog-action-button{display: inline-block;width:100px;margin:0 5px;}

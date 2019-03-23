@@ -60,11 +60,15 @@
 .history-list-container ul li h3 {
     padding-bottom:5px;
     margin-bottom:5px;
+    font-weight:700;
 }
 .history-list-container ul li p {
     word-wrap:break-word;
     max-height:48px;
     overflow:hidden;
+}
+.history-search-block {
+    background-color:#ff0000;
 }
 .history-list-status-line {
     padding-bottom:5px;
@@ -77,4 +81,28 @@
 .history-type-GET {
     background-color:#009900;
 }
-
+.history-host-list-container {
+    height:100%;
+    overflow-y: auto;
+}
+.history-host-list-container li {
+    height:25px;
+    line-height:25px;
+    overflow:hidden;
+    cursor:pointer;
+    padding:0 10px;
+}
+.history-search-container {
+    padding: 10px;
+    position: relative;
+}
+.history-search-key-clear {
+    position: absolute;
+    right: 15px;
+    top: 17px;
+    font-size:16px;
+    cursor: pointer;
+}
+.history-group-add-button {
+    cursor: pointer;
+}

@@ -10,49 +10,44 @@ App.event.extend('history', function() {
      */
     this.event = {
         /**
+         * 显示host选择菜单
+         */
+        showHostList: function() {
+            $('.history-container').on('click', '.history-host-selector', function(e) {
+                self.module.history.renderHostList($(this));
+                e.stopPropagation();
+            });
+        },
+
+        /**
          * 选择host检索history
          */
-        select_host_to_search: function() {
-            $('#history-content').on('click', '#history-sidebar li span', function(e) {
-                let host = $(this).parent().attr('data-host');
+        selectHostToSearch: function() {
+            $('body').on('click', '.history-host-list-container li', function(e) {
+                let host = $(this).attr('data-host');
                 host = host ? host : '';
-                //$('#history-host').find('li').removeClass('focus');
-                $('.history-host').find('li').removeClass('focus');
-                $(this).parent().addClass('focus');
-                App.history.build_ui_list(null, host);
+                Model.set('selectHost', host);
                 e.stopPropagation();
             });
         },
 
         groupSwitch: function() {
             $('.history-container').on('click', '.history-group-switch', function(e) {
-                let target = $(this).parent().next(),
-                    icon = $(this).find('i:first-child');
+                let groupId = $(this).attr('data-group-id'),
+                    folderGroup = JSON.parse(Model.get('folderGroup')),
+                    folderGroupLen = folderGroup.length;
 
-                if (target.css('display') === 'none') {
-                    target.show();
-                    icon.removeClass('folder');
+                if (folderGroup.indexOf(groupId) === -1) {
+                    folderGroup.push(groupId);
                 } else {
-                    target.hide();
-                    icon.addClass('folder');
+                    for (let i = 0; i < folderGroupLen; i++) {
+                        if (folderGroup[i] === groupId) {
+                            folderGroup.splice(i, 1);
+                        }
+                    }
                 }
+                Model.set('folderGroup', JSON.stringify(folderGroup));
             })
-        },
-
-        /**
-         * host hover
-         */
-        host_hover: function() {
-            $('#history-content').on('mouseover', '#history-sidebar li', function(e) {
-                let host = $(this).attr('data-host');
-                if (!host) {
-                    return false;
-                }
-
-                let item_menu_html = View.get_view('history', 'host_item_menu', {'host': host});
-                App.common.tips.show($(this), item_menu_html, {position: 'right'});
-                e.stopPropagation();
-            });
         },
 
         host_delete: function() {
@@ -377,11 +372,19 @@ App.event.extend('history', function() {
          * 搜索
          */
         search: function() {
-            $('#history-search').on('keydown', function(e) {
+            $('.history-container').on('keydown', '.history-search-key', function(e) {
                 if (e.keyCode === 13) {
-                    App.history.search($(this), e);
-                    $('.history-host').find('li').removeClass('focus');
+                    let value = $.trim($(this).val());
+                    Model.set('searchKey', value);
                 }
+                e.stopPropagation();
+            });
+        },
+
+        clearSearchKey: function() {
+            $('.history-container').on('click', '.history-search-key-clear', function(e) {
+                Model.set('searchKey', '');
+                e.stopPropagation();
             });
         },
 

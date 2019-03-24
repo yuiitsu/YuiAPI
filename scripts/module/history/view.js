@@ -20,9 +20,10 @@ App.view.extend('history', function() {
             </div>
             <!-- Search end -->
             <!-- History host start -->
+            {{ var selectHost = data['selectHost'] ? data['selectHost'] : 'All host' }}
             <div class="history-host-selector-container">
                 <div class="history-host-selector bg-level-3 display-flex-row">
-                    <div class="display-flex-auto">{{ data['selectHost'] }}</div>
+                    <div class="display-flex-auto">{{ selectHost }}</div>
                     <i class="mdi mdi-chevron-down"></i>
                 </div>
             </div>
@@ -43,7 +44,9 @@ App.view.extend('history', function() {
                         {{ if groupHistory['groupName'] === 'default' }}
                         <i class="mdi mdi-folder-plus-outline history-group-add-button"></i>
                         {{ else }}
-                        <i class="mdi mdi-dots-vertical"></i>
+                        <i class="mdi mdi-dots-vertical history-group-action cursor-pointer" 
+                            data-group-id="{{ groupHistory['groupId'] }}" 
+                            data-group-name="{{ groupHistory['groupName'] }}"></i>
                         {{ end }}
                     </div>
                     <ul class="{{ hideClass }}">
@@ -52,9 +55,12 @@ App.view.extend('history', function() {
                         {{ var statusClass = history['status'] === 200 ? 'color-success' : 'color-danger' }}
                         {{ var originUrl = history['originUrl'] ? history['originUrl'] : history['url'] }}
                         <li class="border-bottom-level-1 history-item" data-key="{{ history['key'] }}" title="{{ originUrl }}">
-                            <div class="history-list-status-line">
-                                <span class="bg-level-0 history-type history-type-{{ history['type'] }}">{{ history['type'] }}</span>
-                                <span class="{{ statusClass }}">{{ history['status'] }}</span>
+                            <div class="history-list-status-line display-flex-row">
+                                <div class="display-flex-auto">
+                                    <span class="bg-level-0 history-type history-type-{{ history['type'] }}">{{ history['type'] }}</span>
+                                    <span class="{{ statusClass }}">{{ history['status'] }}</span>
+                                </div>
+                                <i class="mdi mdi-dots-vertical history-action cursor-pointer" data-key="{{ history['key'] }}"></i>
                             </div>
                             <h3>{{ history['name'] }}</h3>
                             <p>{{ history['url'] }}</p>
@@ -73,81 +79,34 @@ App.view.extend('history', function() {
      */
     this.hostList = function() {
         return `
-            <ul class="history-host-list-container">
-                <li data-host="">All host</li>       
+            <ul class="history-host-list-container tips-menu-container">
+                <li class="display-flex-row"><span data-host="" class="display-flex-auto">All host</span></li>
                 {{ for var i in data }}
-                <li data-host="{{ data[i] }}">{{ data[i] }}</li>       
+                <li class="display-flex-row">
+                    <span class="display-flex-auto" data-host="{{ data[i] }}">{{ data[i] }}</span>
+                    <i class="mdi mdi-delete history-host-delete" data-host="{{ data[i] }}"></i>
+                </li>       
                 {{ end }}
             </ul>
         `;
     };
 
     /**
-     * host单个数据菜单
+     * 分组菜单
      */
-    this.host_item_menu = function() {
+    this.groupAction = function() {
         return `
-            <ul class="history-group-item-menu">
-                <li class="history-cookies" data-host="{{ data['host'] }}">Cookies</li>
-                <li class="history-test disabled" data-host="{{ data['host'] }}">Test</li>
-                <li class="history-del color-failed" data-host="{{ data['host'] }}">Delete</li>
-            </ul>
-        `;
-    };
-
-    /**
-     * 历史记录列表
-     */
-    this.main_list = function() {
-        return `
-            <table class="history-table font-color-white" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th class="w-30 border-bottom-light">
-                        </th>
-                        <th class="w-50 border-bottom-light">Type</th>
-                        <!--
-                        <th class="align-left history-list-name border-bottom-light">Name</th>
-                        -->
-                        <th class="align-left border-bottom-light">URL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ for var i in data }}
-                    {{ var request_type_icon = data[i]['type'] ? data[i]['type'][0] : '-' }}
-                    <tr data-key="{{ data[i]['key'] }}">
-                        <td class="w-30 history-item-action border-bottom-light" data-key="{{ data[i]['key'] }}">
-                            <i class="mdi mdi-dots-horizontal font-size-20"></i>
-                        </td>
-                        <td class="w-50 border-bottom-light align-center request-type request-type-{{ data[i]['type'] }}">
-                            <span>{{ request_type_icon }}</span>
-                        </td>
-                        <!--
-                        <td class="border-bottom-light">{{ data[i]['name'] }}</td>
-                        -->
-                        <td class="border-bottom-light">
-                            <div class="display-flex-row">
-                                {{ var statusClass = data[i]['status'] === 200 ? 'color-success' : 'color-failed' }}
-                                <div class="{{ statusClass }} font-bold history-item-status">{{ data[i]['status'] }}</div>
-                                <div class="display-flex-auto">
-                                    {{ if data[i]['name'] }}
-                                    <span class=" history-name radius-small-all">{{ data[i]['name'] }}</span>
-                                    {{ end }}
-                                </div>
-                            </div>
-                            <p>{{ data[i]['url'] }}</p>
-                        </td>
-                    </tr>
-                    {{ end }}
-                </tbody>
-            </table>
-        `;
-    };
-
-    this.history_all_action_menu = function() {
-        return `
-            <ul class="history-tips-list history-tips-all-list">
-                <li class="history-clear color-failed">clear</li>
+            <ul class="tips-menu-container">
+                <li class="history-group-add-button" 
+                    data-group-id="{{ data['groupId'] }}" 
+                    data-group-name="{{ data['groupName'] }}">
+                    <i class="mdi mdi-square-edit-outline"></i> 
+                    Edit Group
+                </li>
+                <li class="color-danger history-group-delete" data-group-id="{{ data['groupId'] }}">
+                    <i class="mdi mdi-delete"></i> 
+                    Delete
+                </li>
             </ul>
         `;
     };
@@ -156,35 +115,36 @@ App.view.extend('history', function() {
      * 历史记录单个数据菜单
      * @returns {string}
      */
-    this.history_item_menu = function() {
+    this.historyItemMenu = function() {
         return `
-            <ul class="history-tips-list history-tips-add-list" data-key="{{ data['key'] }}">
-                {{ if data['selected_object']['type'] === 'group' }}
-                <li class="remove-from-group">Remove from group</li>
-                {{ end }}
-                <li class="add-to-group">Add to group</li>
-                <li class="set-assertion disabled">Set assertion</li>
+            <ul class="tips-menu-container" data-key="{{ data['key'] }}">
+                <li class="move-to-group">
+                    <i class="mdi mdi-folder-move"></i> 
+                    Move to group
+                </li>
                 <!--
-                <li class="history-move" data-type="up">Move up</li>
-                <li class="history-move" data-type="down">Move down</li>
+                <li class="set-assertion disabled">Set assertion</li>
                 -->
-                <li class="delete color-failed">Delete</li>
+                <li class="history-delete color-danger">
+                    <i class="mdi mdi-delete"></i> 
+                    Delete
+                </li>
             </ul>
         `;
     };
 
     /**
-     * 添加到分组表单
+     * 移动到分组的表单
      */
-    this.add_to_group_form = function() {
+    this.moveToGroup = function() {
         return `
-            <div class="history-add-to-group-form">
-                <div class="h-30 margin-bottom-10 margin-top-10 group-selector">
-                    {{ App.group.get_select_view() }}
+            <div class="history-move-to-group-form">
+                <div class="history-group-form-line">
+                    {{ this.module.group.getSelectView() }}
                 </div>
-                <div class="h-30">
+                <div class="">
                     <input type="hidden" class="history-key" value="{{ data['key'] }}" />
-                    <button class="btn btn-primary js-handler" id="history-add-to-group">Save</button>
+                    <button class="btn btn-primary js-handler" id="history-move-to-group">Save</button>
                 </div>
             </div>
         `;

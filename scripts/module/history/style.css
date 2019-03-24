@@ -54,7 +54,7 @@
 }
 
 .history-list-container ul li {
-    padding: 10px;
+    padding: 10px 0 10px 17px;
     cursor: pointer;
 }
 .history-list-container ul li h3 {
@@ -68,7 +68,7 @@
     overflow:hidden;
 }
 .history-search-block {
-    background-color:#ff0000;
+    background-color:rgb(217, 80, 63);
 }
 .history-list-status-line {
     padding-bottom:5px;
@@ -81,17 +81,7 @@
 .history-type-GET {
     background-color:#009900;
 }
-.history-host-list-container {
-    height:100%;
-    overflow-y: auto;
-}
-.history-host-list-container li {
-    height:25px;
-    line-height:25px;
-    overflow:hidden;
-    cursor:pointer;
-    padding:0 10px;
-}
+
 .history-search-container {
     padding: 10px;
     position: relative;

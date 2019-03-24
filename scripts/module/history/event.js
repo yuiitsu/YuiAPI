@@ -23,7 +23,7 @@ App.event.extend('history', function() {
          * 选择host检索history
          */
         selectHostToSearch: function() {
-            $('body').on('click', '.history-host-list-container li', function(e) {
+            $('body').on('click', '.history-host-list-container span', function(e) {
                 let host = $(this).attr('data-host');
                 host = host ? host : '';
                 Model.set('selectHost', host);
@@ -31,6 +31,9 @@ App.event.extend('history', function() {
             });
         },
 
+        /**
+         * 展开/折叠分组
+         */
         groupSwitch: function() {
             $('.history-container').on('click', '.history-group-switch', function(e) {
                 let groupId = $(this).attr('data-group-id'),
@@ -47,120 +50,57 @@ App.event.extend('history', function() {
                     }
                 }
                 Model.set('folderGroup', JSON.stringify(folderGroup));
+                e.stopPropagation();
             })
         },
 
-        host_delete: function() {
-            $('body').on('click', '.history-del', function(e) {
+        /**
+         * 打开分组菜单
+          */
+        openGroupAction: function() {
+            $('.history-container').on('click', '.history-group-action', function(e) {
+                let groupId = $(this).attr('data-group-id'),
+                    groupName = $(this).attr('data-group-name');
+                self.module.common.tips.show($(this), self.view.getView('history', 'groupAction', {
+                    groupId: groupId,
+                    groupName: groupName
+                }));
+                e.stopPropagation();
+            });
+        },
+
+        openHistoryAction: function() {
+            $('.history-container').on('click', '.history-action', function(e) {
+                let key = $(this).attr('data-key');
+                self.module.common.tips.show($(this), self.view.getView('history', 'historyItemMenu', {
+                    key: key
+                }));
+                e.stopPropagation();
+            });
+        },
+
+        hostDelete: function() {
+            $('body').on('click', '.history-host-delete', function(e) {
                 let host = $(this).attr('data-host');
                 if (!host) {
                     return false;
                 }
 
-                App.common.dialog().confirm('Confirm to delete the host', function() {
-                    App.history.del_host(host);
+                self.module.common.dialog().confirm('<h3>Confirm to delete this host?</h3><p>'+ host +'</p>', function() {
+                    self.module.history.delHost(host);
                 });
                 e.stopPropagation();
             });
         },
 
         /**
-         * history侧边栏开关
-         */
-        history_switch: function() {
-            $('#history-content').on('click', '#history-switch-button', function() {
-                let target = $('#history-sidebar');
-                if (target.css('display') === 'flex') {
-                    target.hide();
-                    $(this).attr('title', 'Open the sidebar').find('i').addClass('mdi-chevron-right');
-                } else {
-                    target.show();
-                    $(this).attr('title', 'Hide the sidebar').find('i').removeClass('mdi-chevron-right hover');
-                }
-            }).on('mouseover', '#history-switch-button', function() {
-                $(this).find('i').addClass('hover');
-            }).on('mouseout', '#history-switch-button', function() {
-                $(this).find('i').removeClass('hover');
-            });
-        },
-
-        /**
          * 打开一个history
          */
-        history_item_select: function() {
+        selectHistory: function() {
             $('.history-container').on('click', '.history-item', function(e) {
                 // 选中数据
                 let key = $(this).attr('data-key');
                 self.module.history.open_data(key);
-                // // 从缓存中获取数据
-                // let historyData = App.history.getData();
-                // if (historyData[key]) {
-                //     let requestType = historyData[key]['type'],
-                //         form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
-                //         headers = historyData[key]['headers'],
-                //         response_content_type = historyData[key]['response_content_type'],
-                //         result = historyData[key]['result'],
-                //         time = historyData[key]['time'],
-                //         status = historyData[key]['status'];
-
-                //     $('#response-headers').html(headers ? headers : '');
-                //     $('#send-time').html(time);
-                //     $('#response-status').html(status);
-                //     $('.tabs li').eq(1).trigger('click');
-
-                //     let response_data = {
-                //         'headers': headers ? headers : '',
-                //         'response': result,
-                //         'response_content_type': response_content_type,
-                //         'use_time': time,
-                //         'status': status
-                //     };
-                //     Model.set('response_data', response_data);
-                //     //Model.set('request_data_' + form_data_type, historyData[key]['data']);
-                //     Model.set('request_form_type', form_data_type);
-                //     Model.set('request_form_type_tmp', form_data_type);
-                //     Model.set('request_data', historyData[key]);
-                //     Model.set('request_headers', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
-                //     Model.set('authentication', historyData[key]['authentication']);
-                //     App.requestType = requestType;
-
-                //     App.history.set_history_tab(historyData[key]);
-
-                //     // assert
-                //     //let assert_data = App.history.get_assert_data(),
-                //     //    assert_content = '';
-                //     //if (assert_data.hasOwnProperty(key)) {
-                //     //    let assert_type = assert_data[key]['type'];
-                //     //    assert_content = assert_data[key]['content'];
-                //     //    if (assert_type) {
-                //     //        $('input[name=form-data-assert-type]').attr('checked', false).each(function() {
-                //     //            let value = $(this).val();
-                //     //            if (value === assert_type) {
-                //     //                $(this).prop('checked', 'checked');
-                //     //            }
-                //     //        });
-                //     //    }
-                //     //}
-                //     //$('#form-data-assert').text(assert_content);
-                // }
-                e.stopPropagation();
-            });
-        },
-
-        open_all_action: function() {
-            $('#history-content').on('mouseover', '.history-all-action', function(e) {
-                App.common.tips.show($(this), View.get_view('history', 'history_all_action_menu', {}));
-                e.stopPropagation();
-            })
-        },
-
-        open_item_menu: function() {
-            $('#history-content').on('mouseover', '#history-list-box tbody td.history-item-action', function(e) {
-                let key = $(this).attr('data-key');
-                App.common.tips.show($(this), View.get_view('history', 'history_item_menu', {
-                    key: key,
-                    selected_object: App.selected_object
-                }));
                 e.stopPropagation();
             });
         },
@@ -311,10 +251,11 @@ App.event.extend('history', function() {
         /**
          * 打开加入分组界面
          */
-        add_to_group_form: function() {
-            $('body').on('click', '.history-tips-add-list li.add-to-group', function(e) {
+        openMoveToGroup: function() {
+            $('body').on('click', '.move-to-group', function(e) {
                 let key = $(this).parent().attr('data-key');
-                App.common.module('Add to group', View.get_view('history', 'add_to_group_form', {'key': key}), '');
+                self.module.common.module('Move to group',
+                    self.view.getView('history', 'moveToGroup', {'key': key}), '');
                 e.stopPropagation();
             });
         },
@@ -322,29 +263,28 @@ App.event.extend('history', function() {
         /**
          * 加入分组
          */
-        add_to_group: function() {
-            $('body').on('click', '#history-add-to-group', function(e) {
-                let target = $('.history-add-to-group-form');
+        moveToGroup: function() {
+            $('body').on('click', '#history-move-to-group', function(e) {
+                let target = $('.history-move-to-group-form');
                 let group_id = target.find('.history-group-selector').val(),
                     history_key = target.find('.history-key').val(),
                     module_id = $(this).attr('data-module-id');
-                if (!group_id || !history_key) {
+                if (!history_key) {
                     return false;
                 }
-                App.history.add_to_group(history_key, group_id);
+                self.module.history.moveToGroup(history_key, group_id);
                 $('.module-box-' + module_id).remove();
                 e.stopPropagation();
             });
         },
 
-        /**
-         * 向上/下移动
-         */
-        move_position: function() {
-            $('body').on('click', '.history-move', function(e) {
-                let data_type = $(this).attr('data-type'),
-                    key = $(this).parent().attr('data-key');
-                App.history.move_position(data_type, key);
+        deleteGroup: function() {
+
+            $('body').on('click', '.history-group-delete', function(e) {
+                let groupId = $(this).attr('data-group-id');
+                self.module.common.dialog().confirm('Confirm to delete this folder?', function() {
+                    self.module.group.delete(groupId);
+                });
                 e.stopPropagation();
             });
         },
@@ -353,11 +293,11 @@ App.event.extend('history', function() {
          * 删除
          */
         delete: function() {
-            $('body').on('click', '.history-tips-add-list li.delete', function(e) {
+            $('body').on('click', '.history-delete', function(e) {
                 let key = $(this).parent().attr('data-key');
                 if (key) {
-                    App.common.dialog().confirm('Confirm to clear the data?', function() {
-                        App.history.del(key);
+                    self.module.common.dialog().confirm('Confirm to delete the data?', function() {
+                        self.module.history.del(key);
                     });
                 }
                 e.stopPropagation();

@@ -59,6 +59,9 @@
 .theme-dark .border-bottom-level-1 {
     border-bottom: 1px solid rgb(65, 68, 70);
 }
+.theme-dark .border-bottom-level-2 {
+    border-bottom: 1px solid rgb(24, 26, 27);
+}
 .theme-dark .border-right-level-1 {
     border-right: 1px solid rgb(65, 68, 70);
 }
@@ -96,7 +99,7 @@
     background-color:rgb(217, 80, 63);
 }
 
-.theme-dark .history-host-list-container li:hover {
+.theme-dark .tips-menu-container li:hover {
     background-color:rgb(68, 69, 71);
 }
 .theme-dark .history-search-key-clear {
@@ -104,4 +107,22 @@
 }
 .theme-dark .history-search-key-clear:hover {
     color:#fff;
+}
+.theme-dark .history-group-action {
+    color:rgb(78, 81, 83);
+}
+.theme-dark .history-group-action:hover {
+    color:#fff;
+}
+.theme-dark .history-action {
+    color:rgb(78, 81, 83);
+}
+.theme-dark .history-action:hover {
+    color:#fff;
+}
+.history-host-list-container li i {
+    color:rgb(78, 81, 83);
+}
+.history-host-list-container li i:hover {
+    color:#ff0000;
 }

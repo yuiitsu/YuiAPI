@@ -8,8 +8,8 @@ App.view.extend('common', function() {
         return `
             <div class="module-box module-box-{{ data['module_id'] }}">
                 <div class="module-mask" data-module-id="{{ data['module_id'] }}"></div>
-                <div class="module-content">
-                    <div class="module-header">{{ data['name'] }}
+                <div class="module-content bg-level-4 border-level-2">
+                    <div class="module-header border-bottom-level-1">{{ data['name'] }}
                         <i class="mdi mdi-close fr module-close" data-module-id="{{ data['module_id'] }}"></i>
                     </div>
                     <div class="module-main">{{ data['content'] }}</div>
@@ -41,9 +41,10 @@ App.view.extend('common', function() {
         return `
             <div class="dialog dialog-{{ data['dialog_id'] }}">
                 <div class="module-mask"></div>
-                <div class="dialog-content">
-                    <div class="dialog-header">
-                        <i class="mdi mdi-close fr dialog-close" data-dialog-id="{{ data['dialog_id'] }}"></i>
+                <div class="dialog-content bg-level-4 border-level-2">
+                    <div class="dialog-header display-flex-row">
+                        <h3 class="display-flex-auto">System</h3>
+                        <i class="mdi mdi-close dialog-close" data-dialog-id="{{ data['dialog_id'] }}"></i>
                     </div>
                     <div class="dialog-msg">{{ data['msg'] }}</div>
                     <div class="dialog-action">

@@ -2,7 +2,9 @@
  * 历史分组事件监听
  * Created by Yuiitsu on 2018/05/25.
  */
-Event.extend('group', function() {
+App.event.extend('group', function() {
+    //
+    let self = this;
 
     /**
      * 事件
@@ -13,9 +15,15 @@ Event.extend('group', function() {
         /**
          * 打开新增/编辑表单
          */
-        open_form: function() {
-            $('#history-content').on('click', '#history-group-new', function(e) {
-                App.common.module('New Group', View.get_view('group', 'form', ''), '');
+        openForm: function() {
+            $('body').on('click', '.history-group-add-button', function(e) {
+                let groupId = $(this).attr('data-group-id'),
+                    groupName = $(this).attr('data-group-name'),
+                    moduleName = groupId ? 'Edit Folder' : 'New Folder';
+                self.module.common.module(moduleName, self.view.getView('group', 'form', {
+                    groupId: groupId ? groupId : '',
+                    groupName: groupName ? groupName : ''
+                }), '');
                 e.stopPropagation();
             });
         },
@@ -82,25 +90,24 @@ Event.extend('group', function() {
         /**
          * 保存新分组
          */
-        save_group: function() {
-            let _this = this;
+        saveGroup: function() {
             $('body').on('click', '#history-group-save', function(e) {
-                let group_name = $.trim($('#history-group-name').val()),
-                    group_id = $.trim($('#history-group-id').val()),
-                    module_id = $(this).attr('data-module-id');
-                if (!group_name) {
+                let groupName = $.trim($('#history-group-name').val()),
+                    groupId = $.trim($('#history-group-id').val()),
+                    moduleId = $(this).attr('data-module-id');
+                if (!groupName) {
                     return false;
                 }
 
-                if (group_id) {
+                if (groupId) {
                     // 修改
-                    if (App.group.modify_group(group_id, group_name)) {
-                        $('.module-box-' + module_id).remove();
+                    if (self.module.group.modifyGroup(groupId, groupName)) {
+                        $('.module-box-' + moduleId).remove();
                     }
                 } else {
                     // 新增
-                    if (App.group.new_group(group_name)) {
-                        $('.module-box-' + module_id).remove();
+                    if (self.module.group.newGroup(groupName)) {
+                        $('.module-box-' + moduleId).remove();
                     }
                 }
                 e.stopPropagation();

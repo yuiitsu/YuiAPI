@@ -2,7 +2,7 @@
  * 分组View
  * Created by Yuiitsu on 2018/05/25.
  */
-View.extend('group', function() {
+App.view.extend('group', function() {
 
     /**
      * 列表
@@ -36,14 +36,13 @@ View.extend('group', function() {
     this.form = function() {
         return `
             <div class="history-group-form">
-                {{ var name = data && data['name'] ? data['name'] : '' }}
-                {{ var group_id = data && data['group_id'] ? data['group_id'] : '' }}
-                <label>Name</label>       
-                <div class="h-30">
-                    <input type="text" class="input-text" placeholder="Enter group name" id="history-group-name" value="{{ name }}" />
-                    <input type="hidden" id="history-group-id" value="{{ group_id }}" />
+                {{ var name = data && data['groupName'] ? data['groupName'] : '' }}
+                {{ var groupId = data && data['groupId'] ? data['groupId'] : '' }}
+                <div class="history-group-form-line">
+                    <input type="text" class="input-text bg-level-3 border-level-0" placeholder="Enter folder name" id="history-group-name" value="{{ name }}" />
+                    <input type="hidden" id="history-group-id" value="{{ groupId }}" />
                 </div>
-                <div class="h-30">
+                <div class="">
                     <button class="btn btn-primary js-handler" id="history-group-save">Save</button>
                 </div>
             </div>
@@ -57,14 +56,13 @@ View.extend('group', function() {
     this.select = function() {
         return `
             <div class="history-group-selector-box">
-                <select class="history-group-selector">
-                    <option value="">select group</option>
+                <select class="history-group-selector bg-level-3 border-level-0">
+                    <option value="">default</option>
                     {{ for var i in data['list'] }}
                     {{ var selected = data['list'][i]['group_id'].toString() === data['selected_group_id'] ? 'selected="selected"' : '' }}
                     <option value="{{ data['list'][i]['group_id'] }}" {{ selected }}>{{ data['list'][i]['name'] }}</option>
                     {{ end }}
                 </select>
-                <i class="mdi mdi-plus history-group-selector-new"></i>
             </div>
         `;
     };

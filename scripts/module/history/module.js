@@ -16,7 +16,7 @@ App.module.extend('history', function() {
     // 默认数据
     Model.default['historyList'] = [];
     Model.default['hostList'] = [];
-    Model.default['selectHost'] = 'All host';
+    Model.default['selectHost'] = '';
     Model.default['searchKey'] = '';
     Model.default['folderGroup'] = '[]';
 
@@ -26,7 +26,7 @@ App.module.extend('history', function() {
     this.init = function() {
         // 数据监听
         Model.set('historyList', Model.default.historyList).watch('historyList', this.renderHistoryList);
-        Model.set('selectHost', Model.default.selectHost).watch('selectHost', this.filterHistoryListByHost);
+        Model.set('selectHost', Model.default.selectHost).watch('selectHost', this.renderHistoryList);
         Model.set('searchKey', Model.default.searchKey).watch('searchKey', this.renderHistoryList);
         Model.set('folderGroup', Model.default.folderGroup).watch('folderGroup', this.renderHistoryList);
         // 初始化数据
@@ -38,7 +38,7 @@ App.module.extend('history', function() {
      * 初始化数据，从缓存中获取数据，放入数据对象
      */
     this.initData = function() {
-        let hostList = this.get_host_list(),
+        let hostList = this.getHostList(),
             historyList = this.getHistoryList(null, null);
 
         // Set Data
@@ -52,12 +52,12 @@ App.module.extend('history', function() {
     this.renderHistoryList = function() {
         // host列表
         let selectHost = Model.get('selectHost'),
-            historyList = Model.get('historyList'),
+            historyList = self.getHistoryList(null, selectHost),
             historyListLen = historyList.length,
             searchKey = Model.get('searchKey'),
             searchKeyList = searchKey.split(' '),
             searchKeyListLen = searchKeyList.length,
-            groupList = self.module.group.group_list,
+            groupList = JSON.parse(Model.get('groupList')),
             folderGroup = JSON.parse(Model.get('folderGroup')),
             resultList = [],
             groupHistoryList = ['default'],
@@ -126,6 +126,9 @@ App.module.extend('history', function() {
             groupId = groupId ? groupId : 'default';
             if (groupHistoryList.indexOf(groupId) === -1) {
                 groupHistoryList.push(groupId);
+            }
+            if (!groupObject.hasOwnProperty(groupId)) {
+                groupId = 'default';
             }
             if (!groupHistory.hasOwnProperty(groupId)) {
                 let groupName = 'default';
@@ -308,7 +311,7 @@ App.module.extend('history', function() {
      * 刷新host list界面
      */
     this.refresh_host_list = function() {
-        let host_list = this.get_host_list(),
+        let host_list = this.getHostList(),
             _this = this;
         let output_data = {
             list: host_list,
@@ -456,7 +459,7 @@ App.module.extend('history', function() {
      * 获取host list
      * @returns {*|Array}
      */
-    this.get_host_list = function() {
+    this.getHostList = function() {
         return this.getListData(this.hostCacheKey);
     };
 
@@ -543,29 +546,31 @@ App.module.extend('history', function() {
         }
         this.setItem(this.dataKey, historyData);
         //
-        let hashData = this.getListData(this.listKey);
-        for (let i in hashData) {
-            if (hashData[i] === key) {
-                hashData.splice(i, 1);
+        let hashList = this.getListData(this.listKey),
+            hashListLen = hashList.length;
+        for (let i = 0; i < hashListLen; i++) {
+            if (hashList[i] === key) {
+                hashList.splice(i, 1);
             }
         }
-        this.setItem(this.listKey, hashData);
+        this.setItem(this.listKey, hashList);
         //
-        this.refresh_history_list();
+        Model.set('historyList', JSON.stringify(historyData));
     };
 
     /**
      * 删除host
      * @param host
      */
-    this.del_host = function(host) {
-        let host_list = this.get_host_list();
-        for (let i in host_list) {
-            if (host_list[i] === host) {
-                host_list.splice(i, 1);
+    this.delHost = function(host) {
+        let hostList = this.getHostList(),
+            hostListLen = hostList.length;
+        for (let i = 0; i < hostListLen; i++) {
+            if (hostList[i] === host) {
+                hostList.splice(i, 1);
             }
         }
-        this.setItem(this.hostCacheKey, host_list);
+        this.setItem(this.hostCacheKey, hostList);
 
         // 删除host对应数据
         let delHistoryKey = [];
@@ -578,16 +583,18 @@ App.module.extend('history', function() {
         }
         this.setItem(this.dataKey, historyData);
         // 删除数据list中对应的数据
-        let hashData = this.getListData(this.listKey);
-        for (let i in hashData) {
-            if (delHistoryKey.indexOf(hashData[i]) !== -1) {
-                hashData.splice(i, 1);
+        let hashList = this.getListData(this.listKey),
+            hashListLen = hashList.length;
+
+        for (let i = 0; i < hashListLen; i++) {
+            if (delHistoryKey.indexOf(hashList[i]) !== -1) {
+                hashList.splice(i, 1);
             }
         }
-        this.setItem(this.listKey, hashData);
-
-        this.refresh_history_list();
-        this.refresh_host_list();
+        this.setItem(this.listKey, hashList);
+        //
+        Model.set('hostList', hostList);
+        Model.set('historyList', JSON.stringify(historyData));
     };
 
     /**
@@ -627,17 +634,29 @@ App.module.extend('history', function() {
 
     /**
      * 添加到分组
-     * @param history_key
-     * @param group_id
+     * @param historyKey
+     * @param groupId
      */
-    this.add_to_group = function(history_key, group_id) {
-        if (!history_key || !group_id) {
-            this.common.notification('Error: arguments error.', 'danger');
+    this.moveToGroup = function(historyKey, groupId) {
+        if (!historyKey) {
+            this.module.common.notification('Error: arguments error.', 'danger');
             return false;
         }
 
-        App.group.add_history(group_id, history_key);
-        this.common.notification('save ok.');
+        //
+        let historyData = this.getData();
+        for (let i in historyData) {
+            if (i === historyKey) {
+                historyData[i]['group_id'] = groupId;
+            }
+        }
+
+        this.setItem(this.dataKey, historyData);
+        //
+        let historyList = this.getHistoryList(null, null);
+        Model.set('historyList', historyList);
+        //
+        this.module.common.notification('save ok.');
     };
 
     /**

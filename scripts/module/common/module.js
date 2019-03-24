@@ -175,7 +175,7 @@ App.module.extend('common', function() {
         clearTimeout(notification_timer);
         //
         let bg = type ? type : 'success';
-        $('body').append(View.get_view('common', 'notification', {
+        $('body').append(self.view.getView('common', 'notification', {
             text: text,
             bg: bg
         }));
@@ -193,7 +193,7 @@ App.module.extend('common', function() {
      */
     this.module = function(name, content, action) {
         let module_id = Date.parse(new Date());
-        $('body').append(View.get_view('common', 'module', {
+        $('body').append(this.view.getView('common', 'module', {
             name: name,
             content: content,
             action: action,
@@ -228,7 +228,7 @@ App.module.extend('common', function() {
         return {
             show: function(type, msg, confirm_callback, cancel_callback) {
                 let dialog_id = Date.parse(new Date());
-                $('body').append(View.get_view('common', 'dialog', {
+                $('body').append(self.view.getView('common', 'dialog', {
                     type: type,
                     msg: msg,
                     dialog_id: dialog_id

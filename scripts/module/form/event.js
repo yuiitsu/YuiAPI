@@ -451,50 +451,6 @@ Event.extend('form', function() {
                 App.form.build_url_query_string();
             });
         },
-        codeSwitch: function() {
-            $('#output-content').on('click', '.code-switch', function(e) {
-                let parent = $(this).parent(),
-                    target = parent,
-                    display = '';
-
-                if (parent.hasClass('row-root')) {
-                    target = $('.row-child');
-                    if (parent.hasClass('row-root-close')) {
-                        display = 'block';
-                        parent.removeClass('row-root-close');
-                    } else {
-                        display = 'none';
-                        parent.addClass('row-root-close');
-                    }
-                }
-
-                target.each(function() {
-                    let o = $(this).next();
-                    if (!display) {
-                        if (o.css('display') === 'block') {
-                            $(this).addClass('row-close');
-                            parent.addClass('row-close');
-                            o.hide();
-                        } else {
-                            $(this).removeClass('row-close');
-                            parent.removeClass('row-close');
-                            o.show();
-                        }
-                    } else {
-                        if (display === 'block') {
-                            $(this).removeClass('row-close');
-                            parent.removeClass('row-close');
-                            o.show();
-                        } else {
-                            $(this).addClass('row-close');
-                            parent.addClass('row-close');
-                            o.hide();
-                        }
-                    }
-                });
-                e.stopPropagation();
-            })
-        },
         switchCodeTheme: function() {
             $('#output-content').on('click', '.response-code-theme-selector span', function() {
                 let className = $(this).attr('class');

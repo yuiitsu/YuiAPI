@@ -4,12 +4,19 @@
 .response-header {
     padding: 10px;
 }
-.response-header-tab a {
+.response-header-tab span {
     display: inline-block;
     padding: 0 10px;
     border-radius: 25px;
     height:25px;
     line-height:25px;
+    cursor: pointer;
+}
+.response-status-and-time {
+    line-height:25px;
+}
+.response-status-and-time span {
+    font-weight: bold;
 }
 .response-body {
     padding: 10px;
@@ -20,8 +27,10 @@
     Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;
 }
 .response-empty {
-    padding: 30px;
+    padding: 100px 0;
     text-align: center;
+    text-shadow: 1px 1px 1px #000;
+    font-size:14px;
 }
 .response-empty-rectangle {
     display: inline-block;
@@ -31,6 +40,8 @@
     border: 2px solid #ccc;
     margin-bottom:20px;
     text-align: center;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #000;
 }
 
 /* code theme */
@@ -56,7 +67,7 @@
 .code-theme-light .sending pre{background-color:#efefef;}
 
 .response-body pre.code-theme-dark::-webkit-scrollbar-thumb {border-radius:0;background:#828281;box-shadow:rgba(0,0,0,0.5);}
-.code-theme-dark pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);background-color:rgb(50, 54, 57);color:#fff;}
+.code-theme-dark pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);}
 .code-theme-dark .code-string{color:#66D9EF;}
 .code-theme-dark .code-number{color:#F92672;}
 .code-theme-dark .code-boolean{color:#000033;}

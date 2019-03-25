@@ -237,18 +237,6 @@ App.event.extend('history', function() {
         },
 
         /**
-         * 从分组移除
-         */
-        remove_from_group: function() {
-            $('body').on('click', '.history-tips-add-list li.remove-from-group', function(e) {
-                let key = $(this).parent().attr('data-key');
-                App.group.remove_history(key);
-                App.common.tips.remove();
-                e.stopPropagation();
-            });
-        },
-
-        /**
          * 打开加入分组界面
          */
         openMoveToGroup: function() {
@@ -304,10 +292,6 @@ App.event.extend('history', function() {
             });
         },
 
-        clear: function() {
-
-        },
-
         /**
          * 搜索
          */
@@ -326,39 +310,6 @@ App.event.extend('history', function() {
                 Model.set('searchKey', '');
                 e.stopPropagation();
             });
-        },
-
-        /**
-         * 分组tab切换
-         */
-        group_tab: function() {
-            $('#history-content').on('click', '.history-group-tab li', function(e) {
-                let index = $(this).index(),
-                    target_parent = $('#history-content').find('#history-sidebar');
-
-                target_parent.find('.history-group-tab li').removeClass('focus').eq(index).addClass('focus');
-                target_parent.find('.history-host').addClass('hide').eq(index).removeClass('hide');
-            });
-        },
-
-        switch_history_tab: function() {
-            $('#history-tab').on('click', '.history-tab-item', function(e) {
-                let hash = $(this).attr('data-hash');
-                if (!hash) {
-                    return false;
-                }
-
-                App.history.open_data(hash);
-                e.stopPropagation();
-            })
-        },
-
-        remove_history_tab: function() {
-            $('#history-tab').on('click', '.history-tab-item span', function(e) {
-                let hash = $(this).attr('data-hash');
-                App.history.remove_history_tab(hash);
-                e.stopPropagation();
-            })
         }
     };
 });

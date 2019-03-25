@@ -4,70 +4,75 @@
 App.module.extend('response', function() {
     //
     let self = this;
+    //
+    Model.default['showResponseDataType'] = 'Body';
 
     this.init = function() {
         //
-        Model.set('response_data', '').watch('response_data', this.showResponse);
+        Model.set('responseData', '').watch('responseData', this.renderResponse);
+        Model.set('showResponseDataType', Model.default.showResponseDataType)
+            .watch('showResponseDataType', this.renderResponse);
         //
-        this.view.display('response', 'layout', {}, '.response-container');
+        this.view.display('response', 'empty', {}, '.response-container');
     };
 
-    this.showResponse = function() {
-        let request_data = Model.get('request_data'),
-            response_data = Model.get('response_data'),
-            content_type = response_data['response_content_type'];
+    this.renderResponse = function() {
+        let requestData = Model.get('requestData'),
+            responseData = Model.get('responseData'),
+            showResponseDataType = Model.get('showResponseDataType'),
+            contentType = responseData['responseContentType'],
+            renderData = {
+                headers: responseData['headers'],
+                response: responseData['response'],
+                responseContentType: responseData['responseContentType'],
+                showResponseDataType: showResponseDataType,
+                status: responseData['status'],
+                use_time: responseData['use_time'],
+            };
 
-        response_data['codeTheme'] = Model.get('codeTheme');
         // 检查响应数据类型
-        if (content_type && content_type.indexOf('application/json') !== -1) {
-            // response_data['response'] =
-            //     App.common.syntaxHighlight(JSON.stringify(response_data['response'], undefined, 4));
-            response_data['response'] = self.syntaxHighlightPro(response_data['response']);
-        } else if (content_type && content_type.indexOf('image') !== -1) {
+        if (contentType && contentType.indexOf('application/json') !== -1) {
+            renderData['response'] = self.syntaxHighlightPro(responseData['response']);
+        } else if (contentType && contentType.indexOf('image') !== -1) {
             let src = null;
             try {
                 let url = window.URL || window.webkitURL;
-                src = url.createObjectURL(response_data['response']);
+                src = url.createObjectURL(renderData['response']);
             } catch (e) {
-                if (typeof response_data['response'] === 'string') {
-                    // src = window.btoa(response_data['response']);
-                    //src = 'data:image/png;base64,' + response_data['response'];
-                    src = request_data.url;
+                if (typeof renderData['response'] === 'string') {
+                    src = requestData.url;
                 }
             }
 
             if (src) {
-                response_data['response'] = '<img src="'+ src +'" />';
+                renderData['response'] = '<img src="' + src + '" />';
             } else {
-                response_data['response'] = 'Image Blob data cannot be displayed. Please send the request.';
+                renderData['response'] = 'Image Blob data cannot be displayed. Please send the request.';
             }
-        } else if (content_type && (content_type.indexOf('text/xml') !== -1 ||
-            content_type.indexOf('application/xml') !== -1)) {
-            response_data['response'] = self.parse_xml(response_data['response']);
-        //} else if (content_type && content_type.indexOf('text/html') !== -1) {
-        //    response_data['response'] = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        } else if (contentType && (contentType.indexOf('text/xml') !== -1 ||
+            contentType.indexOf('application/xml') !== -1)) {
+            renderData['response'] = self.parse_xml(renderData['response']);
         } else {
-            let response = 'Failed to load response data';
-            if (response_data['response']) {
-                response = self.parse_xml(response_data['response']);
+            let response = '';
+            if (renderData['response']) {
+                response = self.parse_xml(renderData['response']);
                 if (!response) {
                     try {
-                        response = JSON.parse(response_data['response']);
+                        response = JSON.parse(renderData['response']);
                         response = self.syntaxHighlightPro(response);
                     } catch (e) {
-                        if (typeof response_data['response'] === 'object') {
-                            response = self.syntaxHighlightPro(response_data['response']);
+                        if (typeof renderData['response'] === 'object') {
+                            response = self.syntaxHighlightPro(renderData['response']);
                         } else {
-                            response = response_data['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                            response = renderData['response'].replace(/</g, "&lt;").replace(/>/g, "&gt;");
                         }
                     }
                 }
             }
 
-            response_data['response'] = response;
+            renderData['response'] = response;
         }
-
-        self.view.display('response', 'layout', response_data, '.response-container');
+        self.view.display('response', 'layout', renderData, '.response-container');
     };
 
     this.syntaxHighlightPro = function(data) {
@@ -150,5 +155,51 @@ App.module.extend('response', function() {
         iteration(data, true);
 
         return result.join("");
+    };
+
+    /**
+     * 格式化xml
+     * @param content
+     * @returns {*}
+     */
+    this.parse_xml = function(content) {
+        let xml_doc;
+        try {
+            xml_doc = (new DOMParser()).parseFromString(content.replace(/[\n\r]/g, ""), 'text/xml');
+        } catch (e) {
+            return false;
+        }
+
+        if (xml_doc.documentElement.nodeName.toUpperCase() !== 'XML') {
+            return false;
+        }
+
+        function build_xml(index, list, element) {
+            let t = [];
+            for (let i = 0; i < index; i++) {
+                t.push('&nbsp;&nbsp;&nbsp;&nbsp;');
+            }
+            t = t.join("");
+            list.push(t + '&lt;<span class="code-key">'+ element.nodeName +'</span>&gt;\n');
+            for (let i = 0; i < element.childNodes.length; i++) {
+                let nodeName = element.childNodes[i].nodeName;
+                if (element.childNodes[i].childNodes.length === 1) {
+                    let value = element.childNodes[i].childNodes[0].nodeValue;
+                    let value_color = !isNaN(Number(value)) ? 'code-number' : 'code-string';
+                    let value_txt = '<span class="'+ value_color +'">' + value + '</span>';
+                    let item = t + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-key">' + nodeName +
+                        '</span>&gt;' + value_txt + '&lt;/<span class="code-key">' + nodeName + '</span>&gt;\n';
+                    list.push(item);
+                } else {
+                    build_xml(++index, list, element.childNodes[i]);
+                }
+            }
+            list.push(t + '&lt;/<span class="code-key">'+ element.nodeName +'</span>&gt;\n');
+        }
+
+        let list = [];
+        build_xml(0, list, xml_doc.documentElement);
+
+        return list.join("");
     };
 });

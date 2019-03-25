@@ -7,15 +7,21 @@ App.view.extend('response', function() {
         return `
             {{ var headers = data['headers'] ? data['headers'] : 'click the send button for a response' }}
             {{ var status = (data['status'] || data['status'] === 0) ? data['status'] : 'None' }}
-            {{ var status_class = data['status'] ? (data['status'] === 200 ? 'color-success' : 'color-failed') : 'color-failed' }}
+            {{ var status_class = data['status'] ? (data['status'] === 200 ? 'color-success' : 'color-danger') : 'color-danger' }}
             {{ var use_time = data['use_time'] ? data['use_time'] : 'None' }}
-            {{ var response = data['response'] ? data['response'] : '' }}
+            {{ var response = data['showResponseDataType'] === 'Body' ? (data['response'] ? data['response'] : '') : (data['headers'] ? data['headers'] : '') }}
             {{ var codeThemeClass = 'code-theme-' + data['codeTheme'] }}
-            {{ if response }}
+            {{ if status > 0 }}
             <nav class="response-header border-bottom-level-1 display-flex-row">
                 <div class="display-flex-auto response-header-tab">
-                    <a href="#" class="bg-level-0">Body</a>
-                    <a href="#">Headers</a>
+                    {{ var tabs = ['Body', 'Headers'] }}
+                    {{ for var i in tabs }}
+                    {{ var focus = tabs[i] === data['showResponseDataType'] ? 'bg-level-0' : '' }}
+                    <span class="{{ focus }}">{{ tabs[i] }}</span>
+                    {{ end }}
+                </div>
+                <div class="response-status-and-time">
+                    status: <span class="{{ status_class }}">{{ status }}</span> time: <span>{{ use_time }}</span>ms
                 </div>
             </nav>
             <div class="response-body display-flex-auto display-flex-column code-theme-dark">
@@ -23,12 +29,23 @@ App.view.extend('response', function() {
             </div>
             {{ else }}
             <div class="response-empty display-flex-auto">
-                <div class="response-empty-rectangle bg-level-2">Empty</div>
+                <div class="response-empty-rectangle bg-level-2">( ´•︵•\` )</div>
+                <div>
+                    The server is not responding
+                </div>
+            </div>
+            {{ end }}
+        `;
+    };
+
+    this.empty = function() {
+        return `
+            <div class="response-empty display-flex-auto">
+                <div class="response-empty-rectangle bg-level-2">U・ᴥ・U</div>
                 <div>
                     Select history or click the Send button to get a response.
                 </div>
             </div>
-            {{ end }}
         `;
     }
 });

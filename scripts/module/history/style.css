@@ -65,6 +65,7 @@
 .history-list-container ul li p {
     word-wrap:break-word;
     max-height:48px;
+    line-height:16px;
     overflow:hidden;
 }
 .history-search-block {

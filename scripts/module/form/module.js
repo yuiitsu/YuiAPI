@@ -104,52 +104,6 @@ App.module.extend('form', function() {
     };
 
     /**
-     * 格式化xml
-     * @param content
-     * @returns {*}
-     */
-    this.parse_xml = function(content) {
-        let xml_doc;
-        try {
-            xml_doc = (new DOMParser()).parseFromString(content.replace(/[\n\r]/g, ""), 'text/xml');
-        } catch (e) {
-            return false;
-        }
-
-        if (xml_doc.documentElement.nodeName.toUpperCase() !== 'XML') {
-            return false;
-        }
-
-        function build_xml(index, list, element) {
-            let t = [];
-            for (let i = 0; i < index; i++) {
-                t.push('&nbsp;&nbsp;&nbsp;&nbsp;');
-            }
-            t = t.join("");
-            list.push(t + '&lt;<span class="code-key">'+ element.nodeName +'</span>&gt;\n');
-            for (let i = 0; i < element.childNodes.length; i++) {
-                let nodeName = element.childNodes[i].nodeName;
-                if (element.childNodes[i].childNodes.length === 1) {
-                    let value = element.childNodes[i].childNodes[0].nodeValue;
-                    let value_color = !isNaN(Number(value)) ? 'code-number' : 'code-string';
-                    let value_txt = '<span class="'+ value_color +'">' + value + '</span>';
-                    let item = t + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-key">' + nodeName +
-                        '</span>&gt;' + value_txt + '&lt;/<span class="code-key">' + nodeName + '</span>&gt;\n';
-                    list.push(item);
-                } else {
-                    build_xml(++index, list, element.childNodes[i]);
-                }
-            }
-            list.push(t + '&lt;/<span class="code-key">'+ element.nodeName +'</span>&gt;\n');
-        }
-
-        let list = [];
-        build_xml(0, list, xml_doc.documentElement);
-
-        return list.join("");
-    };
-
-    /**
      * 格式化结果
      */
     this.format = function() {

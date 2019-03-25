@@ -120,9 +120,15 @@
 .theme-dark .history-action:hover {
     color:#fff;
 }
-.history-host-list-container li i {
+.theme-dark .history-host-list-container li i {
     color:rgb(78, 81, 83);
 }
-.history-host-list-container li i:hover {
+.theme-dark .history-host-list-container li i:hover {
     color:#ff0000;
+}
+.theme-dark .response-empty {
+    color:rgb(78, 81, 83);
+}
+.theme-dark .response-empty-rectangle {
+    border: 1px solid rgb(65, 68, 70);
 }

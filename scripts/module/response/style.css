@@ -19,6 +19,20 @@
     font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,
     Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",微软雅黑,"Microsoft Jhenghei",sans-serif!important;
 }
+.response-empty {
+    padding: 30px;
+    text-align: center;
+}
+.response-empty-rectangle {
+    display: inline-block;
+    width:80px;
+    height:80px;
+    line-height:80px;
+    border: 2px solid #ccc;
+    margin-bottom:20px;
+    text-align: center;
+}
+
 /* code theme */
 .response-body{}
 .response-body pre div{position:relative;padding-left:20px;font-size:14px;}

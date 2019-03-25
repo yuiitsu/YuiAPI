@@ -39,6 +39,11 @@ button{width:100%;height: 30px;}
 .underline{text-decoration: underline;}
 .pointer-events-none{pointer-events:none;}
 
+/* overflow */
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
 /* opacity */
 .opacity-3{opacity: 0.3}
 .opacity-5{opacity: 0.5}

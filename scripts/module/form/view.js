@@ -256,7 +256,7 @@ App.view.extend('form', function() {
                 -->
             </div>
 
-            <div class="form-request-headers-line">
+            <div class="form-request-headers-line display-flex-column display-flex-auto">
                 <nav>
                     <span class="bg-level-0"><strong>Body</strong></span>
                 </nav>
@@ -273,7 +273,9 @@ App.view.extend('form', function() {
                         <i class="mdi mdi-square-edit-outline"></i> Edit Parameter
                     </span>
                 </div>
+                <div class="display-flex-auto overflow-y-auto">
                 {{ this.view.getView('form', 'form', data) }}
+                </div>
             </div>
         `;
     };

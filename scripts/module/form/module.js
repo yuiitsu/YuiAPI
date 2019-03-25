@@ -54,7 +54,7 @@ App.module.extend('form', function() {
         // Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
         Model.set('request_headers', Model.default.request_headers);
         Model.set('authentication', Model.default.authentication);
-        // Model.set('request_data', Model.default.request_data).watch('request_data', this.show_form);
+        Model.set('requestData', Model.default.request_data).watch('requestData', this.renderForm);
         // 请求参数,三种类型分别存储
         Model.set('request_data_form-data', {});
         Model.set('request_data_form-data-true', {});
@@ -71,23 +71,23 @@ App.module.extend('form', function() {
     /**
      * 渲染请求参数
      */
-    this.show_form = function() {
-        let request_data = Model.get('request_data');
+    this.renderForm = function() {
+        let requestData = Model.get('requestData');
         // 处理headers的显示，即有数据时，默认打开headers表单
-        let request_headers = request_data['request_headers'];
+        let request_headers = requestData['request_headers'];
         if (request_headers && Object.keys(request_headers).length > 0) {
-            request_data['headers_line_type'] = 'Headers';
+            requestData['headers_line_type'] = 'Headers';
         }
         // 分析url参数
-        let url = request_data.url;
-        let params = App.common.get_url_params(url);
+        let url = requestData.url;
+        let params = self.module.common.get_url_params(url);
         Model.set('url_params', {display: true, list: params});
-        request_data['url_params'] = {list: params};
+        requestData['url_params'] = {list: params};
         //
-        View.display('form', 'layout', request_data, '#form-box');
+        self.view.display('form', 'layout', requestData, '.form-container');
         // 存储表单参数数据
         let request_form_type = Model.get('request_form_type');
-        Model.set('request_data_' + request_form_type, request_data['data']);
+        Model.set('request_data_' + request_form_type, requestData['data']);
     };
 
     /**

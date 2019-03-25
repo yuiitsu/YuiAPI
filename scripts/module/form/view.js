@@ -193,25 +193,32 @@ App.view.extend('form', function() {
      */
     this.layout = function() {
         return `
+            {{ var name = data['name'] ? data['name'] : '' }}
+            {{ var url = data['url'] ? data['url'] : '' }}
+            {{ var dataType = data['data_type'] ? data['data_type'] : 'form-data' }}
             <div class="form-header display-flex-row">
-                <input type="text" class="input-text form-name bg-level-3 border-level-0 display-flex-auto" placeholder="API Name" />
+                <input type="text" 
+                    class="input-text form-name bg-level-3 border-level-0 display-flex-auto" 
+                    placeholder="API Name" value="{{ name }}" />
             </div>
 
             <div class="form-url-line display-flex-row">
                 <div class="form-request-type">
+                    {{ var requestTypeList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }}
                     <select id="request-type" class="bg-level-3 border-level-0">
-                        <option value="GET" selected="selected">GET</option>
-                        <option value="POST">POST</option>
-                        <option value="PUT">PUT</option>
-                        <option value="DELETE">DELETE</option>
-                        <option value="OPTIONS">OPTIONS</option>
+                        {{ for var i in requestTypeList }}
+                        {{ var selected = requestTypeList[i] === data['type'] ? 'selected="selected"' : '' }}
+                        <option value="{{ requestTypeList[i] }}" {{ selected }}>{{ requestTypeList[i] }}</option>
+                        {{ end }}
                     </select>
                 </div>
                 <div class="display-flex-auto form-request-url-container display-flex-row bg-level-3 border-level-0">
                     <div class="display-flex">
                         <i class="mdi mdi-alpha-h-box form-host-selector"></i>
                     </div>
-                    <input type="text" class="input-text form-name bg-level-3 display-flex-auto" placeholder="API URL" />
+                    <input type="text" 
+                        class="input-text form-name bg-level-3 display-flex-auto" 
+                        placeholder="API URL" value="{{ url }}" />
                 </div>
                 <div class="form-request-send-container">
                     <button id="send" class="btn btn-primary">Send</button>
@@ -220,10 +227,11 @@ App.view.extend('form', function() {
 
             <div class="form-request-headers-line">
                 <nav>
-                    <a href="#" class="bg-level-0"><strong>Headers</strong></a>
-                    <a href="#"><strong>Authentication</strong></a>
-                    <a href="#"><strong>Params</strong></a>
+                    <span class=""><strong>Headers</strong></span>
+                    <span><strong>Authentication</strong></span>
+                    <span><strong>Params</strong></span>
                 </nav>
+                <!--
                 <table class="form-data-table border-top-level-1" cellspacing="0" id="js-form-headers-body">
                     <thead>
                     <tr>
@@ -245,58 +253,27 @@ App.view.extend('form', function() {
                     </tr>
                     </tbody>
                 </table>
+                -->
             </div>
 
             <div class="form-request-headers-line">
                 <nav>
-                    <a href="#" class="bg-level-0"><strong>Body</strong></a>
+                    <span class="bg-level-0"><strong>Body</strong></span>
                 </nav>
                 <div class="form-request-data-type-container display-flex-row border-top-level-1">
                     <div class="display-flex-auto">
-                        <label class="form-request-data-type">
-                            <input type="radio" name="form-data-type" value="form-data-true"> form-data
-                        </label>
-                        <label class="form-request-data-type">
-                            <input type="radio" name="form-data-type" value="form-data" checked="checked"> x-www-form-urlencoded
-                        </label>
-                        <label class="form-request-data-type">
-                            <input type="radio" name="form-data-type" value="raw"> raw
-                        </label>
+                        {{ var dataTypeList = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}
+                        {{ for var i in dataTypeList }}
+                        {{ var item = dataTypeList[i] }}
+                        {{ var checked = item['key'] === dataType ? 'mdi-checkbox-marked-circle' : '' }}
+                        <label class="form-request-data-type"><i class="mdi mdi-checkbox-blank-circle {{ checked }}" value="{{ item['key'] }}"></i> {{ item['value'] }}</label>
+                        {{ end }}
                     </div>
-                    <a href="#">
+                    <span>
                         <i class="mdi mdi-square-edit-outline"></i> Edit Parameter
-                    </a>
+                    </span>
                 </div>
-                <table class="form-data-table border-top-level-1" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <td class="border-bottom-level-1"><input type="checkbox" class="form-select-all" checked="checked"></td>
-                        <td class="border-bottom-level-1">Key</td>
-                        <td class="border-bottom-level-1">Value</td>
-                        <td class="border-bottom-level-1">Description</td>
-                        <td class="border-bottom-level-1"></td>
-                    </tr>
-                    </thead>
-                    <tbody class="form-data-input">
-                    <tr>
-                        <td><input type="checkbox" class="form-select" checked="checked" /></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-value form-data-item input-text" data-type="form-data-headers"></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-description form-data-item input-text" data-type="form-data-headers"></td>
-                        <td class="cursor-pointer form-line-del-box">
-                            <i class="mdi mdi-close"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-select" checked="checked" /></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-value form-data-item input-text" data-type="form-data-headers"></td>
-                        <td><input type="text" class="bg-level-3 border-level-0 form-description form-data-item input-text" data-type="form-data-headers"></td>
-                        <td class="cursor-pointer form-line-del-box">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                {{ this.view.getView('form', 'form', data) }}
             </div>
         `;
     };
@@ -309,25 +286,9 @@ App.view.extend('form', function() {
             {{ var data_type = data['data_type'] ? data['data_type'] : 'form-data' }}
             {{ var view_name = data_type === 'form-data-true' ? 'form_data_box' : (data_type === 'raw' ? 'raw' : 'urlencoded_box') }}
             {{ var form_data_list = data['data'] }}
-            <table class="form-data-table font-color-white" cellspacing="0">
-                <thead>
-                    <tr>
-                        <td colspan="5" class="border-bottom-light">
-                            {{ var data_type_list = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}
-                            {{ for var i in data_type_list }}
-                            {{ var item = data_type_list[i] }}
-                            {{ var checked = item['key'] === data_type ? 'checked="checked"' : '' }}
-                            <label class="form-request-data-type"><input type="radio" name="form-data-type" value="{{ item['key'] }}" {{ checked }} /> {{ item['value'] }}</label>
-                            {{ end }}
-                            <span class="fr form-edit-parameter" id="js-form-edit-parameter">
-                                <i class="mdi mdi-square-edit-outline" />
-                                Edit Parameter
-                            </span>
-                        </td>
-                    </tr>
-                </thead>
+            <table class="form-data-table border-top-level-1" cellspacing="0">
                 <tbody id="form-data" class="form-data-input form-data-type" data-type="form-data">
-                    {{ this.get_view('form', view_name, form_data_list) }}
+                    {{ this.view.getView('form', view_name, form_data_list) }}
                 </tbody>
             </table>
         `;
@@ -427,13 +388,13 @@ App.view.extend('form', function() {
     this.urlencoded_box = function() {
         return `
             <tr class="form-data-title">
-                <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
+                <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td class="border-bottom-light">Key</td>
                 <td class="border-bottom-light">Value</td>
                 <td class="border-bottom-light">Description</td>
                 <td class="border-bottom-light"></td>
             </tr>
-            {{ View.get_view('form', 'urlencoded_line', data) }}
+            {{ this.view.getView('form', 'urlencoded_line', data) }}
         `;
     };
 
@@ -449,18 +410,18 @@ App.view.extend('form', function() {
             {{ var value_format = value.replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             {{ var description = typeof data[i] === 'object' ? data[i]['description'] : '' }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
-                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" value="{{ item_key }}" /> </td>
-                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" value="{{ value_format }}" /> </td>
-                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" value="{{ description }}" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
+                <td><input type="text" class="form-key bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" value="{{ item_key }}" /> </td>
+                <td><input type="text" class="form-value bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" value="{{ value_format }}" /> </td>
+                <td><input type="text" class="form-description bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" value="{{ description }}" /> </td>
                 <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
             </tr>
             {{ end }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
-                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data" /> </td>
-                <td><input type="text" class="form-value form-data-item input-text" data-type="form-data" /> </td>
-                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
+                <td><input type="text" class="form-key bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" /> </td>
+                <td><input type="text" class="form-value bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" /> </td>
+                <td><input type="text" class="form-description bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data" /> </td>
                 <td class="cursor-pointer form-line-del-box"></td>
             </tr>
         `;
@@ -475,7 +436,7 @@ App.view.extend('form', function() {
             <tr>
                 <td colspan="4">
                     {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
-                    <select id="raw-content-type" class="border-normal">
+                    <select id="raw-content-type" class="bg-level-3 border-level-0">
                         {{ var content_type = data ? data['content_type'] : '' }}
                         {{ for var i in raw_content_type_list }}
                         {{ var item = raw_content_type_list[i] }}
@@ -488,7 +449,7 @@ App.view.extend('form', function() {
             <tr>
                 <td colspan="4">
                     {{ var raw_data = data['data'] ? data['data'] : '' }}
-                    <textarea style="padding:10px;width:100%;height:200px;">{{ raw_data }}</textarea>
+                    <textarea style="padding:10px;width:100%;height:200px;" class="bg-level-3 border-level-0 color-level-0">{{ raw_data }}</textarea>
                 </td>
             </tr>
         `;

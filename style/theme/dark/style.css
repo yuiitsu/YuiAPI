@@ -39,6 +39,9 @@
 .theme-dark {
     color: rgb(226, 228, 231);
 }
+.theme-dark .color-level-0 {
+    color: rgb(226, 228, 231);
+}
 
 /* border */
 .theme-dark .border-level-0 {

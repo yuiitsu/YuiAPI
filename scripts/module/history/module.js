@@ -556,16 +556,13 @@ App.module.extend('history', function() {
                 'use_time': time,
                 'status': status
             };
+            console.log(historyData[key]);
             Model.set('responseData', response_data);
-            //Model.set('request_data_' + form_data_type, historyData[key]['data']);
             Model.set('requestFormType', form_data_type);
             Model.set('requestFormTypeTmp', form_data_type);
             Model.set('requestData', historyData[key]);
             Model.set('requestHeaders', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
             Model.set('authentication', historyData[key]['authentication']);
-            App.requestType = requestType;
-
-            // this.set_history_tab(historyData[key]);
         }
     };
 });

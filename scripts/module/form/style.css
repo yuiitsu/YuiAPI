@@ -38,7 +38,7 @@
 .form-request-headers-line nav {
     padding-bottom: 15px;
 }
-.form-request-headers-line nav a{
+.form-request-headers-line nav span{
     display: inline-block;
     padding: 0 10px;
     border-radius: 25px;
@@ -54,4 +54,7 @@
 }
 .form-data-table td {
     padding: 5px 0;
+}
+.form-request-data-type {
+    margin-right:10px;
 }

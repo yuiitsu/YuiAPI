@@ -2,7 +2,7 @@
  * 请求表单的事件监听
  * Created by Yuiitsu on 2018/05/21.
  */
-Event.extend('form', function() {
+App.event.extend('form', function() {
     let self = this;
     /**
      * 执行事件监听
@@ -13,7 +13,7 @@ Event.extend('form', function() {
          * 如果是text，显示input，如果是file，显示文件选择按钮
          */
         form_value_type_change: function() {
-            $('#form-box').on('change', '#form-data .form-value-data-type', function() {
+            $('.form-container').on('change', '.form-value-data-type', function() {
                 let value = $(this).val();
                 switch (value) {
                     case "Text":
@@ -274,9 +274,9 @@ Event.extend('form', function() {
          * 表单输入自动增加行，body部分
          */
         form_data_body_input: function() {
-            $('#form-box').on('input', '#form-data .form-data-item', function(e) {
+            $('.form-container').on('input', '#form-data .form-data-item', function(e) {
                 let data_type = $(this).attr('data-type');
-                let target_obj = $('#form-data');
+                let target_obj = $('#form-body');
                 let parent = $(this).parent().parent();
                 if (parent.index() + 1 === target_obj.find('tr').length) {
                     // 创建新的一行
@@ -284,10 +284,10 @@ Event.extend('form', function() {
                     // 根据类型不同，替换目标对象
                     switch (data_type)  {
                         case "form-data-true":
-                            _htmlItem = View.get_view('form', 'form_data_line', {});
+                            _htmlItem = self.view.getView('form', 'form_data_line', {});
                             break;
                         case "form-data":
-                            _htmlItem = View.get_view('form', 'urlencoded_line', {});
+                            _htmlItem = self.view.getView('form', 'urlencoded_line', {});
                             break;
                         default:
                             break;
@@ -298,7 +298,7 @@ Event.extend('form', function() {
                 e.stopPropagation();
             }).on('change', '#form-data .form-data-item', function(e) {
                 // 保存到model
-                App.form.get_params();
+                self.module.form.get_params();
                 e.stopPropagation();
             });
         },
@@ -307,8 +307,8 @@ Event.extend('form', function() {
          * form data type
          */
         form_data_type_change: function() {
-            $('#form-box').on('click', 'input[name=form-data-type]', function(e) {
-                let data_type = $(this).val();
+            $('.form-container').on('click', '.form-request-data-type', function(e) {
+                let data_type = $(this).attr('data-type');
                 Model.set('request_form_type_tmp', data_type);
                 e.stopPropagation();
             });
@@ -449,13 +449,6 @@ Event.extend('form', function() {
                 e.stopPropagation();
             }).on('change', '#js-url-params .form-data-item', function(e) {
                 App.form.build_url_query_string();
-            });
-        },
-        switchCodeTheme: function() {
-            $('#output-content').on('click', '.response-code-theme-selector span', function() {
-                let className = $(this).attr('class');
-                Model.set('codeTheme', className);
-                localStorage.setItem('codeTheme', className);
             });
         }
     };

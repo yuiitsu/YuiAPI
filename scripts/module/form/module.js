@@ -49,21 +49,21 @@ App.module.extend('form', function() {
         // 请求表单类型，变化后，切换对应表单
         Model.set('request_form_type', 'form-data');
         // 切换解发事件用，值等于request_form_type
-        // Model.set('request_form_type_tmp', 'form-data').watch('request_form_type_tmp', this.change_form);
+        Model.set('request_form_type_tmp', 'x-www-form-urlencoded').watch('request_form_type_tmp', this.change_form);
         // 整个请求数据对象，包括url，request type, params等
         // Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
         Model.set('request_headers', Model.default.request_headers);
         Model.set('authentication', Model.default.authentication);
         Model.set('requestData', Model.default.request_data).watch('requestData', this.renderForm);
         // 请求参数,三种类型分别存储
+        Model.set('request_data_x-www-form-urlencoded', {});
         Model.set('request_data_form-data', {});
-        Model.set('request_data_form-data-true', {});
         Model.set('request_data_raw', '');
         // 监听请求结果数据
         //Model.set('response_data', '').watch('response_data', this.show_response);
         // Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
         // 渲染页面
-        this.view.display('form', 'layout', {'list': [], 'selected_group_id': this.selected_group_id}, '.form-container');
+        this.view.display('form', 'layout', {}, '.form-container');
         //
         // View.display('form', 'response_layout', {}, '#output-content');
     };
@@ -176,32 +176,35 @@ App.module.extend('form', function() {
      * 根据form类型，切换对应表单
      */
     this.change_form = function() {
-        let request_form_type_tmp = Model.get('request_form_type_tmp');
-        let request_data = Model.get('request_data_' + request_form_type_tmp);
-        let view_name = '';
-        switch (request_form_type_tmp) {
+        let requestFormTypeTmp = Model.get('request_form_type_tmp'),
+            requestData = Model.get('request_data_' + requestFormTypeTmp),
+            viewName = '';
+        switch (requestFormTypeTmp) {
             case 'form-data':
-                view_name = 'urlencoded_box';
+                viewName = 'urlencoded_box';
                 break;
             case 'form-data-true':
-                view_name = 'form_data_box';
+                viewName = 'form_data_box';
                 break;
             case 'raw':
-                view_name = 'raw';
+                viewName = 'raw';
                 break;
             default:
-                view_name = 'urlencoded_line';
+                viewName = 'urlencoded_line';
                 break;
         }
-        Model.set('request_form_type', request_form_type_tmp);
-        View.display('form', view_name, request_data, '#form-data');
+        Model.set('request_form_type', requestFormTypeTmp);
+        self.view.display('form', 'layoutBody', {
+            data: requestData,
+            data_type: requestFormTypeTmp
+        }, '#form-data');
     };
 
     /**
      * 获取页面请求参数，保存成model数据
      */
     this.get_params = function() {
-        let target = $('#form-data'),
+        let target = $('#form-body'),
             request_form_type_tmp = Model.get('request_form_type_tmp'),
             form_data = {},
             i = 0;
@@ -216,7 +219,7 @@ App.module.extend('form', function() {
                 description_obj = target.find('.form-description');
 
             select_obj.each(function () {
-                if ($(this).is(":checked")) {
+                if ($(this).hasClass('mdi-checkbox-marked')) {
                     let key = $.trim(key_obj.eq(i).val());
                     if (key) {
                         let value = $.trim(value_obj.eq(i).val()),

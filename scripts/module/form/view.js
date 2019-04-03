@@ -195,7 +195,6 @@ App.view.extend('form', function() {
         return `
             {{ var name = data['name'] ? data['name'] : '' }}
             {{ var url = data['url'] ? data['url'] : '' }}
-            {{ var dataType = data['data_type'] ? data['data_type'] : 'form-data' }}
             <div class="form-header display-flex-row">
                 <input type="text" 
                     class="input-text form-name bg-level-3 border-level-0 display-flex-auto" 
@@ -256,26 +255,36 @@ App.view.extend('form', function() {
                 -->
             </div>
 
-            <div class="form-request-headers-line display-flex-column display-flex-auto">
-                <nav>
-                    <span class="bg-level-0"><strong>Body</strong></span>
-                </nav>
-                <div class="form-request-data-type-container display-flex-row border-top-level-1">
-                    <div class="display-flex-auto">
-                        {{ var dataTypeList = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}
-                        {{ for var i in dataTypeList }}
-                        {{ var item = dataTypeList[i] }}
-                        {{ var checked = item['key'] === dataType ? 'mdi-checkbox-marked-circle' : '' }}
-                        <label class="form-request-data-type"><i class="mdi mdi-checkbox-blank-circle {{ checked }}" value="{{ item['key'] }}"></i> {{ item['value'] }}</label>
-                        {{ end }}
-                    </div>
-                    <span>
-                        <i class="mdi mdi-square-edit-outline"></i> Edit Parameter
-                    </span>
+            <div class="form-request-headers-line display-flex-column display-flex-auto" id="form-data">
+                {{ this.view.getView('form', 'layoutBody', data) }}
+            </div>
+        `;
+    };
+
+    this.layoutBody = function() {
+        return `
+            {{ var dataType = data['data_type'] ? data['data_type'] : 'form-data' }}
+            <nav>
+                <span class="bg-level-0"><strong>Body</strong></span>
+            </nav>
+            <div class="form-request-data-type-container display-flex-row border-top-level-1">
+                <div class="display-flex-auto">
+                    {{ var dataTypeList = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}
+                    {{ for var i in dataTypeList }}
+                    {{ var item = dataTypeList[i] }}
+                    {{ var checked = item['key'] === dataType ? 'mdi-checkbox-marked-circle' : '' }}
+                    <label class="form-request-data-type" data-type="{{ item['key'] }}">
+                        <i class="mdi mdi-checkbox-blank-circle {{ checked }}"></i> 
+                        {{ item['value'] }}
+                    </label>
+                    {{ end }}
                 </div>
-                <div class="display-flex-auto overflow-y-auto">
-                {{ this.view.getView('form', 'form', data) }}
-                </div>
+                <span>
+                    <i class="mdi mdi-square-edit-outline"></i> Edit Parameter
+                </span>
+            </div>
+            <div class="display-flex-auto overflow-y-auto">
+            {{ this.view.getView('form', 'form', data) }}
             </div>
         `;
     };
@@ -289,7 +298,7 @@ App.view.extend('form', function() {
             {{ var view_name = data_type === 'form-data-true' ? 'form_data_box' : (data_type === 'raw' ? 'raw' : 'urlencoded_box') }}
             {{ var form_data_list = data['data'] }}
             <table class="form-data-table border-top-level-1" cellspacing="0">
-                <tbody id="form-data" class="form-data-input form-data-type" data-type="form-data">
+                <tbody class="form-data-input form-data-type" data-type="form-data" id="form-body">
                     {{ this.view.getView('form', view_name, form_data_list) }}
                 </tbody>
             </table>
@@ -303,13 +312,13 @@ App.view.extend('form', function() {
     this.form_data_box = function() {
         return `
             <tr class="form-data-title">
-                <td class="border-bottom-light"><input type="checkbox" class="form-select-all" checked="checked" /></td>
+                <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td class="border-bottom-light">Key</td>
                 <td class="border-bottom-light">Value</td>
                 <td class="border-bottom-light">Description</td>
                 <td class="border-bottom-light"></td>
             </tr>
-            {{ View.get_view('form', 'form_data_line', data) }}
+            {{ this.view.getView('form', 'form_data_line', data) }}
         `;
     };
 
@@ -326,32 +335,32 @@ App.view.extend('form', function() {
             {{ var value_format = value.replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             {{ var description = typeof data[i] === 'object' ? data[i]['description'] : '' }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
-                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-true" value="{{ item_key }}" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
+                <td><input type="text" class="form-key bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-true" value="{{ item_key }}" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-60 radius-small-all border-normal form-value-data-type">
+                    <select class="w-60 radius-small-all border-normal form-value-data-type form-data-item input-text">
                         {{ for var j in value_type_list }}
                         {{ var is_selected = value_type.toLowerCase() === value_type_list[j].toLowerCase() ? 'selected=selected' : '' }}
                         <option value="{{ value_type_list[j] }}" {{ is_selected }}>{{ value_type_list[j] }}</option>
                         {{ end }}
                     </select>
-                    <input type="{{ value_type }}" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" value="{{ value_format }}" />
+                    <input type="{{ value_type }}" class="form-value bg-level-3 border-level-0 form-key form-data-item input-text display-flex-auto" data-type="form-data-true" value="{{ value_format }}" />
                 </td>
-                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-true" value="{{ description }}" /> </td>
+                <td><input type="text" class="form-description bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-true" value="{{ description }}" /> </td>
                 <td class="cursor-pointer form-line-del-box"><i class="mdi mdi-close" /></td>
             </tr>
             {{ end }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
-                <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-true" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
+                <td><input type="text" class="form-key bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-true" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-60 radius-small-all border-normal form-value-data-type">
+                    <select class="w-60 radius-small-all border-normal form-value-data-type bg-level-3 border-level-0">
                         <option value="Text">Text</option>
                         <option value="File">File</option>
                     </select>
-                    <input type="text" class="form-value form-data-item input-text display-flex-auto" data-type="form-data-true" />
+                    <input type="text" class="form-value bg-level-3 border-level-0 form-key form-data-item input-text display-flex-auto" data-type="form-data-true" />
                 </td>
-                <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-true" /> </td>
+                <td><input type="text" class="form-description bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-true" /> </td>
                 <td class="cursor-pointer form-line-del-box"></td>
             </tr>
         `;
@@ -366,7 +375,7 @@ App.view.extend('form', function() {
             {{ var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
             {{ var value_format = data[i]['value'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" value="{{ item_key }}" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" value="{{ value_format }}" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" value="{{ data[i]['description'] }}" /> </td>
@@ -374,7 +383,7 @@ App.view.extend('form', function() {
             </tr>
             {{ end }}
             <tr>
-                <td><input type="checkbox" class="form-select" checked="checked" /> </td>
+                <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td><input type="text" class="form-key form-data-item input-text" data-type="form-data-headers" /> </td>
                 <td><input type="text" class="form-value form-data-item input-text" data-type="form-data-headers" /> </td>
                 <td><input type="text" class="form-description form-data-item input-text" data-type="form-data-headers" /> </td>

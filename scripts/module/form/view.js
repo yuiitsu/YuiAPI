@@ -317,7 +317,7 @@ App.view.extend('form', function() {
                 <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td><input type="text" class="form-key bg-level-3 border-level-0 form-data-item input-text" data-type="form-data-true" value="{{ item_key }}" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-60 radius-small-all border-normal form-value-data-type  bg-level-3 border-level-0">
+                    <select class="w-70 radius-small-all border-normal form-value-data-type  bg-level-3 border-level-0">
                         {{ for var j in value_type_list }}
                         {{ var is_selected = value_type.toLowerCase() === value_type_list[j].toLowerCase() ? 'selected=selected' : '' }}
                         <option value="{{ value_type_list[j] }}" {{ is_selected }}>{{ value_type_list[j] }}</option>
@@ -333,7 +333,7 @@ App.view.extend('form', function() {
                 <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td><input type="text" class="form-key bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-true" /> </td>
                 <td class="display-flex-row">
-                    <select class="w-60 radius-small-all border-normal form-value-data-type bg-level-3 border-level-0">
+                    <select class="w-70 radius-small-all border-normal form-value-data-type bg-level-3 border-level-0">
                         <option value="Text">Text</option>
                         <option value="File">File</option>
                     </select>

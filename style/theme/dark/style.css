@@ -42,6 +42,9 @@
 .theme-dark .color-level-0 {
     color: rgb(226, 228, 231);
 }
+.theme-dark .color-level-2 {
+    color: #ccc;
+}
 
 /* border */
 .theme-dark .border-level-0 {
@@ -134,4 +137,7 @@
 }
 .theme-dark .response-empty-rectangle {
     border: 1px solid rgb(65, 68, 70);
+}
+.theme-dark .request-url {
+    border: 1px solid rgb(41, 44, 47);
 }

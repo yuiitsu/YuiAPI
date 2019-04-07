@@ -14,7 +14,7 @@ App.module.extend('history', function() {
     this.history_tab_key = 'history_tab';
 
     // 默认数据
-    Model.default['historyList'] = [];
+    Model.default['historyList'] = '=1';
     Model.default['hostList'] = [];
     Model.default['selectHost'] = '';
     Model.default['searchKey'] = '';
@@ -168,7 +168,6 @@ App.module.extend('history', function() {
                 });
             }
         }
-
         self.view.display('history', 'main', data, '.history-container');
     };
 
@@ -531,7 +530,6 @@ App.module.extend('history', function() {
     this.open_data = function(key) {
         let historyData = self.getData();
         if (historyData[key]) {
-            console.log(historyData[key]);
             let requestType = historyData[key]['type'],
                 form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
                 headers = historyData[key]['headers'],

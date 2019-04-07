@@ -100,7 +100,6 @@ App.event.extend('history', function() {
             $('.history-container').on('click', '.history-item', function(e) {
                 // 选中数据
                 let key = $(this).attr('data-key');
-                console.log(key);
                 self.module.history.open_data(key);
                 e.stopPropagation();
             });

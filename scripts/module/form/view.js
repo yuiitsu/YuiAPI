@@ -32,7 +32,7 @@ App.view.extend('form', function() {
                         <i class="mdi mdi-alpha-h-box form-host-selector"></i>
                     </div>
                     <input type="text" 
-                        class="input-text bg-level-3 display-flex-auto" 
+                        class="input-text bg-level-3 display-flex-auto request-url" 
                         placeholder="API URL" value="{{ url }}" id="request-url" />
                 </div>
                 <div class="form-request-send-container">

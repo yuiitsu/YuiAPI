@@ -58,7 +58,7 @@ App.event.extend('form', function() {
                         is_form_data = true;
 
                     //
-                    if (Object.keys(header_data).length > 0) {
+                    if (header_data && Object.keys(header_data).length > 0) {
                         for (let i in header_data) {
                             if (header_data.hasOwnProperty(i)) {
                                 request_params['headers'][i] = header_data[i]['value'];
@@ -100,8 +100,6 @@ App.event.extend('form', function() {
                     let result_obj = $('#result');
                     result_obj.parent().addClass('sending');
                     let start_timestamp=new Date().getTime();
-
-
 
                     self.module.common.request(url, request_params, formData['data'], function(res, jqXHR) {
                         //

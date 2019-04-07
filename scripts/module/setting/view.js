@@ -2,7 +2,7 @@
  * 设置View
  * Created by Yuiitsu on 2018/05/22.
  */
-View.extend('setting', function() {
+App.view.extend('setting', function() {
     /**
      * 设置界面
      * @returns {string}

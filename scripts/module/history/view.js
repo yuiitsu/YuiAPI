@@ -28,6 +28,7 @@ App.view.extend('history', function() {
                 </div>
             </div>
             <!-- History host end -->
+            {{ if data['groupHistoryList'].length > 0 }}
             <div class="history-list-container display-flex-auto">
                 {{ for var i in data['groupHistoryList'] }}
                 {{ var groupHistory = data['groupHistoryList'][i] }}
@@ -72,6 +73,9 @@ App.view.extend('history', function() {
                 </div>
                 {{ end }}
             </div>
+            {{ else }}
+            <div class="history-host-selector-container color-level-2">Nothing in your history box. Requests that you send will be saved here.</div>
+            {{ end }}
         `;
     };
 

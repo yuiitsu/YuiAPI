@@ -3,7 +3,7 @@
  * Created by Yuiitsu on 2018/05/22.
  */
 const Version = {
-
+    //
     current_version: 'v1.0.0',
 
     /**
@@ -11,8 +11,7 @@ const Version = {
      */
     update_logs: {
         'v1.0.0': [
-            'Added user account sync data',
-            'Added theme selection'
+            'Rebuild UI'
         ],
         'v0.10.0': [
             'Added code theme.',
@@ -112,7 +111,7 @@ const Version = {
             // 将新版本号写入缓存
             localStorage.setItem('version', this.current_version);
             // 显示更新记录
-            App.common.module('Update logs', View.get_view('setting', 'version_update_logs', {
+            App.module.common.module('Update logs', App.view.getView('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
             }), '<button class="btn btn-primary module-close js-handler">Close</button>');

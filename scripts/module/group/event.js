@@ -87,33 +87,6 @@ App.event.extend('group', function() {
             })
         },
 
-        /**
-         * 保存新分组
-         */
-        saveGroup: function() {
-            $('body').on('click', '#history-group-save', function(e) {
-                let groupName = $.trim($('#history-group-name').val()),
-                    groupId = $.trim($('#history-group-id').val()),
-                    moduleId = $(this).attr('data-module-id');
-                if (!groupName) {
-                    return false;
-                }
-
-                if (groupId) {
-                    // 修改
-                    if (self.module.group.modifyGroup(groupId, groupName)) {
-                        $('.module-box-' + moduleId).remove();
-                    }
-                } else {
-                    // 新增
-                    if (self.module.group.newGroup(groupName)) {
-                        $('.module-box-' + moduleId).remove();
-                    }
-                }
-                e.stopPropagation();
-            });
-        },
-
         selector_new_group: function() {
             $('body').on('click', '.history-group-selector-new', function(e) {
                 App.common.module('New Group', View.get_view('group', 'form', ''), '');

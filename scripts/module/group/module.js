@@ -31,6 +31,11 @@ App.module.extend('group', function() {
             return false;
         }
 
+        if (groupName.toLocaleLowerCase() === 'default') {
+            self.module.common.notification('Unable to use built-in name: default', 'danger');
+            return false;
+        }
+
         let groupList = JSON.parse(Model.get('groupList')),
             groupListLen = groupList.length;
         // 检查重名

@@ -136,8 +136,8 @@ App.module.extend('history', function() {
                     groupName = groupObject[groupId]['name'];
                     //
                     for (let g = 0; g < groupListLen; g++) {
-                        if (groupList[g]['group_id'] === groupId) {
-                            groupList.splice(g, 1);
+                        if (groupList[g] && groupList[g]['group_id'] === groupId) {
+                            delete groupList[g];
                         }
                     }
                 }
@@ -161,11 +161,13 @@ App.module.extend('history', function() {
         if (groupList.length > 0) {
             let notUseGroupListLen = groupList.length;
             for (let i = 0; i < notUseGroupListLen; i++) {
-                data.groupHistoryList.push({
-                    groupName: groupList[i]['name'],
-                    groupId: groupList[i]['group_id'],
-                    historyList: []
-                });
+                if (groupList[i]) {
+                    data.groupHistoryList.push({
+                        groupName: groupList[i]['name'],
+                        groupId: groupList[i]['group_id'],
+                        historyList: []
+                    });
+                }
             }
         }
         self.view.display('history', 'main', data, '.history-container');

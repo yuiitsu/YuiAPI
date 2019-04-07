@@ -35,13 +35,13 @@ v0.9.5 [Update logs](https://www.yuiapi.com)
 ## 使用
 ### 根据HOST筛选历史记录
 请求过的API HOST都会在左侧的列表里，选择点击一个HOST，右侧就会只出现该HOST的历史记录
-![image](http://www.colorgamer.com/usr/uploads/2018/10/1540561766.png)
+![image](https://www.colorgamer.com/usr/uploads/2019/04/2217338312.png)
 ### 快速切换API的HOST
 点击API URI左而的小图标，会打开已有HOST列表，选择点击一个HOST，表单中的API URL的HOST将会被替换
-![image](http://www.colorgamer.com/usr/uploads/2018/10/2701654315.png)
+![image](https://www.colorgamer.com/usr/uploads/2019/04/2279524444.png)
 ### 快速获取/编辑请求参数
 点击Body参数右侧的Edit Parameter，会打开参数编辑对话框，如图
-![image](http://www.colorgamer.com/usr/uploads/2018/10/1971341823.png)
+![image](https://www.colorgamer.com/usr/uploads/2019/04/1400452174.png)
 该表单支持两个种模式的参数
 - query string形式。如：a=1&b=2
 - 键值对形式。每一行为一组键值对，键值用英文的:号分隔
@@ -52,4 +52,4 @@ v0.9.5 [Update logs](https://www.yuiapi.com)
 如果Body参数表单里已有参数，它们也会出现在该对话框的文本框里，复制到别处或是编辑都可
 ### 编辑URL PARAMS
 如果你的URL上是带参数的，可以直接在Params表单里进行查看和编辑。在表单里编辑和直接在URL上编辑都会相互更新。想像一下，当API URL很长时，这个表单是多么的贴心
-![image](http://www.colorgamer.com/usr/uploads/2018/10/2385088286.png)
+![image](https://www.colorgamer.com/usr/uploads/2019/04/417386759.png)

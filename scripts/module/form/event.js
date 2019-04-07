@@ -159,7 +159,10 @@ App.event.extend('form', function() {
         host_select: function() {
             $('.form-container').on('click', '.form-host-selector', function() {
                 let host_list = self.module.history.getHostList();
-                self.module.common.tips.show($(this), self.view.getView('history', 'select_host_list', host_list));
+                self.module.common.tips.show($(this), self.view.getView('history', 'select_host_list', host_list), {
+                    width: '279px',
+                    height: '200px'
+                });
             });
 
             $('body').on('click', '#host-select-item li', function(e) {

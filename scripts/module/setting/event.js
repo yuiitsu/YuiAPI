@@ -2,7 +2,8 @@
  * 设置的事件监听
  * Created by Yuiitsu on 2018/05/22.
  */
-Event.extend('setting', function() {
+App.event.extend('setting', function() {
+    let self = this;
     /**
      * 事件
       * @type {{show_setting: event.show_setting, item_click: event.item_click}}
@@ -13,7 +14,7 @@ Event.extend('setting', function() {
          */
         show_setting: function() {
             $('#settings').on('click', function() {
-                App.common.tips.show($(this), View.get_view('setting', 'setting', {}));
+                self.module.common.tips.show($(this), self.view.getView('setting', 'setting', {}));
             });
         },
 
@@ -29,7 +30,7 @@ Event.extend('setting', function() {
                     data_method = $(this).attr('data-method');
 
                 if (data_module && data_method) {
-                    App[data_module][data_method]();
+                    self.module[data_module][data_method]();
                     return false;
                 }
 

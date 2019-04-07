@@ -2,7 +2,7 @@
  * setting module
  * Created by onlyfu on 2018/05/31.
  */
-App.extend('setting', function() {
+App.module.extend('setting', function() {
     let self = this;
     /**
      * 初始化，系统加载时会调用
@@ -15,7 +15,7 @@ App.extend('setting', function() {
      */
     this.about = function() {
         let version = Version.current_version;
-        self.common.module('About YuiAPI', View.get_view('setting', 'about', {
+        self.module.common.module('About YuiAPI', self.view.getView('setting', 'about', {
             version: version
         }), '');
     };

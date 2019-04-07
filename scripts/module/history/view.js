@@ -62,7 +62,9 @@ App.view.extend('history', function() {
                                 </div>
                                 <i class="mdi mdi-dots-vertical history-action cursor-pointer" data-key="{{ history['key'] }}"></i>
                             </div>
+                            {{ if history['name'] }}
                             <h3>{{ history['name'] }}</h3>
+                            {{ end }}
                             <p>{{ history['url'] }}</p>
                         </li>
                         {{ end }}
@@ -165,7 +167,7 @@ App.view.extend('history', function() {
      */
     this.select_host_list = function() {
         return `
-            <ul class="history-tips-list" id="host-select-item">
+            <ul class="tips-menu-container history-tips-list" id="host-select-item">
                 {{ for var i in data }}
                 <li style="text-align:left;">{{ data[i] }}</li>
                 {{ end }}

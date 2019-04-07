@@ -27,6 +27,7 @@
 .form-request-url-container input {
     border-radius: 3px;
     border:0;
+    padding-left:1px;
 }
 .form-request-send-container {
     width:100px;
@@ -48,6 +49,9 @@
 .form-request-data-type-container {
     padding: 10px 0;
 }
+.form-request-data-type-container i {
+    margin-right:5px;
+}
 .form-data-table {
     width:100%;
     font-size: 13px;
@@ -58,4 +62,36 @@
 .form-request-data-type {
     margin-right:10px;
     white-space:nowrap;
+}
+.form-edit-parameter-content {
+    padding: 10px 0;
+}
+.form-edit-parameter-content textarea {
+    width:100%;
+    height:300px;
+}
+.form-line-del-box i:hover {
+    color:#ff0000;
+}
+.mdi-checkbox-blank-outline {
+    margin-right:5px;
+}
+.form-headers-body {
+    max-height:150px;
+    overflow-y: auto;
+}
+.form-request-headers-tab {
+    position: relative;
+}
+.form-headers-tab-has-data {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width:5px;
+    height:5px;
+    border-radius: 50%;
+    background-color:#009900;
+}
+.bg-level-0 .form-headers-tab-has-data {
+    display: none;
 }

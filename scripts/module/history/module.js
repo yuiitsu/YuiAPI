@@ -208,8 +208,8 @@ App.module.extend('history', function() {
      */
     this.add = function(params) {
         // 获取host
-        this.host = this.common.getHost(params['url']);
-        let dataHashKey = this.common.md5(params['url']);
+        this.host = this.module.common.getHost(params['url']);
+        let dataHashKey = this.module.common.md5(params['url']);
         //
         let historyData = this.getData();
         historyData[dataHashKey] = params;
@@ -239,18 +239,8 @@ App.module.extend('history', function() {
             this.setItem(this.assert_key, assert_result);
         }
 
-        // 刷新host和history list
-        if($('#history-list-box').length > 0) {
-            this.refresh_history_list();
-            this.refresh_host_list();
-        } else {
-            this.init_interface();
-        }
-
-        // 加入分组
-        if (params['group_id']) {
-            App.group.add_history(params['group_id'], dataHashKey);
-        }
+        // 渲染history list
+        this.renderHistoryList();
     };
 
     /**
@@ -541,6 +531,7 @@ App.module.extend('history', function() {
     this.open_data = function(key) {
         let historyData = self.getData();
         if (historyData[key]) {
+            console.log(historyData[key]);
             let requestType = historyData[key]['type'],
                 form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
                 headers = historyData[key]['headers'],
@@ -556,11 +547,11 @@ App.module.extend('history', function() {
                 'use_time': time,
                 'status': status
             };
-            console.log(historyData[key]);
             Model.set('responseData', response_data);
             Model.set('requestFormType', form_data_type);
             Model.set('requestFormTypeTmp', form_data_type);
             Model.set('requestData', historyData[key]);
+            Model.set('requestData_' + form_data_type, historyData[key]['data']);
             Model.set('requestHeaders', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
             Model.set('authentication', historyData[key]['authentication']);
         }

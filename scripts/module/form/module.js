@@ -8,11 +8,11 @@ App.module.extend('form', function() {
     // 
     let self = this;
     // default data
-    Model.default['url_params'] = {
+    Model.default['urlParams'] = {
         display: true,
         list: []
     };
-    Model.default['request_headers'] = {};
+    Model.default['requestHeaders'] = {};
 
     Model.default['authentication'] = {
         type: '',
@@ -47,25 +47,20 @@ App.module.extend('form', function() {
     this.init = function() {
         // 监听数据
         // 请求表单类型，变化后，切换对应表单
-        Model.set('request_form_type', 'form-data');
+        Model.set('requestFormType', 'form-data');
         // 切换解发事件用，值等于request_form_type
-        Model.set('request_form_type_tmp', 'x-www-form-urlencoded').watch('request_form_type_tmp', this.change_form);
+        Model.set('requestFormTypeTmp', 'form-data').watch('requestFormTypeTmp', this.change_form);
         // 整个请求数据对象，包括url，request type, params等
-        // Model.set('url_params', Model.default.url_params).watch('url_params', this.show_url_params);
-        Model.set('request_headers', Model.default.request_headers);
+        // Model.set('urlParams', Model.default.urlParams).watch('urlParams', this.show_url_params);
+        Model.set('requestHeaders', Model.default.request_headers);
         Model.set('authentication', Model.default.authentication);
         Model.set('requestData', Model.default.request_data).watch('requestData', this.renderForm);
         // 请求参数,三种类型分别存储
-        Model.set('request_data_x-www-form-urlencoded', {});
-        Model.set('request_data_form-data', {});
-        Model.set('request_data_raw', '');
-        // 监听请求结果数据
-        //Model.set('response_data', '').watch('response_data', this.show_response);
-        // Model.set('codeTheme', Model.default.codeTheme).watch('codeTheme', this.renderCodeTheme);
+        Model.set('requestData_x-www-form-urlencoded', {});
+        Model.set('requestData_form-data', {});
+        Model.set('requestData_raw', '');
         // 渲染页面
         this.view.display('form', 'layout', {}, '.form-container');
-        //
-        // View.display('form', 'response_layout', {}, '#output-content');
     };
 
     /**
@@ -81,13 +76,13 @@ App.module.extend('form', function() {
         // 分析url参数
         let url = requestData.url;
         let params = self.module.common.get_url_params(url);
-        Model.set('url_params', {display: true, list: params});
-        requestData['url_params'] = {list: params};
+        Model.set('urlParams', {display: true, list: params});
+        requestData['urlParams'] = {list: params};
         //
         self.view.display('form', 'layout', requestData, '.form-container');
         // 存储表单参数数据
-        let request_form_type = Model.get('request_form_type');
-        Model.set('request_data_' + request_form_type, requestData['data']);
+        let request_form_type = Model.get('requestFormType');
+        Model.set('requestData_' + request_form_type, requestData['data']);
     };
 
     /**
@@ -96,9 +91,9 @@ App.module.extend('form', function() {
     this.show_url_params = function() {
         // 检查url params form是否在页面上，如果在重新渲染，如果不在，不做处理
         if ($('#js-form-url-params').length > 0) {
-            let url_params = Model.get('url_params');
+            let url_params = Model.get('urlParams');
             if (url_params.display) {
-                View.display('form', 'headers_params', {url_params: url_params}, '.form-headers-body');
+                self.view.display('form', 'headers_params', {url_params: url_params}, '.form-headers-body');
             }
         }
     };
@@ -176,8 +171,8 @@ App.module.extend('form', function() {
      * 根据form类型，切换对应表单
      */
     this.change_form = function() {
-        let requestFormTypeTmp = Model.get('request_form_type_tmp'),
-            requestData = Model.get('request_data_' + requestFormTypeTmp),
+        let requestFormTypeTmp = Model.get('requestFormTypeTmp'),
+            requestData = Model.get('requestData_' + requestFormTypeTmp),
             viewName = '';
         switch (requestFormTypeTmp) {
             case 'form-data':
@@ -193,7 +188,7 @@ App.module.extend('form', function() {
                 viewName = 'urlencoded_line';
                 break;
         }
-        Model.set('request_form_type', requestFormTypeTmp);
+        Model.set('requestFormType', requestFormTypeTmp);
         self.view.display('form', 'layoutBody', {
             data: requestData,
             data_type: requestFormTypeTmp
@@ -205,7 +200,7 @@ App.module.extend('form', function() {
      */
     this.get_params = function() {
         let target = $('#form-body'),
-            request_form_type_tmp = Model.get('request_form_type_tmp'),
+            request_form_type_tmp = Model.get('requestFormTypeTmp'),
             form_data = {},
             i = 0;
 
@@ -240,7 +235,7 @@ App.module.extend('form', function() {
             });
         }
 
-        Model.set('request_data_' + request_form_type_tmp, form_data);
+        Model.set('requestData_' + request_form_type_tmp, form_data);
     };
 
     /**
@@ -258,7 +253,7 @@ App.module.extend('form', function() {
             description_obj = target.find('.form-description');
 
         select_obj.each(function () {
-            if ($(this).is(":checked")) {
+            if ($(this).hasClass("mdi-checkbox-marked")) {
                 let key = $.trim(key_obj.eq(i).val());
                 if (key) {
                     let value = $.trim(value_obj.eq(i).val()),
@@ -278,7 +273,7 @@ App.module.extend('form', function() {
             i++;
         });
 
-        Model.set('request_headers', form_data);
+        Model.set('requestHeaders', form_data);
     };
 
     /**
@@ -294,7 +289,7 @@ App.module.extend('form', function() {
             value_obj = target.find('.form-value');
 
         select_obj.each(function () {
-            if ($(this).is(":checked")) {
+            if ($(this).hasClass("mdi-checkbox-marked")) {
                 let key = $.trim(key_obj.eq(i).val());
                 if (key) {
                     form_data.push({
@@ -315,7 +310,7 @@ App.module.extend('form', function() {
      */
     this.build_request_data = function() {
         let request_form_type_tmp = Model.get('request_form_type_tmp');
-        let request_data = Model.get('request_data_' + request_form_type_tmp);
+        let request_data = Model.get('requestData_' + request_form_type_tmp);
         let form_data = {},
             is_form_data = false;
         if (request_form_type_tmp === 'form-data-true') {
@@ -356,7 +351,9 @@ App.module.extend('form', function() {
             switch (authentication.type) {
                 case "Basic":
                     let content = data['user'] + ':' + data['pass'];
-                    request_params['headers']['Authorization'] = 'Basic ' + btoa(content);
+                    if (content) {
+                        request_params['headers']['Authorization'] = 'Basic ' + btoa(content);
+                    }
                     break;
                 default:
                     break;
@@ -370,7 +367,7 @@ App.module.extend('form', function() {
     };
 
     this.build_url_query_string = function() {
-        let url_params = App.form.get_url_params(),
+        let url_params = self.module.form.get_url_params(),
             query_string = '';
         if (Object.keys(url_params).length > 0) {
             let query_string_list = [];
@@ -382,11 +379,11 @@ App.module.extend('form', function() {
             query_string = query_string_list.join("&");
 
         }
-        let target = $('#url');
+        let target = $('#request-url');
         let url = $.trim(target.val());
         url = url.split('?')[0] + '?' + query_string;
         target.val(url);
-        Model.set('url_params', {display: false, list: url_params});
+        Model.set('urlParams', {display: false, list: url_params});
     };
 
     this.renderCodeTheme = function() {

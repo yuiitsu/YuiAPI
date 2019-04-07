@@ -290,7 +290,7 @@ App.module.extend('common', function() {
                     description_obj = parent_obj.find('.form-description');
 
                 select_obj.each(function () {
-                    if ($(this).is(":checked")) {
+                    if ($(this).hasClass("mdi-checkbox-marked")) {
                         let key = $.trim(key_obj.eq(i).val());
                         if (key) {
                             let value = $.trim(value_obj.eq(i).val()),
@@ -324,10 +324,10 @@ App.module.extend('common', function() {
                 return this.get_data($('#form-data-headers'));
             },
             form: function() {
-                return this.get_data($('#form-data'));
+                return this.get_data($('#form-body'));
             },
             form_data: function() {
-                return this.get_data($('#form-data'), true);
+                return this.get_data($('#form-body'), true);
             }
         };
     };

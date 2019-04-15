@@ -1,0 +1,9 @@
+.setting-container {
+    height:45px;
+    line-height:45px;
+    padding: 0 10px;
+    border-left: 1px solid rgb(65, 68, 70);
+}
+.setting-container .mdi {
+    font-size: 20px;
+}

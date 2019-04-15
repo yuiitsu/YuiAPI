@@ -114,7 +114,7 @@ button{width:100%;height: 30px;}
 .login-action{height:30px;line-height:30px;color:#bbb;padding-left:10px;}
 .login-action a{font-weight:bold;color:#fff;}
 .login-action i{font-weight:bold;color:#fff;font-size:20px;vertical-align: middle;}
-.user-login-bar{display: inline-block;margin-right:10px;}
+.user-login-bar{display: inline-block;}
 .user-login-bar .user-avatar{height:30px;vertical-align: middle;margin-right:10px;border-radius: 50%;}
 
 /* cookies */

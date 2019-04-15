@@ -1,7 +1,7 @@
 /**
  * User View
  */
-View.extend('user', function() {
+App.view.extend('user', function() {
     /**
      *
      */
@@ -22,7 +22,6 @@ View.extend('user', function() {
 
     this.no_login = function() {
         return `
-            <i class="mdi mdi-account-circle"></i>
             <a href="#" id="login">Login</a>
         `;
     };

@@ -28,17 +28,17 @@ App.module.extend('user', function() {
         let token = localStorage.getItem('token');
         if (token) {
             let url = 'http://www.yuiapi.com/api/v1/user/auth/info';
-            App.common.request(url, {}, {
+            self.module.common.request(url, {}, {
                 'token': token
             }, function (res) {
                 if (res && res.hasOwnProperty('code') && res['code'] === 0) {
-                    View.display('user', 'is_login', res.data, '.user-login-bar');
+                    self.view.display('user', 'is_login', res.data, '.user-login-bar');
                 } else {
-                    View.display('user', 'no_login', {}, '.user-login-bar');
+                    self.view.display('user', 'no_login', {}, '.user-login-bar');
                 }
             });
         } else {
-            View.display('user', 'no_login', {}, '.user-login-bar');
+            self.view.display('user', 'no_login', {}, '.user-login-bar');
         }
     }
 });

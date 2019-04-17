@@ -67,6 +67,50 @@ App.event.extend('response', function() {
                 .on('click', '.response-header-tab span', function(e) {
                 let text = $(this).text();
                 Model.set('showResponseDataType', text);
+                e.stopPropagation();
+            });
+        },
+        openFormat: function() {
+            $('.response-container').on('click', '.response-body-format', function(e) {
+                self.module.response.showFormat();
+                e.stopPropagation();
+            });
+        },
+        changeResponseFormatType: function() {
+            $('body').on('click', '.response-format-type span', function(e) {
+                let type = $(this).text(),
+                    target = $('#response-body'),
+                    responseBody = target.val();
+
+                switch (type) {
+                    case 'Raw':
+                        try {
+                            responseBody = JSON.stringify(Model.get('responseData').response);
+                        } catch (e) {
+                        }
+                        break;
+                    case 'Format':
+                        try {
+                            responseBody = JSON.stringify(Model.get('responseData').response, null, 4);
+                        } catch (e) {
+                        }
+                        break;
+                }
+
+                target.val(responseBody);
+                //
+                $('.response-format-type span').removeClass('bg-level-0');
+                $(this).addClass('bg-level-0');
+            });
+        },
+        copyResponseBody: function() {
+            $('body').on('click', '.response-body-copy', function(e) {
+                let target = $('#response-body');
+                target.select();
+                document.execCommand('copy');
+                //
+                self.module.common.tips.show($(this), 'Copy success.', {position: 'left'});
+                e.stopPropagation();
             });
         }
     }

@@ -36,7 +36,7 @@
 /* module */
 .module-box{position: relative;left:0;top:0;}
 .module-mask{position: fixed;left:0;top:0;width:100%;height:100%;background-color:#444;opacity: 0.5;}
-.module-content{position: fixed;left:50%;top:50%;width:700px;transform: translate(-50%, -50%);
+.module-content{position: fixed;left:50%;top:50%;width:700px;transform: translate(-50%, -70%);
     border-radius: 5px;padding: 10px;}
 .module-header{height:40px;line-height:30px;border-bottom:1px solid #eaeaea;font-size:20px;font-weight:bold;}
 .module-header i{font-size:20px;}

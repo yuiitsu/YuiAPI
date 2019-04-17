@@ -45,7 +45,7 @@
 }
 
 /* code theme */
-.response-body{}
+.response-body{position:relative;}
 .response-body pre div{position:relative;padding-left:20px;font-size:14px;}
 .response-body pre div i{position:absolute;left: 0;top:0;font-size:16px;display: inline-block;
     width:13px;height:13px;cursor:pointer;}
@@ -75,3 +75,11 @@
 .code-theme-dark .code-key{color:#A6E22E;font-weight:bold;}
 .code-theme-dark #result-format span.focus{background-color:rgb(50, 54, 57);color:#fff;}
 .code-theme-dark .sending pre{background-color:#333;}
+
+.response-body-format{position:absolute;top:10px;right:20px;font-size:20px;opacity: 0.5;cursor:pointer;}
+.response-body-format:hover{opacity: 1;}
+
+.response-format-modal{height:500px;}
+.response-format-modal textarea{width:100%;padding:10px;}
+.response-format-type span{display: inline-block;padding:5px 10px;border-radius: 20px;cursor:pointer;}
+.response-body-copy{width:100px;}

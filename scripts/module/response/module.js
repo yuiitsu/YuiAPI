@@ -75,6 +75,19 @@ App.module.extend('response', function() {
         self.view.display('response', 'layout', renderData, '.response-container');
     };
 
+    this.showFormat = function() {
+        let responseData = Model.get('responseData'),
+            responseBody = responseData.response;
+
+        try {
+            responseBody = JSON.stringify(responseBody, null, 4);
+        } catch (e) {
+        }
+        self.module.common.module('Source', self.view.getView('response', 'format', {
+            responseBody: responseBody
+        }), '');
+    };
+
     this.syntaxHighlightPro = function(data) {
 
         let result = [];

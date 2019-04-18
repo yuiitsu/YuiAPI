@@ -79,7 +79,9 @@ body.theme-dark {
 }
 
 /* target */
-.theme-dark .header nav{}
+.theme-dark .header nav a:hover{
+    color:rgb(217, 80, 63);
+}
 .theme-dark .history-host-selector:hover {
 }
 

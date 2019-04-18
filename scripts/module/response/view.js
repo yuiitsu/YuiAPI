@@ -24,10 +24,7 @@ App.view.extend('response', function() {
                     status: <span class="{{ status_class }}">{{ status }}</span> time: <span>{{ use_time }}</span>ms
                 </div>
             </nav>
-            <div class="response-body display-flex-auto display-flex-column code-theme-dark">
-                <pre class="display-flex-auto">{{ response }}</pre>
-                <i class="mdi mdi-clipboard-text response-body-format"></i>
-            </div>
+            {{ this.view.getView('response', 'responseBody', response) }}
             {{ else }}
             <div class="response-empty display-flex-auto">
                 <div class="response-empty-rectangle bg-level-2">( ´•︵•\` )</div>
@@ -36,6 +33,15 @@ App.view.extend('response', function() {
                 </div>
             </div>
             {{ end }}
+        `;
+    };
+
+    this.responseBody = function() {
+        return `
+            <div class="response-body display-flex-auto display-flex-column code-theme-dark">
+                <pre class="display-flex-auto">{{ data }}</pre>
+                <i class="mdi mdi-clipboard-text response-body-format" id="response-body-format"></i>
+            </div>
         `;
     };
 
@@ -60,9 +66,34 @@ App.view.extend('response', function() {
                         <span class="bg-level-0">Format</span>
                         <span>Raw</span>
                     </div>
-                    <button class="btn btn-primary response-body-copy">Copy</button>
+                    <button class="btn btn-primary response-body-button response-body-copy">Copy</button>
                 </div>
             </div>
         `;
-    }
+    };
+
+    this.jsonEditor = function() {
+        return `
+            <div class="response-format-modal display-flex-column">
+                <textarea class="bg-level-3 border-level-0 color-level-0 display-flex-auto" id="response-body">{{ data['responseBody'] }}</textarea>
+                <div class="display-flex-row margin-top-10">
+                    <div class="display-flex-auto json-format-type">
+                        <span class="bg-level-0">Format</span>
+                        <span>Raw</span>
+                    </div>
+                    <button class="btn btn-primary js-handler response-body-button response-json-editor">OK</button>
+                </div>
+            </div>
+        `;
+    };
+
+    this.jsonEditorBody = function() {
+        return `
+            <nav class="response-header border-bottom-level-1 display-flex-row">JSON</nav>
+            <div class="response-body display-flex-auto display-flex-column code-theme-dark">
+                <pre class="display-flex-auto">{{ data }}</pre>
+                <i class="mdi mdi-alpha-j-box response-body-format" id="json-opener"></i>
+            </div>
+        `;
+    };
 });

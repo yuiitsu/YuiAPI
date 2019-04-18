@@ -31,6 +31,7 @@
     text-align: center;
     text-shadow: 1px 1px 1px #000;
     font-size:14px;
+    position: relative;
 }
 .response-empty-rectangle {
     display: inline-block;
@@ -42,6 +43,18 @@
     text-align: center;
     border-radius: 5px;
     box-shadow: 1px 1px 1px #000;
+}
+.response-empty i.mdi-alpha-j-box {
+    position: absolute;
+    top:10px;
+    right:10px;
+    font-size:28px;
+    cursor: pointer;
+    color:#fff;
+    opacity: .5;
+}
+.response-empty i.mdi-alpha-j-box:hover {
+    opacity: 1;
 }
 
 /* code theme */
@@ -79,7 +92,7 @@
 .response-body-format{position:absolute;top:10px;right:20px;font-size:20px;opacity: 0.5;cursor:pointer;}
 .response-body-format:hover{opacity: 1;}
 
-.response-format-modal{height:500px;}
+.response-format-modal{height:490px;margin-top:10px;}
 .response-format-modal textarea{width:100%;padding:10px;}
-.response-format-type span{display: inline-block;padding:5px 10px;border-radius: 20px;cursor:pointer;}
-.response-body-copy{width:100px;}
+.response-format-type span, .json-format-type span{display: inline-block;padding:5px 10px;border-radius: 20px;cursor:pointer;}
+.response-body-button{width:100px;}

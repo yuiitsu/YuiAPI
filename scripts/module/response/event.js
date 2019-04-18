@@ -71,7 +71,7 @@ App.event.extend('response', function() {
             });
         },
         openFormat: function() {
-            $('.response-container').on('click', '.response-body-format', function(e) {
+            $('.response-container').on('click', '#response-body-format', function(e) {
                 self.module.response.showFormat();
                 e.stopPropagation();
             });
@@ -111,6 +111,58 @@ App.event.extend('response', function() {
                 //
                 self.module.common.tips.show($(this), 'Copy success.', {position: 'left'});
                 e.stopPropagation();
+            });
+        },
+        openJsonEditor: function() {
+            $('body').on('click', '#json-opener', function(e) {
+                self.module.response.showJsonEditor();
+                e.stopPropagation();
+            });
+        },
+        jsonEditorOk: function() {
+            $('body').on('click', '.response-json-editor', function(e) {
+                let target = $('#response-body'),
+                    jsonData = $.trim(target.val()),
+                    module_id = $(this).attr('data-module-id');
+                //
+                try {
+                    JSON.parse(jsonData);
+                } catch (e) {
+                    this.module.common.notification('JSON format error.', 'danger');
+                    return false;
+                }
+                //
+                Model.set('jsonData', jsonData);
+                //
+                $('.module-box-' + module_id).remove();
+                e.stopPropagation();
+            });
+        },
+        changeJsonFormatType: function() {
+            $('body').on('click', '.json-format-type span', function(e) {
+                let type = $(this).text(),
+                    target = $('#response-body'),
+                    responseBody = target.val();
+
+                switch (type) {
+                    case 'Raw':
+                        try {
+                            responseBody = responseBody.replace(/\n|\r|\s/g, '');
+                        } catch (e) {
+                        }
+                        break;
+                    case 'Format':
+                        try {
+                            responseBody = JSON.stringify(JSON.parse(responseBody), null, 4);
+                        } catch (e) {
+                        }
+                        break;
+                }
+
+                target.val(responseBody);
+                //
+                $('.json-format-type span').removeClass('bg-level-0');
+                $(this).addClass('bg-level-0');
             });
         }
     }

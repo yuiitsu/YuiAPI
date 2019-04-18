@@ -10,6 +10,7 @@ App.module.extend('response', function() {
     this.init = function() {
         //
         Model.set('responseData', '').watch('responseData', this.renderResponse);
+        Model.set('jsonData', '').watch('jsonData', this.renderJsonFormat);
         Model.set('showResponseDataType', Model.default.showResponseDataType)
             .watch('showResponseDataType', this.renderResponse);
         //
@@ -75,6 +76,16 @@ App.module.extend('response', function() {
         self.view.display('response', 'layout', renderData, '.response-container');
     };
 
+    this.renderJsonFormat = function() {
+        let jsonData = Model.get('jsonData');
+        try {
+            jsonData = JSON.parse(jsonData);
+            jsonData = self.syntaxHighlightPro(jsonData);
+        } catch (e) {
+        }
+        self.view.display('response', 'jsonEditorBody', jsonData, '.response-container');
+    };
+
     this.showFormat = function() {
         let responseData = Model.get('responseData'),
             responseBody = responseData.response;
@@ -85,6 +96,18 @@ App.module.extend('response', function() {
         }
         self.module.common.module('Source', self.view.getView('response', 'format', {
             responseBody: responseBody
+        }), '');
+    };
+
+    this.showJsonEditor = function() {
+        let jsonData = Model.get('jsonData');
+        try {
+            jsonData = JSON.parse(jsonData);
+            jsonData = JSON.stringify(jsonData, null, 4);
+        } catch (e) {
+        }
+        self.module.common.module('Input JSON string', self.view.getView('response', 'jsonEditor', {
+            responseBody: jsonData
         }), '');
     };
 

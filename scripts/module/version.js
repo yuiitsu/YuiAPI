@@ -4,14 +4,15 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.0',
+    current_version: 'v1.0.1',
 
     /**
      * 更新记录
      */
     update_logs: {
-        'v1.1.0': [
-            'Added response source replication.'
+        'v1.0.1': [
+            'Added response source replication.',
+            'Added JSON handler to format JSON string.'
         ],
         'v1.0.0': [
             'Rebuild UI'

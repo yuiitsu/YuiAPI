@@ -10,7 +10,9 @@ const Version = {
      * 更新记录
      */
     update_logs: {
-        'v1.1.0': [],
+        'v1.1.0': [
+            'Added response source replication.'
+        ],
         'v1.0.0': [
             'Rebuild UI'
         ],

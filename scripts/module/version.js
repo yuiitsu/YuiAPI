@@ -11,7 +11,7 @@ const Version = {
      */
     update_logs: {
         'v1.0.1': [
-            'Added response source replication.',
+            'Added response body replication.',
             'Added JSON handler to format JSON string.'
         ],
         'v1.0.0': [

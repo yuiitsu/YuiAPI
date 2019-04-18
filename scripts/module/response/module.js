@@ -90,9 +90,11 @@ App.module.extend('response', function() {
         let responseData = Model.get('responseData'),
             responseBody = responseData.response;
 
-        try {
-            responseBody = JSON.stringify(responseBody, null, 4);
-        } catch (e) {
+        if (Object.prototype.toString.call(responseBody) === '[object Object]') {
+            try {
+                responseBody = JSON.stringify(responseBody, null, 4);
+            } catch (e) {
+            }
         }
         self.module.common.module('Source', self.view.getView('response', 'format', {
             responseBody: responseBody

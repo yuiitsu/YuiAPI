@@ -80,19 +80,25 @@ App.event.extend('response', function() {
             $('body').on('click', '.response-format-type span', function(e) {
                 let type = $(this).text(),
                     target = $('#response-body'),
-                    responseBody = target.val();
+                    // responseBody = target.val(),
+                    responseData = Model.get('responseData'),
+                    responseBody = responseData.response;
 
                 switch (type) {
                     case 'Raw':
-                        try {
-                            responseBody = JSON.stringify(Model.get('responseData').response);
-                        } catch (e) {
+                        if (Object.prototype.toString.call(responseBody) === '[object Object]') {
+                            try {
+                                responseBody = JSON.stringify(responseBody);
+                            } catch (e) {
+                            }
                         }
                         break;
                     case 'Format':
-                        try {
-                            responseBody = JSON.stringify(Model.get('responseData').response, null, 4);
-                        } catch (e) {
+                        if (Object.prototype.toString.call(responseBody) === '[object Object]') {
+                            try {
+                                responseBody = JSON.stringify(responseBody, null, 4);
+                            } catch (e) {
+                            }
                         }
                         break;
                 }

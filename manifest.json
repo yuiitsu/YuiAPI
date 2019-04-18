@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "YuiAPI",
     "short_name": "YuiAPI",
-    "version": "1.1.0",
+    "version": "1.0.1",
     "description":"An easy-to-use rest client that helps you test the api",
     "homepage_url": "https://www.yuiapi.com",
     "author":"Yuiitsu",

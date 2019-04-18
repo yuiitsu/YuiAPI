@@ -10,7 +10,10 @@ App.view.extend('setting', function() {
     this.setting = function() {
         return `
             <ul class="history-tips-list setting-list  tips-menu-container">
+                <!--
                 <li data-module="setting" data-method="feedback">Feedback</li>
+                -->
+                <li data-module="setting" data-method="updateLogs">What's new?</li>
                 <li data-module="setting" data-method="about">About YuiAPI</li>
             </ul>
         `;

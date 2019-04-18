@@ -146,3 +146,10 @@ body.theme-dark {
 .theme-dark .response-empty-rectangle {
     border: 1px solid rgb(65, 68, 70);
 }
+
+.theme-dark .version-update-logs ul li a{
+    color: rgb(217, 80, 63);
+}
+.theme-dark .version-update-logs ul li a:hover{
+    color: rgb(217, 25, 25);
+}

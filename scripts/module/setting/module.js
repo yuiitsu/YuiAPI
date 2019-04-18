@@ -19,4 +19,21 @@ App.module.extend('setting', function() {
             version: version
         }), '');
     };
+
+    /**
+     * 反馈
+     */
+    this.feedback = function() {
+
+    };
+
+    /**
+     * 更新记录
+     */
+    this.updateLogs = function() {
+        App.module.common.module('Update logs', self.view.getView('setting', 'version_update_logs', {
+            list: Version.update_logs[Version.current_version],
+            current_version: Version.current_version
+        }), '<button class="btn btn-primary module-close js-handler">Close</button>');
+    };
 });

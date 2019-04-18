@@ -128,7 +128,7 @@ App.event.extend('response', function() {
                 try {
                     JSON.parse(jsonData);
                 } catch (e) {
-                    this.module.common.notification('JSON format error.', 'danger');
+                    self.module.common.notification('JSON format error.', 'danger');
                     return false;
                 }
                 //

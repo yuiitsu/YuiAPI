@@ -11,8 +11,8 @@ const Version = {
      */
     update_logs: {
         'v1.0.1': [
-            'Added response body replication.',
-            'Added JSON handler to format JSON string.'
+            'Added copy response body. <a href="https://github.com/yuiitsu/YuiAPI/wiki/Copy-response-body" target="_blank">view usage</a>',
+            'Added JSON handler to format JSON string. <a href="https://github.com/yuiitsu/YuiAPI/wiki/Format-JSON-string" target="_blank">view usage</a>'
         ],
         'v1.0.0': [
             'Rebuild UI'

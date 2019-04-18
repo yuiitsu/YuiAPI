@@ -140,6 +140,7 @@ button{width:100%;height: 30px;}
 .version-update-logs h3{margin-top:30px;}
 .version-update-logs ul{padding:10px;font-size:16px;line-height:1.6}
 .version-update-logs ul li{border-bottom: 1px dotted #ccc;}
+.version-update-logs ul li a{text-decoration: underline;}
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {width:5px;height:10px;}

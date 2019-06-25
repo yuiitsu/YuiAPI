@@ -4,12 +4,19 @@
  */
 const Version = {
     //
-    current_version: 'v1.0.1',
+    current_version: 'v1.0.3',
 
     /**
      * 更新记录
      */
     update_logs: {
+        'v1.1.0': [],
+        'v1.0.3': [
+            'Fixed headers bug.'
+        ],
+        'v1.0.2': [
+            'Fixed flex bug.'
+        ],
         'v1.0.1': [
             'Added copy response body. <a href="https://github.com/yuiitsu/YuiAPI/wiki/Copy-response-body" target="_blank">view usage</a>',
             'Added JSON handler to format JSON string. <a href="https://github.com/yuiitsu/YuiAPI/wiki/Format-JSON-string" target="_blank">view usage</a>'

@@ -433,6 +433,10 @@ App.event.extend('form', function() {
                 } else {
                     $(this).addClass('mdi-checkbox-marked');
                 }
+
+                if ($(this).parent().parent().parent().attr('id') === 'form-data-headers') {
+                    self.module.form.get_headers_params();
+                }
             });
         },
 
@@ -460,6 +464,10 @@ App.event.extend('form', function() {
                         }
                     }
                 });
+
+                if ($(this).parent().parent().parent().attr('id') === 'form-data-headers') {
+                    self.module.form.get_headers_params();
+                }
 
                 self.module.form.get_params();
                 e.stopPropagation();

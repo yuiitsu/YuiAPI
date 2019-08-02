@@ -96,3 +96,24 @@
 .bg-level-0 .form-headers-tab-has-data {
     display: none;
 }
+
+.form-data-table-container {
+    height: 100%;
+}
+
+.form-data-raw-content-textarea textarea {
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-data-raw-json-format {
+    height: 30px;
+    padding-left:1px;
+}
+.form-data-raw-json-format span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    cursor: pointer;
+}

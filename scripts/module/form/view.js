@@ -74,7 +74,7 @@ App.view.extend('form', function() {
                 </span>
                 {{ end }}
             </div>
-            <div class="display-flex-auto overflow-y-auto form-request-data-body-container">
+            <div class="display-flex-auto overflow-y-auto form-request-data-body-container display-flex-column">
             {{ this.view.getView('form', 'form', data) }}
             </div>
         `;
@@ -276,11 +276,9 @@ App.view.extend('form', function() {
             {{ var data_type = data['data_type'] ? data['data_type'] : 'form-data' }}
             {{ var view_name = data_type === 'form-data-true' ? 'form_data_box' : (data_type === 'raw' ? 'raw' : 'urlencoded_box') }}
             {{ var form_data_list = data['data'] }}
-            <table class="form-data-table border-top-level-1" cellspacing="0">
-                <tbody class="form-data-input form-data-type" data-type="form-data" id="form-body">
-                    {{ this.view.getView('form', view_name, form_data_list) }}
-                </tbody>
-            </table>
+            <div class="form-data-table-container display-flex-column">
+                {{ this.view.getView('form', view_name, form_data_list) }}
+            </div>
         `;
     };
 
@@ -290,14 +288,18 @@ App.view.extend('form', function() {
      */
     this.form_data_box = function() {
         return `
-            <tr class="form-data-title">
-                <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select-all"></i></td>
-                <td class="border-bottom-light">Key</td>
-                <td class="border-bottom-light">Value</td>
-                <td class="border-bottom-light">Description</td>
-                <td class="border-bottom-light"></td>
-            </tr>
-            {{ this.view.getView('form', 'form_data_line', data) }}
+            <table class="form-data-table border-top-level-1 display-flex-auto" cellspacing="0">
+                <tbody class="form-data-input form-data-type" data-type="form-data" id="form-body">
+                    <tr class="form-data-title">
+                        <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select-all"></i></td>
+                        <td class="border-bottom-light">Key</td>
+                        <td class="border-bottom-light">Value</td>
+                        <td class="border-bottom-light">Description</td>
+                        <td class="border-bottom-light"></td>
+                    </tr>
+                    {{ this.view.getView('form', 'form_data_line', data) }}
+                </tbody>
+            </table>
         `;
     };
 
@@ -378,14 +380,18 @@ App.view.extend('form', function() {
      */
     this.urlencoded_box = function() {
         return `
-            <tr class="form-data-title">
-                <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select-all"></i></td>
-                <td class="border-bottom-light">Key</td>
-                <td class="border-bottom-light">Value</td>
-                <td class="border-bottom-light">Description</td>
-                <td class="border-bottom-light"></td>
-            </tr>
-            {{ this.view.getView('form', 'urlencoded_line', data) }}
+            <table class="form-data-table border-top-level-1 display-flex-auto" cellspacing="0">
+                <tbody class="form-data-input form-data-type" data-type="form-data" id="form-body">
+                    <tr class="form-data-title">
+                        <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select-all"></i></td>
+                        <td class="border-bottom-light">Key</td>
+                        <td class="border-bottom-light">Value</td>
+                        <td class="border-bottom-light">Description</td>
+                        <td class="border-bottom-light"></td>
+                    </tr>
+                    {{ this.view.getView('form', 'urlencoded_line', data) }}
+                </tbody>
+            </table>
         `;
     };
 
@@ -424,25 +430,30 @@ App.view.extend('form', function() {
      */
     this.raw = function() {
         return `
-            <tr>
-                <td colspan="4">
-                    {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
-                    <select id="raw-content-type" class="bg-level-3 border-level-0">
-                        {{ var content_type = data ? data['content_type'] : '' }}
-                        {{ for var i in raw_content_type_list }}
-                        {{ var item = raw_content_type_list[i] }}
-                        {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}
-                        <option value="{{ item['k'] }}" {{ selected }}>{{ item['v'] }}</option>
-                        {{ end }}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
+            <div class="form-data-raw-content-type h-30">
+                {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
+                <select id="raw-content-type" class="bg-level-3 border-level-0">
+                    {{ var content_type = data ? data['content_type'] : '' }}
+                    {{ for var i in raw_content_type_list }}
+                    {{ var item = raw_content_type_list[i] }}
+                    {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}
+                    <option value="{{ item['k'] }}" {{ selected }}>{{ item['v'] }}</option>
+                    {{ end }}
+                </select>
+            </div>
+            <div class="form-data-raw-content-textarea display-flex-auto display-flex-column">
+                <div class="display-flex-auto display-flex-column">
                     {{ var raw_data = data['data'] ? data['data'] : '' }}
-                    <textarea style="padding:10px;width:100%;height:200px;" class="bg-level-3 border-level-0 color-level-0">{{ raw_data }}</textarea>
-                </td>
-            </tr>
+                    <textarea style="padding:10px;width:100%;height:100%;" id="form-data-raw-textarea"
+                    class="bg-level-3 border-level-0 color-level-0 display-flex-auto">{{ raw_data }}</textarea>
+                </div>
+                <div class="h-30">
+                    <div class="display-flex-auto form-data-raw-json-format">
+                        <span class="bg-level-3">JSON Format</span>
+                        <span>Raw</span>
+                    </div>
+                </div>
+            </div>
         `;
     };
 

@@ -153,3 +153,15 @@ body.theme-dark {
 .theme-dark .version-update-logs ul li a:hover{
     color: rgb(217, 25, 25);
 }
+
+.theme-dark .form-data-raw-content-textarea textarea {
+   border-bottom: 0;
+}
+
+.theme-dark .tips-array-bottom .tips-array-in {
+    border-top: 8px solid rgb(41, 44, 47);
+}
+
+.theme-dark .tips-array-bottom .tips-array-out {
+    border-top: 8px solid rgb(24, 26, 27);
+}

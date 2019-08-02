@@ -472,6 +472,36 @@ App.event.extend('form', function() {
                 self.module.form.get_params();
                 e.stopPropagation();
             })
+        },
+
+        rawFormat: function() {
+            $('.form-container').on('click', '.form-data-raw-json-format span', function(e) {
+                let type = $(this).text(),
+                    target = $('#form-data-raw-textarea'),
+                    responseBody = target.val();
+
+                switch (type) {
+                    case 'Raw':
+                        try {
+                            responseBody = responseBody.replace(/\n|\r|\s/g, '');
+                        } catch (e) {
+                        }
+                        break;
+                    case 'Format':
+                        try {
+                            responseBody = JSON.stringify(JSON.parse(responseBody), null, 4);
+                        } catch (e) {
+                            self.module.common.tips.show($(this), 'JSON format error.');
+                            return false;
+                        }
+                        break;
+                }
+
+                target.val(responseBody);
+                //
+                $('.form-data-raw-json-format span').removeClass('bg-level-3');
+                $(this).addClass('bg-level-3');
+            });
         }
     };
 });

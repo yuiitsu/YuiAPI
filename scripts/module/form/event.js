@@ -487,7 +487,7 @@ App.event.extend('form', function() {
                         } catch (e) {
                         }
                         break;
-                    case 'Format':
+                    case 'JSON Format':
                         try {
                             responseBody = JSON.stringify(JSON.parse(responseBody), null, 4);
                         } catch (e) {

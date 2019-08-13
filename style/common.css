@@ -97,6 +97,7 @@ button{width:100%;height: 30px;}
 
 /* content */
 .container{height:100%;}
+.main-container{overflow-y: hidden;}
 /* header line */
 .header{height:45px;border-bottom:1px solid rgb(65, 68, 70);}
 .header .logo{height:45px;line-height:45px;padding: 0 10px;font-size:22px;font-weight:700;}

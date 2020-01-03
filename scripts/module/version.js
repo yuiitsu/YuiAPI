@@ -4,7 +4,7 @@
  */
 const Version = {
     //
-    current_version: 'v1.0.5',
+    current_version: 'v1.1.0',
 
     /**
      * 更新记录

@@ -1,7 +1,7 @@
 /**
  * Content Script
  */
-App.extend('content', function() {
+App.module.extend('content', function() {
     //
     let self = this;
 

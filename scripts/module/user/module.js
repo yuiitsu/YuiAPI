@@ -14,6 +14,7 @@ App.module.extend('user', function() {
             } else {
                 self.log('method '+ method +' not exist.');
             }
+            response({});
         });
 
         //

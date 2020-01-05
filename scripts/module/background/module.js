@@ -22,13 +22,15 @@ App.module.extend('background', function() {
                 }
             }
             // 发消息通知main screen.
-            let tab_id = localStorage.getItem('current_tab_id');
+            let tab_id = parseInt(localStorage.getItem('current_tab_id'));
             chrome.tabs.sendMessage(tab_id, {
-                'callback_method': callback_method,
-                'callback_module': callback_module,
-                'response': res,
+                // 'callback_method': callback_method,
+                // 'callback_module': callback_module,
+                'method': 'check_login',
+                // 'response': res,
             }, function (response) {
             });
+            send_response({});
         } catch (e) {
             console.log(e);
         }

@@ -11,7 +11,6 @@ App.module.extend('content', function() {
             console.log('Login Failed.');
             return false;
         }
-
         try {
             let login_user = JSON.parse(target.text());
             this.login(login_user);
@@ -26,12 +25,11 @@ App.module.extend('content', function() {
             return false;
         }
         // 发送查询字发送到background
-        let send_message = {
+        let sendMessage = {
+            module: 'background',
             method: 'login_success',
             data: login_user
         };
-        chrome.extension.sendMessage(send_message, function(res) {
-            console.log(res);
-        });
+        self.browser.sendMessage(sendMessage);
     }
 });

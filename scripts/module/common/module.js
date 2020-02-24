@@ -2,7 +2,13 @@
  * Created by onlyfu on 2017/9/6.
  */
 App.module.extend('common', function() {
+
     let self = this;
+
+    this.init = function() {
+        self.browser.onMessage();
+    };
+
     this.cache = {
         /**
          * 获取列表数据

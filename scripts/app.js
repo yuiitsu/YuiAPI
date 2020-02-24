@@ -269,12 +269,109 @@ let App = {
     //        }
     //    });
     //},
+    /**
+     * this.browser.onMessage(callback);
+     * this.browser.sendMessage(callback);
+     */
+    browser:  {
+        onMessage: function() {
+            var browser = this.getBrowser();
+            if (!this.environment.hasOwnProperty(browser)) {
+                App.log('not found browser api: ' + browser);
+                return false;
+            }
+            this.environment[browser]['onMessage']();
+        },
+        sendMessage: function(message) {
+            var browser = this.getBrowser();
+            if (!this.environment.hasOwnProperty(browser)) {
+                App.log('not found browser api: ' + browser);
+                return false;
+            }
+            this.environment[browser]['sendMessage'](message);
+        },
+        environment: {
+            chrome: {
+                onMessage: function() {
+                    // chrome.extension.onMessage.addListener(function(request, _, response) {
+                    chrome.runtime.onMessage.addListener(function(request, _, response) {
+                        let module = request.module, 
+                            method = request.method, 
+                            data = request.data;
+                        if (App.module.hasOwnProperty(module) && App.module[module].hasOwnProperty(method)) {
+                            App.module[module][method](data, response);
+                        } else {
+                            App.log('module: '+ module +', method: '+ method +' not exist.');
+                        }
+                        response({});
+                    });
+                },
+                sendMessage: function(message) {
+                    chrome.runtime.sendMessage(message, function(res) {
+                        console.log(res);
+                    });
+                },
+                sendMessageTabs: function(module, method) {
+                    chrome.tabs.sendMessage(tab_id, {
+                        'module': module,
+                        'method': method,
+                    }, function (response) {
+                    });
+                }
+            },
+            firefox: {
+                onMessage: function() {
+                    browser.runtime.onMessage.addListener(function(request, _, response) {
+                        let module = request.module, 
+                            method = request.method,
+                            data = request.data;
+                        if (App.module.hasOwnProperty(module) && App.module[module].hasOwnProperty(method)) {
+                            App.module[module][method](data, response);
+                        } else {
+                            App.log('module: '+ module +', method: '+ method +' not exist.');
+                        }
+                        response({});
+                    });
+                },
+                sendMessage: function(message) {
+                    console.log(message);
+                    browser.runtime.sendMessage(message).then(function(res) {}, function(err){});
+                },
+                sendMessageTabs: function(module, method) {
+                    browser.tabs.sendMessage(tab_id, {
+                        'module': module,
+                        'method': method,
+                    }, function (response) {
+                    });
+                }
+            },
+        },
+        getBrowser: function() {
+            let userAgent = window.navigator.userAgent, 
+                browser = '';
+            if (userAgent.match(/Chrome\//)) {
+                browser = 'chrome';
+            } else if (userAgent.match(/Firefox\//)) {
+                browser = 'firefox';
+            }
+            return browser;
+        }
+    },
+    // checkBrowser: function() {
+    //     let userAgent = window.navigator.userAgent;
+    //     if (userAgent.match(/Chrome\//)) {
+    //         App.browser = 'chrome';
+    //     } else if (userAgent.match(/Firefox\//)) {
+    //         App.browser = 'firefox';
+    //     }
+    // },
 
     log: function(msg) {
         console.log('[CES]', msg);
     },
 
     run: function() {
+        // this.checkBrowser();
         this.module.run();
         this.event.init();
         //this.background_listening();

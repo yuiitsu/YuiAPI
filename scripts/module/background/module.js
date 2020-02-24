@@ -26,6 +26,7 @@ App.module.extend('background', function() {
             chrome.tabs.sendMessage(tab_id, {
                 // 'callback_method': callback_method,
                 // 'callback_module': callback_module,
+                'module': 'user',
                 'method': 'check_login',
                 // 'response': res,
             }, function (response) {
@@ -46,16 +47,6 @@ App.module.extend('background', function() {
         });
 
         // 监听content script请求
-        chrome.extension.onMessage.addListener(function(request, _, send_response){
-            console.log(request);
-            if ($.isFunction(self[request.method])) {
-                self[request.method](request.data, send_response);
-            } else {
-                send_response({
-                    'returnValue': 1,
-                    'returnMsg': '未找到执行方法'
-                });
-            }
-        });
+        self.browser.onMessage();
     }
 });

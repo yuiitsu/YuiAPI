@@ -6,20 +6,7 @@ App.module.extend('user', function() {
     let self = this;
 
     this.init = function() {
-        // listen background script send message.
-        chrome.extension.onMessage.addListener(function(request, _, response) {
-            let method = request.method;
-            if (self.hasOwnProperty(method)) {
-                self[method]();
-            } else {
-                self.log('method '+ method +' not exist.');
-            }
-            response({});
-        });
-
-        //
         this.check_login();
-        //
     };
 
     /**

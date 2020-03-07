@@ -3,7 +3,7 @@
     left:0;top:0;}
 .tips-array{position: absolute;width:8px;height:8px;}
 
-.tips-array-top{top:-8px;}
+.tips-array-top{top:-9px;}
 .tips-array-top .tips-array-out{position:absolute;border-bottom:8px solid rgb(24, 26, 27);border-right:8px solid transparent;
     border-left:8px solid transparent;left:0;top:0;}
 .tips-array-top .tips-array-in{position:absolute;border-bottom:8px solid rgb(41, 42, 45);border-right:8px solid transparent;

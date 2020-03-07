@@ -3,11 +3,26 @@
  * Created by onlyfu on 2018/05/31.
  */
 App.module.extend('setting', function() {
+    //
     let self = this;
+    //
+    Model.default['defaultTheme'] = 'theme-dark';
     /**
      * 初始化，系统加载时会调用
      */
     this.init = function() {
+        // default theme
+        let localDefaultTheme = localStorage.getItem('defaultTheme');
+        localDefaultTheme = localDefaultTheme ? localDefaultTheme : 'theme-light';
+        Model.set('defaultTheme', Model.default['defaultTheme']).watch('defaultTheme', this.renderTheme);
+        Model.set('defaultTheme', localDefaultTheme);
+    };
+
+    this.renderTheme = function() {
+        $('body').removeClass().addClass(Model.get('defaultTheme'));
+        self.view.display('setting', 'themeSelector', {
+            defaultTheme: Model.get('defaultTheme')
+        }, '.theme-selector');
     };
 
     /**

@@ -74,6 +74,9 @@ body.theme-dark {
 .theme-dark .border-bottom-level-2 {
     border-bottom: 1px solid rgb(24, 26, 27);
 }
+.theme-dark .border-left-level-1 {
+    border-left: 1px solid rgb(65, 68, 70);
+}
 .theme-dark .border-right-level-1 {
     border-right: 1px solid rgb(65, 68, 70);
 }

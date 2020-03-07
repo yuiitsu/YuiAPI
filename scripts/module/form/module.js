@@ -3,10 +3,11 @@
  * Created by onlyfu on 2018/05/25.
  */
 App.module.extend('form', function() {
+    let self = this;
     // 已选择group id
     this.selected_group_id = '';
+    this.requestXHRKey = 'formSending';
     // 
-    let self = this;
     // default data
     Model.default['urlParams'] = {
         display: true,
@@ -40,6 +41,9 @@ App.module.extend('form', function() {
 
     Model.default['codeTheme'] = localStorage.getItem('codeTheme') ?
         localStorage.getItem('codeTheme') : 'dark';
+    
+    //
+    Model.default['sending'] = 0;
 
     /**
      * 初始化
@@ -59,6 +63,8 @@ App.module.extend('form', function() {
         Model.set('requestData_x-www-form-urlencoded', {});
         Model.set('requestData_form-data', {});
         Model.set('requestData_raw', '');
+        //
+        Model.set('sending', Model.default.sending).watch('sending', this.renderSending);
         // 渲染页面
         this.view.display('form', 'layout', {}, '.form-container');
     };
@@ -391,5 +397,18 @@ App.module.extend('form', function() {
         $('.result-box').removeClass('code-theme-light')
             .removeClass('code-theme-dark').addClass('code-theme-' + codeTheme);
     };
+
+    this.renderSending = function() {
+        let sending = Model.get('sending');
+        if (sending) {
+            self.view.display('form', 'sending', {}, '.form-request-send-container');
+        } else {
+            //
+            self.module.common.requestXHR.abort(self.requestXHRKey);
+            //
+            self.view.display('form', 'send', {}, '.form-request-send-container');
+        }
+    };
+
 });
 

@@ -96,14 +96,15 @@ App.event.extend('form', function() {
                     // authentication
                     let authentication = self.module.form.build_authentication_to_request(request_params);
 
-                    $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
+                    // $this.attr('disabled', true).html('<i class="mdi mdi-refresh mdi-spin"></i> Sending...');
+                    Model.set('sending', 1);
                     let result_obj = $('#result');
                     result_obj.parent().addClass('sending');
                     let start_timestamp=new Date().getTime();
 
-                    self.module.common.request(url, request_params, formData['data'], function(res, jqXHR) {
+                    let xhr = self.module.common.request(url, request_params, formData['data'], function(res, jqXHR) {
                         //
-                        $this.attr('disabled', false).html('Send');
+                        // $this.attr('disabled', false).html('Send');
                         //
                         let headers = jqXHR.getAllResponseHeaders();
                         let response_content_type = jqXHR.getResponseHeader('content-type');
@@ -146,10 +147,19 @@ App.event.extend('form', function() {
                             assertion_data: assertion_data,
                             authentication: authentication
                         });
-
+                        //
+                        Model.set('sending', 0);
                     }, is_form_data);
+                    //
+                    self.module.common.requestXHR.add(self.module.form.requestXHRKey, xhr);
                 }
                 e.stopPropagation();
+            });
+        },
+
+        cancelSending: function() {
+            $('.form-container').on('click', '.form-send-extra-container-sending', function(e) {
+                Model.set('sending', 0);
             });
         },
 

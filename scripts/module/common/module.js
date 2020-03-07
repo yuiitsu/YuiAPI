@@ -4,9 +4,14 @@
 App.module.extend('common', function() {
 
     let self = this;
+    //
+    Model.default['requestXHR'] = {};
 
     this.init = function() {
+        //
         self.browser.onMessage();
+        //
+        Model.set('requestXHR', Model.default.requestXHR);
     };
 
     this.cache = {
@@ -141,7 +146,7 @@ App.module.extend('common', function() {
                     if (focus_left + target_width > client_width) {
                         focus_left = focus_left - target_width + focus_width;
                         focus_top = focus_top + focus_height;
-                        arr_obj.css('right', 8);
+                        arr_obj.css('right', 13);
                     } else {
                         arr_obj.css('left', 8);
                     }
@@ -489,6 +494,31 @@ App.module.extend('common', function() {
         });
 
         xhr.send(send_data);
+        //
+        return xhr;
+    };
+
+    /**
+     * ajax object
+     */
+    this.requestXHR = {
+        add: function(k, v) {
+            let xhr = Model.get('requestXHR');
+            if (xhr && xhr.hasOwnProperty(k)) {
+                xhr[k].abort();
+            }
+            xhr[k] = v;
+        },
+        abort: function(k) {
+            let xhr = Model.get('requestXHR');
+            if (xhr.hasOwnProperty(k)) {
+                try {
+                    xhr[k].abort();
+                } catch(e) {
+                    console.log(e);
+                }
+            }
+        }
     };
 
     /**

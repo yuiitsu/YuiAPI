@@ -22,7 +22,7 @@ App.view.extend('history', function() {
             <!-- History host start -->
             {{ var selectHost = data['selectHost'] ? data['selectHost'] : 'All host' }}
             <div class="history-host-selector-container">
-                <div class="history-host-selector bg-level-3 display-flex-row">
+                <div class="history-host-selector bg-level-3 display-flex-row border-level-0">
                     <div class="display-flex-auto">{{ selectHost }}</div>
                     <i class="mdi mdi-chevron-down"></i>
                 </div>

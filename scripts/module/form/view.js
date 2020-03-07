@@ -35,8 +35,8 @@ App.view.extend('form', function() {
                         class="input-text bg-level-3 display-flex-auto request-url" 
                         placeholder="API URL" value="{{ url }}" id="request-url" />
                 </div>
-                <div class="form-request-send-container">
-                    <button id="send" class="btn btn-primary">Send</button>
+                <div class="form-request-send-container display-flex-row">
+                    {{ this.view.getView('form', 'send') }}
                 </div>
             </div>
 
@@ -46,6 +46,26 @@ App.view.extend('form', function() {
 
             <div class="form-request-headers-line display-flex-column display-flex-auto" id="form-data">
                 {{ this.view.getView('form', 'layoutBody', data) }}
+            </div>
+        `;
+    };
+
+    this.send = function() {
+        return `
+            <button id="send" class="btn btn-primary display-flex-auto">Send</button>
+            <div class="form-send-extra-container">
+                <i class="mdi mdi-menu-down"></i>
+            </div>
+        `
+    };
+
+    this.sending = function() {
+        return `
+            <button id="send" class="btn btn-primary sending display-flex-auto" disabled="disabled">
+                <i class="mdi mdi-refresh mdi-spin"></i> Sending...
+            </button>
+            <div class="form-send-extra-container form-send-extra-container-sending">
+                <i class="mdi mdi-stop"></i>
             </div>
         `;
     };

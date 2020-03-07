@@ -3,6 +3,15 @@
  * Created by Yuiitsu on 2018/05/22.
  */
 App.view.extend('setting', function() {
+    this.themeSelector = function(data) {
+        return `
+            {{ var themes = ['theme-dark', 'theme-light'] }}
+            {{ for var i in themes }}
+            {{ var selected = data.defaultTheme === themes[i] ? 'border-level-5': '' }}
+            <span class="theme-selector-{{ themes[i] }} border-level-0 {{ selected }}" data-type="{{ themes[i] }}"></span>
+            {{ end }}
+        `;
+    };
     /**
      * 设置界面
      * @returns {string}

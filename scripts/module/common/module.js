@@ -339,29 +339,6 @@ App.module.extend('common', function() {
     };
 
     /**
-     *
-     * @param content_type
-     * @returns {string}
-     */
-    this.get_response_content_type_text = function(content_type) {
-        let result = 'UNKNOWN';
-        if (content_type) {
-            if (content_type.indexOf('application/json') !== -1) {
-                result = 'JSON';
-            } else if (content_type.indexOf('image') !== -1) {
-                result = 'IMG';
-            } else if (content_type.indexOf('text/xml') !== -1 || content_type.indexOf('application/xml') !== -1) {
-                result = 'XML';
-            } else if (content_type.indexOf('text/html') !== -1) {
-                result = 'HTML';
-            } else if (content_type.indexOf('text/plain') !== -1) {
-                result = 'TEXT';
-            }
-        }
-        return result;
-    };
-
-    /**
      * 检查response的content_type类型
      * @param content_type
      * @param callback

@@ -82,11 +82,14 @@ body.theme-dark {
 .theme-dark .header nav a:hover{
     color:rgb(217, 80, 63);
 }
-.theme-dark .history-host-selector:hover {
-}
 
 .theme-dark .response-header-tab a:hover {
     background-color: rgb(67, 70, 73);
+}
+
+.theme-dark .response-body {
+    scrollbar-color: #323639 #292a2d;
+    scrollbar-width: thin;
 }
 
 .theme-dark ::-webkit-scrollbar {
@@ -94,7 +97,7 @@ body.theme-dark {
     height:5px;
 }
 .theme-dark ::-webkit-scrollbar-thumb {
-    border-radius:0;background:rgb(41, 44, 47);box-shadow:rgba(0,0,0,0.5);
+    border-radius:0;background:rgb(49, 53, 57);box-shadow:rgba(0,0,0,0.5);
 }
 .theme-dark ::-webkit-scrollbar-corner {
     background-color:rgb(50, 54, 57);

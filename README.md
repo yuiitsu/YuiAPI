@@ -1,29 +1,38 @@
-![](https://github.com/yuiitsu/YuiAPI/blob/master/images/logo128.png?raw=true)
+![](https://raw.githubusercontent.com/yuiitsu/YuiAPI/master/images/yuiapi-logo-128.png)
 # YuiAPI
-YuiAPI是一个基于Chrome extension，非常简单易用的API调试客户端，你可以随意的使用它。
+YuiAPI是一个浏览器扩展，非常简单易用的API调试客户端，你可以随意的使用它。
+
+
 
 ## 目录
 1. [当前版本](#当前版本)
-2. [安装](#安装)
+2. [支持浏览器](#支持浏览器)
+3. [安装](#安装)
 
-    2.1 [安全的线上版本](#安全的线上版本)
+    3.1 [安全的线上版本](#安全的线上版本)
     
-    2.2 [离线版本](#离线版本)
+    3.2 [离线版本](#离线版本)
     
-3. [使用](#使用)
+4. [使用](#使用)
 
-    3.1 [根据HOST筛选历史记录](#根据host筛选历史记录)
+    4.1 [根据HOST筛选历史记录](#根据host筛选历史记录)
     
-    3.2 [快速切换API的HOST](#快递切换api的host)
+    4.2 [快速切换API的HOST](#快递切换api的host)
     
-    3.3 [快速获取/编辑请求参数](#快速获取/编辑请求参数)
+    4.3 [快速获取/编辑请求参数](#快速获取/编辑请求参数)
     
-    3.4 [编辑URL PARAMS](#编辑url-params)
+    4.4 [编辑URL PARAMS](#编辑url-params)
+
+
 
 ## 当前版本
-v0.9.5 [Update logs](https://www.yuiapi.com)
+v1.1.2 [Update logs](https://www.yuiapi.com)
 
-1 调整history tab位置，增加Send后对history tab的处理
+## 支持浏览器
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome |
+| --------- | --------- | --------- |
+| Edge| latest versions| latest versions|
 
 ## 安装
 ### 安全的线上版本

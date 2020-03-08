@@ -179,3 +179,10 @@ body.theme-dark {
     padding-left: 2px;
     padding-right: 2px;
 }
+
+.theme-dark .form-data-raw-json-format span.focus {
+    border-left: 0px solid rgb(41, 44, 47);
+    border-bottom: 0px solid rgb(41, 44, 47);
+    border-right: 0px solid rgb(41, 44, 47);
+}
+

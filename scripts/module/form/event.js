@@ -509,8 +509,8 @@ App.event.extend('form', function() {
 
                 target.val(responseBody);
                 //
-                $('.form-data-raw-json-format span').removeClass('bg-level-3');
-                $(this).addClass('bg-level-3');
+                $('.form-data-raw-json-format span').removeClass('bg-level-3').removeClass('focus');
+                $(this).addClass('bg-level-3').addClass('focus');
             });
         }
     };

@@ -467,9 +467,9 @@ App.view.extend('form', function() {
                     <textarea style="padding:10px;width:100%;height:100%;" id="form-data-raw-textarea"
                     class="bg-level-3 border-level-0 color-level-0 display-flex-auto">{{ raw_data }}</textarea>
                 </div>
-                <div class="h-30">
+                <div class="h-30 form-data-raw-json-format-container">
                     <div class="display-flex-auto form-data-raw-json-format">
-                        <span class="bg-level-3">JSON Format</span>
+                        <span class="bg-level-3 focus">JSON Format</span>
                         <span>Raw</span>
                     </div>
                 </div>

@@ -181,10 +181,6 @@ body.theme-light {
     color: rgb(217, 25, 25);
 }
 
-.theme-light .form-data-raw-content-textarea textarea {
-   border-bottom: 0;
-}
-
 .theme-light .tips-array-bottom .tips-array-in {
     border-top: 8px solid rgb(41, 44, 47);
 }

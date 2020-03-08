@@ -137,7 +137,7 @@
 }
 
 .form-data-raw-content-type {
-    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .form-data-raw-content-textarea textarea {
@@ -151,14 +151,21 @@
 
 .form-data-raw-json-format {
     height: 30px;
-    /* padding-left:1px; */
+    position: relative;
 }
 .form-data-raw-json-format span {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: inline-block;
     height: 30px;
     line-height: 30px;
     padding: 0 10px;
     cursor: pointer;
+}
+
+.form-data-raw-json-format span.raw-json-format-tab-raw {
+    left: 99.5px;
 }
 
 .form-data-raw-json-format span.focus {

@@ -469,8 +469,8 @@ App.view.extend('form', function() {
                 </div>
                 <div class="h-30 form-data-raw-json-format-container">
                     <div class="display-flex-auto form-data-raw-json-format">
-                        <span class="bg-level-3 focus">JSON Format</span>
-                        <span>Raw</span>
+                        <span class="raw-json-format-tab-format bg-level-3 focus">JSON Format</span>
+                        <span class="raw-json-format-tab-raw">Raw</span>
                     </div>
                 </div>
             </div>

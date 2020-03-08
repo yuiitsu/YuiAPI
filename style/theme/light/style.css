@@ -194,6 +194,10 @@ body.theme-light {
     padding-right: 2px;
 }
 
+.theme-light .form-send-extra-container {
+    color: #fff;
+}
+
 /* code */
 .theme-light .code-theme-dark pre{text-shadow: -2px 1px 3px rgba(187, 187, 187, 0.17);}
 .theme-light .code-theme-dark .code-string{color:rgb(0, 128, 0);}

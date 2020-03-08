@@ -136,6 +136,11 @@
     height: 100%;
 }
 
+.form-value-data-type {
+    height: 28px;
+    margin-right:4px;
+}
+
 .form-data-raw-content-type {
     margin-bottom: 10px;
 }

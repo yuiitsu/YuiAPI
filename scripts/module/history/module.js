@@ -213,6 +213,9 @@ App.module.extend('history', function() {
         let dataHashKey = this.module.common.md5(params['url']);
         //
         let historyData = this.getData();
+        if (historyData[dataHashKey]) {
+            params['group_id'] = historyData[dataHashKey]['group_id'] ? historyData[dataHashKey]['group_id'] : 0;
+        }
         historyData[dataHashKey] = params;
         historyData[dataHashKey]['host'] = this.host;
         this.setItem(this.dataKey, historyData);

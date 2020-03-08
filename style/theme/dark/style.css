@@ -54,7 +54,7 @@ body.theme-dark {
 
 /* border */
 .theme-dark .border-level-0 {
-    border: 1px solid rgb(50, 54, 57)
+    border: 1px solid rgb(49, 44, 47)
 }
 .theme-dark .border-level-1 {
     border: 1px solid rgb(65, 68, 70)
@@ -67,6 +67,9 @@ body.theme-dark {
 }
 .theme-dark .border-top-level-1 {
     border-top: 1px solid rgb(65, 68, 70);
+}
+.theme-dark .border-bottom-level-0 {
+    border-bottom: 1px solid rgb(49, 44, 47);
 }
 .theme-dark .border-bottom-level-1 {
     border-bottom: 1px solid rgb(65, 68, 70);
@@ -170,4 +173,9 @@ body.theme-dark {
 
 .theme-dark .tips-array-bottom .tips-array-out {
     border-top: 8px solid rgb(24, 26, 27);
+}
+
+.theme-dark .form-data-table tbody td{
+    padding-left: 2px;
+    padding-right: 2px;
 }

@@ -28,7 +28,7 @@
     }],
     "browser_action": {
         "default_title": "YuiAPI",
-        "default_icon": "images/logo48.png"
+        "default_icon": "images/yuiapi-logo-32.png"
     },
     "permissions": [
         "tabs",
@@ -37,8 +37,8 @@
         "https://*/*"
     ],
     "icons": {
-        "16": "images/logo16.png",
-        "48": "images/logo48.png",
-        "128": "images/logo128.png"
+        "16": "images/yuiapi-logo-16.png",
+        "48": "images/yuiapi-logo-48.png",
+        "128": "images/yuiapi-logo-128.png"
     }
 }

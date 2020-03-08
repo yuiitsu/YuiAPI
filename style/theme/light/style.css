@@ -68,6 +68,9 @@ body.theme-light {
 .theme-light .border-top-level-1 {
     border-top: 1px solid #ccc;
 }
+.theme-light .border-bottom-level-0 {
+    border-bottom: 1px solid #ccc;
+}
 .theme-light .border-bottom-level-1 {
     border-bottom: 1px solid #ccc;
 }
@@ -168,7 +171,7 @@ body.theme-light {
 }
 .theme-light .response-empty-rectangle {
     border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px #666;
+    box-shadow: 0 0 0 #666;
 }
 
 .theme-light .version-update-logs ul li a{

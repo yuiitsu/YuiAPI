@@ -11,9 +11,10 @@ const Version = {
      */
     update_logs: {
         'v1.1.1': [
+            'Fixed missing groupid when sending a request',
             'Adjusted UI.',
             'Added light theme.',
-            'Added github login'
+            // 'Added github login'
         ],
         'v1.0.5': [
             'Fixed some bugs.'

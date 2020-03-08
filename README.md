@@ -36,7 +36,7 @@ v1.1.2 [Update logs](https://www.yuiapi.com)
 
 ## 安装
 ### 安全的线上版本
-请直接使用Chrome在线商店安装：[https://chrome.google.com/webstore/detail/yuiapi-a-rest-client-api/bnmefgocpeggmnpkglmkfoidibbcogcf?utm_source=chrome-ntp-icon](https://chrome.google.com/webstore/detail/yuiapi-a-rest-client-api/bnmefgocpeggmnpkglmkfoidibbcogcf?utm_source=chrome-ntp-icon)
+请在Chrome/Firefox扩展商品搜索YuiAPI进行安装，或点击上面浏览器小图标
 
 ### 离线版本
 请打开Chrome的**开发者模式**，然后**加载已解压的扩展程序**

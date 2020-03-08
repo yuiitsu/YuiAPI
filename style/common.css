@@ -114,11 +114,12 @@ button{width:100%;height: 30px;}
 .main-container{overflow-y: hidden;}
 /* header line */
 .header{height:45px;}
-.header .logo{height:45px;line-height:45px;padding: 0 10px;font-size:22px;font-weight:700;}
+.header .logo{height:45px;line-height:45px;padding: 0 10px;font-size:18px;font-weight:700;}
 .header .logo span.logo-first{color:rgb(217, 80, 63);}
 .header .logo span.logo-sec{color:rgb(88, 165, 92);}
+.header .logo img{vertical-align: middle;margin-top:-5px;margin-right:5px;height:20px;}
 .theme-selector{padding-top:16px;}
-.theme-selector span{height:15px;width:15px;border-radius: 3px;display: inline-block;margin-left:5px;}
+.theme-selector span{height:15px;width:15px;border-radius: 3px;display: inline-block;margin-right:5px;}
 .theme-selector span.theme-selector-theme-dark{background-color: rgb(41, 44, 47);}
 .theme-selector span.theme-selector-theme-light{background-color: rgb(255, 255, 255);}
 .nav{text-align: right;height:43px;line-height:43px;}

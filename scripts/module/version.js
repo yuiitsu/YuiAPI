@@ -4,13 +4,13 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.1',
+    current_version: 'v1.1.2',
 
     /**
      * 更新记录
      */
     update_logs: {
-        'v1.1.1': [
+        'v1.1.2': [
             'Fixed missing groupid when sending a request',
             'Adjusted UI.',
             'Added light theme.',

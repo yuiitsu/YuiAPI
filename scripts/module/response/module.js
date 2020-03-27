@@ -101,18 +101,6 @@ App.module.extend('response', function() {
         }), '');
     };
 
-    this.showJsonEditor = function() {
-        let jsonData = Model.get('jsonData');
-        try {
-            jsonData = JSON.parse(jsonData);
-            jsonData = JSON.stringify(jsonData, null, 4);
-        } catch (e) {
-        }
-        self.module.common.module('Input JSON string', self.view.getView('response', 'jsonEditor', {
-            responseBody: jsonData
-        }), '');
-    };
-
     this.syntaxHighlightPro = function(data) {
 
         let result = [];

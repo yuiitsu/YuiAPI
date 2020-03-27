@@ -54,7 +54,7 @@ App.view.extend('setting', function() {
                 <ul>
                     {{ for i in data['list'] }}
                     {{ var no = parseInt(i) + 1 }}
-                    <li>{{ no }}. {{ data['list'][i] }}</li>       
+                    <li>{{ data['list'][i] }}</li>       
                     {{ end }}
                 </ul>
                 <h3 class="align-right"><em>Thank you for choosing YuiAPI</em></h3>

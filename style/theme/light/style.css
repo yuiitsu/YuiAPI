@@ -8,7 +8,7 @@ body.theme-light {
 .theme-light input, .theme-light select {
     color: #444;
 }
-.theme-light input:focus, .theme-light select:focus, .theme-light textarea:focus {
+.theme-light input:focus, .theme-light select:focus {
     border: 1px solid rgb(61, 100, 133);
 }
 .theme-light input.request-url:focus {

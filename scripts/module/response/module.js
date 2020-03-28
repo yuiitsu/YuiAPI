@@ -132,16 +132,10 @@ App.module.extend('response', function() {
                         symbolStart = '',
                         symbolEnd = '',
                         key = isArray ? '' : '<span class="code-key">'+ i +': </span>';
+
                     if (dataType === '[object Object]') {
                         symbolStart = '{';
                         symbolEnd = '}';
-                    }
-                    if (dataType === '[object Array]') {
-                        symbolStart = '[';
-                        symbolEnd = ']';
-                    }
-
-                    if (dataType === '[object Object]') {
                         if (Object.keys(data[i]).length > 0) {
                             result.push('<div class="child row-child"><i class="code-switch"></i>'+ key +'<span>' + symbolStart);
                             result.push('</span></div>');
@@ -152,6 +146,8 @@ App.module.extend('response', function() {
                             result.push(symbolEnd + '</span></div>');
                         }
                     } else if (dataType === '[object Array]') {
+                        symbolStart = '[';
+                        symbolEnd = ']';
                         if (data[i].length > 0) {
                             result.push('<div class="child row-child"><i class="code-switch"></i>'+ key +'<span>' + symbolStart);
                             result.push('</span></div>');

@@ -131,8 +131,7 @@ button{width:100%;height: 30px;}
 .theme-selector span{height:15px;width:15px;border-radius: 3px;display: inline-block;margin-right:5px;}
 .theme-selector span.theme-selector-theme-dark{background-color: rgb(41, 44, 47);}
 .theme-selector span.theme-selector-theme-light{background-color: rgb(255, 255, 255);}
-.nav{text-align: right;height:43px;line-height:43px;}
-.nav a{color:#fff;margin-right:10px;}
+
 .container-item{border-right:1px solid rgb(65, 68, 70);}
 .container-item:last-child{border-right:0;}
 

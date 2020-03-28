@@ -89,6 +89,11 @@ body.theme-dark {
     color:rgb(217, 80, 63);
 }
 
+.theme-dark .header nav a.focus {
+    color:rgb(217, 80, 63);
+    font-weight: 700;
+}
+
 .theme-dark .response-header-tab a:hover {
     background-color: rgb(67, 70, 73);
 }
@@ -186,3 +191,10 @@ body.theme-dark {
     border-right: 0px solid rgb(41, 44, 47);
 }
 
+/* tools */
+.theme-dark .tools-nav ul li.focus{
+    background-color: rgb(78, 81, 83);
+}
+.theme-dark .tools-nav ul li:hover{
+    background-color: rgb(78, 81, 83);
+}

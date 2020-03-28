@@ -14,9 +14,14 @@ App.module.extend('tools.jsonFormat', function() {
         this.view.display('tools.jsonFormat', 'layout', {}, '.js-main-container-tools');
     };
 
-    this.renderPretty = function() {
-        let prettyData = self.module.response.syntaxHighlightPro(JSON.parse(Model.get('toolsJSONString')));
-        console.log(prettyData);
-        $('.tools-json-format-pretty-container').html(prettyData);
+    this.renderPretty = function(data) {
+        let result = '';
+        try {
+            result = self.module.response.syntaxHighlightPro(JSON.parse(data));
+            result = self.view.getView('tools.jsonFormat', 'prettyPre', result);
+        } catch (e) {
+            result = self.view.getView('tools.jsonFormat', 'error', {});
+        }
+        $('.tools-json-format-pretty-container').html(result);
     };
 });

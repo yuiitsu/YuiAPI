@@ -10,12 +10,11 @@ App.event.extend('tools.jsonFormat', function() {
     this.event = {
         autoDisplayPretty: function() {
             $('.tools-json-format-textarea').on('input', function() {
-                console.log($(this).val());
                 Model.set('toolsJSONString', $(this).val());
             });
         },
         changeJsonFormatType: function() {
-            $('body').on('click', '.json-format-type button', function(e) {
+            $('body').on('click', '.json-format-type span', function(e) {
                 let type = $(this).text(),
                     target = $('.tools-json-format-textarea'),
                     responseBody = target.val();
@@ -37,7 +36,7 @@ App.event.extend('tools.jsonFormat', function() {
 
                 target.val(responseBody);
                 //
-                $('.json-format-type button').removeClass('bg-level-0');
+                $('.json-format-type span').removeClass('bg-level-0');
                 $(this).addClass('bg-level-0');
             });
         }

@@ -9,7 +9,7 @@ App.event.extend('response', function() {
      */
     this.event = {
         codeSwitch: function() {
-            $('.response-container').on('click', '.code-switch', function(e) {
+            $('.main-container').on('click', '.code-switch', function(e) {
                 let parent = $(this).parent(),
                     target = parent,
                     display = '';

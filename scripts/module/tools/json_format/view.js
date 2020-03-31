@@ -18,7 +18,7 @@ App.view.extend('tools.jsonFormat', function() {
                 <div class="display-flex-auto border-right-level-1 display-flex-column padding-10">
                     <textarea class="tools-json-format-textarea display-flex-auto bg-level-3 border-level-0 color-level-0" placeholder="Paste JSON String"></textarea>
                 </div>
-                <div class="display-flex-auto display-flex-column response-body response-container tools-json-format-pretty-container code-theme-dark"></div>
+                <div class="display-flex-auto display-flex-column response-body tools-json-format-pretty-container code-theme-dark"></div>
             </div>
         `;
     };

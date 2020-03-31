@@ -432,6 +432,8 @@ App.module.extend('common', function() {
                                 //if (xhr.getResponseHeader('accept-ranges') === 'bytes') {
                                     xhr.responseType = 'blob';
                                 //}
+                            default:
+                                xhr.responseType = 'text';
                         }
                     });
                     break;

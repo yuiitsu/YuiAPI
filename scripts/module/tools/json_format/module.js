@@ -10,8 +10,10 @@ App.module.extend('tools.jsonFormat', function() {
     this.init = function() {
         //
         Model.set('toolsJSONString', Model.default.toolsJSONString).watch('toolsJSONString', this.renderPretty);
-        //
-        this.view.display('tools.jsonFormat', 'layout', {}, '.js-main-container-tools');
+    };
+
+    this.renderLayout = function() {
+        self.view.display('tools.jsonFormat', 'layout', {}, '.tools-box');
     };
 
     this.renderPretty = function(data) {

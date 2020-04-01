@@ -11,21 +11,30 @@ App.module.extend('tools.textCompare', function() {
     };
 
     this.init = function() {
-        Model.set('tools.textCompare', {}).watch('tools.textCompare', this.compare);
+        Model.set('tools.textCompare', {}).watch('tools.textCompare', this.checkCompare);
     };
 
     this.renderLayout = function() {
         self.view.display('tools.textCompare', 'layout', {}, '.tools-box');
     };
 
-    this.compare = function(data) {
+    this.checkCompare = function(data) {
         let textA = data.a, 
             textB = data.b;
         //
-        if (!textA || !textB) {
-            return false;
-        }
-        console.log(data);
+        setTimeout(function() {
+            if (textA && textB) {
+                self.compare(textA, textB);
+            } else {
+                if (textA) {
+                    self.renderPretty('a');
+                }
+                if (textB) {
+                    self.renderPretty('b');
+                }
+            }
+        });
+        
         return;
         //
         let leftTextLines = leftText.split('\n'), 
@@ -54,13 +63,15 @@ App.module.extend('tools.textCompare', function() {
         console.log(result);
     }
 
-    this.renderPretty = function(data) {
-        let result = '';
-        try {
-            result = unescape(data.replace(/\\u/g, '%u'));
-        } catch (e) {
-            result = self.view.getView('tools.unicode', 'error', {});
+    this.renderPretty = function(type) {
+        let data = Model.get('tools.textCompare'), 
+            targetData = data[type], 
+            lines = targetData.split('\n'), 
+            linesLen = lines.length;
+        //
+        for (let i = 0; i < linesLen; i++) {
+
         }
-        $('.tools-unicode-result-container').html(result);
+        self.view.display('tools.textCompare', 'prettyLine', lines, '#tools-compare-' + type);
     };
 });

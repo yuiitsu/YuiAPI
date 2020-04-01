@@ -16,9 +16,9 @@ App.event.extend('tools.textCompare', function() {
                     data = Model.get('tools.textCompare'), _this = $(this);
                 //
                 data[type] = paste;
-                setTimeout(function() {
-                    _this.html('<div class="t">'+ paste +'</div>');
-                });
+                // setTimeout(function() {
+                //     _this.html('<div class="t">'+ paste +'</div>');
+                // });
                 Model.set('tools.textCompare', data);
             });
         }

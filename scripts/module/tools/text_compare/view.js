@@ -14,13 +14,28 @@ App.view.extend('tools.textCompare', function() {
                 </div>
             </div>
             <div class="display-flex-row display-flex-auto overflow-hide">
-                <div class="display-flex-auto border-right-level-1 display-flex-column padding-10">
-                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true" data-type="a" id="tools-compare-left"></div>
+                <div class="display-flex-auto border-right-level-1 display-flex-row padding-10">
+                    <div class="tools-compare-line-number-container"></div>
+                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3 display-flex-auto" contenteditable="true" data-type="a" id="tools-compare-a"></div>
                 </div>
                 <div class="display-flex-auto display-flex-column padding-10">
-                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true" data-type="b" id="tools-compare-right"></div>
+                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true" data-type="b" id="tools-compare-b"></div>
                 </div>
             </div>
+        `;
+    };
+
+    this.prettyLine = function(data) {
+        return `
+            {{ for var i in data }}
+            {{ var lineNumber = parseInt(i) + 1 }}
+            <div class="tools-compare-pretty-line">
+                <div class="tools-compare-pretty-line-number">{{ lineNumber }}</div>
+                <pre class="">
+                    <span>{{  data[i] }}</span>
+                </pre>
+            </div>
+            {{ end }}
         `;
     };
     

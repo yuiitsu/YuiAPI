@@ -1,4 +1,28 @@
+.tools-compare-line-number-container {
+    width:50px;
+    height: 100%;
+}
 .tools-compare-box {
     height: 100%;
     outline: none;
+}
+
+.tools-compare-pretty-line {
+    position: relative;
+    height: 18px;
+    line-height: 18px;
+}
+
+.tools-compare-pretty-line-number {
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 40px;
+    padding: 0 5px;
+    background-color:#ccc;
+    user-select: none;
+}
+
+.tools-compare-pretty-line pre {
+    padding-left: 50px;
 }

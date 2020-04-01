@@ -14,6 +14,11 @@ App.module.extend('tools', function() {
                 name: 'Text Compare',
                 module: 'tools.textCompare',
                 is_focus: false
+            },
+            {
+                name: 'Unicode转码',
+                module: 'tools.unicode',
+                is_focus: false
             }
         ];
     //

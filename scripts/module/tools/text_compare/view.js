@@ -15,10 +15,10 @@ App.view.extend('tools.textCompare', function() {
             </div>
             <div class="display-flex-row display-flex-auto overflow-hide">
                 <div class="display-flex-auto border-right-level-1 display-flex-column padding-10">
-                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true"></div>
+                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true" data-type="a" id="tools-compare-left"></div>
                 </div>
                 <div class="display-flex-auto display-flex-column padding-10">
-                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true"></div>
+                    <div class="tools-compare-box padding-10 border-level-1 bg-level-3" contenteditable="true" data-type="b" id="tools-compare-right"></div>
                 </div>
             </div>
         `;

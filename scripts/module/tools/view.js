@@ -8,16 +8,20 @@ App.view.extend('tools', function() {
         return `
             <nav class="tools-nav border-right-level-1">
                 <div class="side-title">Tools</div>
-                <ul>
-                    {{ for var i in data.tools }}
-                    {{ var focus = data.tools[i]['is_focus'] ? 'focus': '' }}
-                    <li class="border-top-level-1 {{ focus }}" data-key="{{ data.tools[i]['module'] }}">
-                        {{ data.tools[i]['name'] }}
-                    </li>
-                    {{ end }}
-                </ul>
+                <ul class="tools-nav-box"></ul>
             </nav>
             <div class="display-flex-auto display-flex-column overflow-hide tools-box"></div>
         `;
     };
+
+    this.navigation = function(data) {
+        return `
+            {{ for var i in data.tools }}
+            {{ var focus = data.tools[i]['is_focus'] ? 'focus': '' }}
+            <li class="border-top-level-1 {{ focus }}" data-key="{{ data.tools[i]['module'] }}">
+                {{ data.tools[i]['name'] }}
+            </li>
+            {{ end }}
+        `;
+    }
 });

@@ -57,7 +57,7 @@ body.theme-light {
     border: 1px solid #ccc;
 }
 .theme-light .border-level-1 {
-    border: 1px solid rgb(65, 68, 70)
+    border: 1px solid #ccc;
 }
 .theme-light .border-level-2 {
     border: 1px solid rgb(24, 26, 27);

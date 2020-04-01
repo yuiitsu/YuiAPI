@@ -17,22 +17,6 @@
     vertical-align: middle;
 }
 
-.tools-json-format-header {
-    height: 51px;
-    text-align:right;
-    padding-top: 10px;
-}
-
-.tools-json-format-header button {
-    width: 80px;
-}
-
-.tools-json-format-textarea {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-}
-
 .tools-json-format-pretty-container {
     height: 100%;
     width: 100%;

@@ -16,7 +16,7 @@ App.module.extend('tools', function() {
                 is_focus: false
             },
             {
-                name: 'Unicode转码',
+                name: 'Unicode Decode',
                 module: 'tools.unicode',
                 is_focus: false
             }
@@ -26,10 +26,14 @@ App.module.extend('tools', function() {
         //
         Model.set('tools.items', []).watch('tools.items', this.renderItem);
         //
-        this.view.display('tools', 'layout', {tools: tools}, '.js-main-container-tools');
+        this.view.display('tools', 'layout', {}, '.js-main-container-tools');
         //
         Model.set('tools.items', tools);
     };
+
+    this.renderNavigation = function(data) {
+        this.view.display('tools', 'navigation', {tools: data}, '.tools-nav-box');
+    }
 
     this.renderItem = function(data) {
         let currentTool = '';
@@ -40,5 +44,20 @@ App.module.extend('tools', function() {
         });
         //
         self.module[currentTool].renderLayout();
+        //
+        self.renderNavigation(data);
+    };
+
+    this.switch = function(key) {
+        let tools = Model.get('tools.items');
+        tools.forEach(e => {
+            if (e.module === key) {
+                e.is_focus = true;
+            } else {
+                e.is_focus = false;
+            }
+        });
+        //
+        Model.set('tools.items', tools);
     };
 });

@@ -10,11 +10,11 @@ App.module.extend('tools', function() {
                 module: 'tools.jsonFormat',
                 is_focus: true
             },
-            {
-                name: 'Text Compare',
-                module: 'tools.textCompare',
-                is_focus: false
-            },
+            // {
+            //     name: 'Text Compare',
+            //     module: 'tools.textCompare',
+            //     is_focus: false
+            // },
             {
                 name: 'Unicode Decode',
                 module: 'tools.unicode',

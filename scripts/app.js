@@ -154,7 +154,9 @@ let App = {
                 txt.push("return html;");
                 txt.push("}");
                 txt.push("});");
-                eval(txt.join(""));
+                // will be executed during development mode.
+                let f = (new Function('return function v() {' + txt.join('') + '}'))();
+                f();
             }
         },
 

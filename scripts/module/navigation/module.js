@@ -9,10 +9,10 @@ App.module.extend('navigation', function() {
                 name: 'Client',
                 is_focus: true
             },
-            {
-                name: 'Document',
-                is_focus: false
-            },
+            // {
+            //     name: 'Document',
+            //     is_focus: false
+            // },
             {
                 name: 'Tools',
                 is_focus: false

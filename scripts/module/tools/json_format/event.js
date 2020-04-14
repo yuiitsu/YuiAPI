@@ -9,7 +9,8 @@ App.event.extend('tools.jsonFormat', function() {
      */
     this.event = {
         autoDisplayPretty: function() {
-            $('.tools-json-format-textarea').on('input', function() {
+            let parent = $('.js-main-container-tools');
+            parent.on('input', '.tools-json-format-textarea', function() {
                 Model.set('toolsJSONString', $(this).val());
             });
         },

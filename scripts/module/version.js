@@ -4,13 +4,22 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.2',
+    current_version: 'v1.1.5',
 
     /**
      * 更新记录
      */
     update_logs: {
-        'v1.1.2': [
+        'v1.2.0': [
+            'You can now log in with your github account. Turn on sync and the historical data will be saved to the cloud and shared across multiple computers or browsers. Supports Chrome / Firefox / Edge.'
+        ],
+        'v1.1.5': [
+            'Added tools module',
+            'Moved JSON parse into tools',
+            'Added unicode parse tool',
+            'Removed the eval method during template parsing.'
+        ],
+        'v1.1.1': [
             'Fixed missing groupid when sending a request',
             'Adjusted UI.',
             'Added light theme.',

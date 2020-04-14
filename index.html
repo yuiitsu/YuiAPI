@@ -6,20 +6,27 @@
     <link href="style/materialdesignicons.min.css" rel="stylesheet" />
     <link href="style/common.css" rel="stylesheet" />
     <link href="scripts/module/common/style.css" rel="stylesheet" />
+    <link href="scripts/module/navigation/style.css" rel="stylesheet" />
     <link href="scripts/module/history/style.css" rel="stylesheet" />
     <link href="scripts/module/group/style.css" rel="stylesheet" />
     <link href="scripts/module/user/style.css" rel="stylesheet" />
     <link href="scripts/module/response/style.css" rel="stylesheet" />
     <link href="scripts/module/form/style.css" rel="stylesheet" />
     <link href="scripts/module/setting/style.css" rel="stylesheet" />
+    <link href="scripts/module/tools/style.css" rel="stylesheet" />
+    <link href="scripts/module/tools/json_format/style.css" rel="stylesheet" />
+    <link href="scripts/module/tools/text_compare/style.css" rel="stylesheet" />
     <link href="style/theme/dark/style.css" rel="stylesheet" />
     <link href="style/theme/light/style.css" rel="stylesheet" />
-    <script src="scripts/lib/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="scripts/lib/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script src="scripts/model.js" type="text/javascript"></script>
     <script src="scripts/app.js" type="text/javascript"></script>
     <script src="scripts/module/common/module.js" type="text/javascript"></script>
     <script src="scripts/module/common/view.js" type="text/javascript"></script>
     <script src="scripts/module/common/event.js" type="text/javascript"></script>
+    <script src="scripts/module/navigation/module.js" type="text/javascript"></script>
+    <script src="scripts/module/navigation/view.js" type="text/javascript"></script>
+    <script src="scripts/module/navigation/event.js" type="text/javascript"></script>
     <script src="scripts/module/group/module.js" type="text/javascript"></script>
     <script src="scripts/module/group/view.js" type="text/javascript"></script>
     <script src="scripts/module/group/event.js" type="text/javascript"></script>
@@ -38,6 +45,18 @@
     <script src="scripts/module/setting/module.js" type="text/javascript"></script>
     <script src="scripts/module/setting/event.js" type="text/javascript"></script>
     <script src="scripts/module/setting/view.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/view.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/module.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/event.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/json_format/view.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/json_format/module.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/json_format/event.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/text_compare/view.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/text_compare/module.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/text_compare/event.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/unicode/view.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/unicode/module.js" type="text/javascript"></script>
+    <script src="scripts/module/tools/unicode/event.js" type="text/javascript"></script>
     <script src="scripts/module/version.js" type="text/javascript"></script>
 </head>
 <body class="theme-dark">
@@ -51,14 +70,8 @@
             <span class="theme-selector-theme-dark border-level-0 border-level-5" data-type="theme-dark"></span>
             <span class="theme-selector-theme-light border-level-0" data-type="theme-light"></span>
         </div>
-        <nav class="nav display-flex-auto border-right-level-1">
-            <!--
-            <a href="#">Document</a>
-            <a href="#">Mock</a>
-            <a href="#">Monitor</a>
-            -->
-            <a href="#" id="json-opener">JSON</a>
-        </nav>
+        <div></div>
+        <nav class="nav display-flex-auto border-right-level-1"></nav>
         <div class="user-container border-right-level-1 hide">
             <div class="user-login-bar">
 
@@ -68,7 +81,7 @@
             <i class="mdi mdi-settings cursor-pointer" id="settings"></i>
         </div>
     </div>
-    <div class="main-container display-flex-auto display-flex-row">
+    <div class="main-container display-flex-auto display-flex-row" data-container="Client">
         <!-- history start -->
         <div class="container-item history-container display-flex-auto display-flex-column border-right-level-1"></div>
         <!-- history end -->
@@ -78,6 +91,9 @@
         <!-- form start -->
         <div class="container-item form-container display-flex-auto display-flex-column"></div>
         <!-- form end -->
+    </div>
+    <div class="main-container display-flex-auto display-flex-row js-main-container-tools hide" data-container="Tools">
+        
     </div>
 </div>
 </body>

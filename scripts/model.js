@@ -49,34 +49,36 @@ let Model = {
         let _this = this;
         Object.defineProperty(this.default, target, {
             set: function(value) {
-                let value_type = Object.prototype.toString.call(value);
-                let target_type = Object.prototype.toString.call(_this.data[target]);
-                if (value_type !== target_type) {
-                    _this.data[target] = value;
-                    callback(value);
-                } else {
-                    if (value_type === '[object String]' || value_type === '[object Number]') {
-                        if (value !== _this.data[target]) {
-                            _this.data[target] = value;
-                            callback(value);
-                        }
-                    } else if (value_type === '[object Array]' || value_type === '[object Object]') {
-                        let value_length = value_type === '[object Object]' ? _this.object_length(value) : value.length;
-                        let target_length = value_type === '[object Object]' ? _this.object_length(_this.data[target]) : _this.data[target].length;
-                        if (value_length !== target_length) {
-                            _this.data[target] = value;
-                            callback(value);
-                        } else {
-                            for (const i in value) {
-                                if (!_this.data[target].hasOwnProperty(i) || value[i] !== _this.data[target][i]) {
-                                    _this.data[target] = value;
-                                    callback(value);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
+                _this.data[target] = value;
+                callback(value);
+                // let value_type = Object.prototype.toString.call(value);
+                // let target_type = Object.prototype.toString.call(_this.data[target]);
+                // if (value_type !== target_type) {
+                //     _this.data[target] = value;
+                //     callback(value);
+                // } else {
+                //     if (value_type === '[object String]' || value_type === '[object Number]') {
+                //         if (value !== _this.data[target]) {
+                //             _this.data[target] = value;
+                //             callback(value);
+                //         }
+                //     } else if (value_type === '[object Array]' || value_type === '[object Object]') {
+                //         let value_length = value_type === '[object Object]' ? _this.object_length(value) : value.length;
+                //         let target_length = value_type === '[object Object]' ? _this.object_length(_this.data[target]) : _this.data[target].length;
+                //         if (value_length !== target_length) {
+                //             _this.data[target] = value;
+                //             callback(value);
+                //         } else {
+                //             for (const i in value) {
+                //                 if (!_this.data[target].hasOwnProperty(i) || value[i] !== _this.data[target][i]) {
+                //                     _this.data[target] = value;
+                //                     callback(value);
+                //                     break;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
         });
     },

@@ -48,5 +48,6 @@ App.module.extend('background', function() {
 
         // 监听content script请求
         self.browser.onMessage();
+        //
     }
 });

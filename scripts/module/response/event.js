@@ -9,7 +9,7 @@ App.event.extend('response', function() {
      */
     this.event = {
         codeSwitch: function() {
-            $('.response-container').on('click', '.code-switch', function(e) {
+            $('.main-container').on('click', '.code-switch', function(e) {
                 let parent = $(this).parent(),
                     target = parent,
                     display = '';
@@ -119,12 +119,6 @@ App.event.extend('response', function() {
                 e.stopPropagation();
             });
         },
-        openJsonEditor: function() {
-            $('body').on('click', '#json-opener', function(e) {
-                self.module.response.showJsonEditor();
-                e.stopPropagation();
-            });
-        },
         jsonEditorOk: function() {
             $('body').on('click', '.response-json-editor', function(e) {
                 let target = $('#response-body'),
@@ -144,32 +138,6 @@ App.event.extend('response', function() {
                 e.stopPropagation();
             });
         },
-        changeJsonFormatType: function() {
-            $('body').on('click', '.json-format-type span', function(e) {
-                let type = $(this).text(),
-                    target = $('#response-body'),
-                    responseBody = target.val();
-
-                switch (type) {
-                    case 'Raw':
-                        try {
-                            responseBody = responseBody.replace(/\n|\r|\s/g, '');
-                        } catch (e) {
-                        }
-                        break;
-                    case 'Format':
-                        try {
-                            responseBody = JSON.stringify(JSON.parse(responseBody), null, 4);
-                        } catch (e) {
-                        }
-                        break;
-                }
-
-                target.val(responseBody);
-                //
-                $('.json-format-type span').removeClass('bg-level-0');
-                $(this).addClass('bg-level-0');
-            });
-        }
+        
     }
 });

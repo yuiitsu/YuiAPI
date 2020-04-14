@@ -1,0 +1,33 @@
+/* tools */
+.tools-nav {
+    width: 150px;
+    height: 100%;
+}
+
+.tools-nav ul li{
+    height: 35px;
+    line-height: 35px;
+    border-top: 1px solid #ccc;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.tools-nav ul li i {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.tools-json-format-pretty-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.side-title {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+}

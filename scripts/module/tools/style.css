@@ -1,0 +1,15 @@
+.tools-header {
+    height: 51px;
+    text-align:right;
+    padding-top: 12px;
+}
+
+.tools-header button {
+    width: 80px;
+}
+
+.tools-item-title {
+    line-height: 30px;
+    padding-right: 20px;
+    font-weight: 700;
+}

@@ -8,7 +8,7 @@ body.theme-dark {
 .theme-dark input, .theme-dark select {
     color: #fff;
 }
-.theme-dark input:focus, .theme-dark select:focus, .theme-dark textarea:focus {
+.theme-dark input:focus, .theme-dark select:focus {
     border: 1px solid rgb(61, 100, 133);
 }
 .theme-dark input.request-url:focus {
@@ -87,6 +87,11 @@ body.theme-dark {
 /* target */
 .theme-dark .header nav a:hover{
     color:rgb(217, 80, 63);
+}
+
+.theme-dark .header nav a.focus {
+    color:rgb(217, 80, 63);
+    font-weight: 700;
 }
 
 .theme-dark .response-header-tab a:hover {
@@ -186,3 +191,10 @@ body.theme-dark {
     border-right: 0px solid rgb(41, 44, 47);
 }
 
+/* tools */
+.theme-dark .tools-nav ul li.focus{
+    background-color: rgb(78, 81, 83);
+}
+.theme-dark .tools-nav ul li:hover{
+    background-color: rgb(78, 81, 83);
+}

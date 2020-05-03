@@ -308,7 +308,7 @@ App.view.extend('form', function() {
      */
     this.form_data_box = function() {
         return `
-            <table class="form-data-table border-top-level-1 display-flex-auto" cellspacing="0">
+            <table class="form-data-table border-top-level-1" cellspacing="0">
                 <tbody class="form-data-input form-data-type" data-type="form-data" id="form-body">
                     <tr class="form-data-title">
                         <td class="border-bottom-light"><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select-all"></i></td>

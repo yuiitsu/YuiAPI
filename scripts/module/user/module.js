@@ -6,7 +6,7 @@ App.module.extend('user', function() {
     let self = this;
 
     this.init = function() {
-        this.check_login();
+        // this.check_login();
     };
 
     /**

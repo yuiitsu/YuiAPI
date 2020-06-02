@@ -19,7 +19,7 @@ App.view.extend('form', function() {
 
             <div class="form-url-line display-flex-row">
                 <div class="form-request-type">
-                    {{ var requestTypeList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }}
+                    {{ var requestTypeList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'] }}
                     <select id="request-type" class="bg-level-3 border-level-0">
                         {{ for var i in requestTypeList }}
                         {{ var selected = requestTypeList[i] === data['type'] ? 'selected="selected"' : '' }}

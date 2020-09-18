@@ -4,7 +4,7 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.8',
+    current_version: 'v1.1.9',
 
     /**
      * 更新记录
@@ -12,6 +12,9 @@ const Version = {
     update_logs: {
         'v1.2.0': [
             'You can now log in with your github account. Turn on sync and the historical data will be saved to the cloud and shared across multiple computers or browsers. Supports Chrome / Firefox / Edge.'
+        ],
+        'v1.1.9': [
+            'Fixed blob data display error.'
         ],
         'v1.1.8': [
             'Added PATCH request method.'

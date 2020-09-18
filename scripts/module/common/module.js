@@ -431,6 +431,7 @@ App.module.extend('common', function() {
                             case 'img':
                                 //if (xhr.getResponseHeader('accept-ranges') === 'bytes') {
                                     xhr.responseType = 'blob';
+                                    break;
                                 //}
                             default:
                                 xhr.responseType = 'text';

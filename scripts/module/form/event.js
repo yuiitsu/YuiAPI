@@ -325,8 +325,8 @@ App.event.extend('form', function() {
                     let _htmlItem = self.view.getView('form', 'headers_params_line', {});
                     target_obj.append(_htmlItem);
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
+                    container.animate({scrollTop: 99999}, 'slow');
                 }
-                container.animate({scrollTop: 99999}, 'slow');
                 e.stopPropagation();
             }).on('change', '#form-request-headers-container .form-data-item', function(e) {
                 // save to model
@@ -359,9 +359,9 @@ App.event.extend('form', function() {
                     }
                     target_obj.append(_htmlItem);
                     $(this).parent().parent().find('.form-line-del-box').html('<i class="mdi mdi-close"></i>');
+                    //
+                    $('.form-request-data-body-container').animate({scrollTop: 99999}, 'slow');
                 }
-                //
-                $('.form-request-data-body-container').animate({scrollTop: 99999}, 'slow');
                 e.stopPropagation();
             }).on('change', '#form-data .form-data-item', function(e) {
                 // 保存到model

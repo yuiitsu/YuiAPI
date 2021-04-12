@@ -372,10 +372,10 @@ App.view.extend('form', function() {
      */
     this.form_header_line = function() {
         return `
-            {{ for var i in data['requestHeaders'] }}
+            {{ for var i in data['request_headers'] }}
             {{ var item_key = i.replace(/\"/g, '&#34;').replace(/\'/g, '&#39;') }}
-            {{ var value_format = data['requestHeaders'][i]['value'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
-            {{ var description = data['requestHeaders'][i]['description'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
+            {{ var value_format = data['request_headers'][i]['value'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
+            {{ var description = data['request_headers'][i]['description'].replace(/\\"/g, '&#34;').replace(/\\'/g, '&#39;'); }}
             <tr>
                 <td><i class="mdi mdi-checkbox-blank-outline mdi-checkbox-marked form-select"></i></td>
                 <td><input type="text" value="{{ item_key }}" class="bg-level-3 border-level-0 form-key form-data-item input-text" data-type="form-data-headers"></td>

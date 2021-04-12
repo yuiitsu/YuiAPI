@@ -202,7 +202,7 @@ App.event.extend('form', function() {
                 //}
                 request_data['headersLineType'] = type;
                 request_data['authentication'] = authentication;
-                request_data['requestHeaders'] = request_headers;
+                request_data['request_headers'] = request_headers;
                 request_data['urlParams'] = url_params ? url_params : {list: []};
                 self.view.display('form', 'headers_layout', request_data, '#form-request-headers-container');
                 e.stopPropagation();

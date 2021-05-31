@@ -73,9 +73,12 @@ App.view.extend('form', function() {
     this.layoutBody = function() {
         return `
             {{ var dataType = data['data_type'] ? data['data_type'] : 'form-data' }}
-            <nav>
-                <span class="bg-level-0"><strong>Body</strong></span>
-            </nav>
+            <div class="display-flex-row">
+                <nav class="display-flex-auto">
+                    <span class="bg-level-0"><strong>Body</strong></span>
+                </nav>
+                <div class="cursor-pointer" id="curl-button">cURL</div>
+            </div>
             <div class="form-request-data-type-container display-flex-row border-top-level-1">
                 <div class="display-flex-auto">
                     {{ var dataTypeList = [{'key': 'form-data-true', 'value': 'form-data'}, {'key': 'form-data', 'value': 'x-www-form-urlencoded'}, {'key': 'raw', 'value': 'raw'}] }}

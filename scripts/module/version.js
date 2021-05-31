@@ -4,7 +4,7 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.13',
+    current_version: 'v1.1.15',
 
     /**
      * 更新记录
@@ -12,6 +12,15 @@ const Version = {
     update_logs: {
         'v1.2.0': [
             'You can now log in with your github account. Turn on sync and the historical data will be saved to the cloud and shared across multiple computers or browsers. Supports Chrome / Firefox / Edge.'
+        ],
+        'v1.1.16': [
+            'Now you can convert a request to cURL.'
+        ],
+        'v1.1.15': [
+            'Fixed some bugs.'
+        ],
+        'v1.1.14': [
+            'Fixed some bugs.'
         ],
         'v1.1.13': [
             'Removed unused permissions: tabs.'
@@ -166,7 +175,7 @@ const Version = {
             // 将新版本号写入缓存
             localStorage.setItem('version', this.current_version);
             // 显示更新记录
-            App.module.common.module('Update logs', App.view.getView('setting', 'version_update_logs', {
+            App.module.common.module('Update log', App.view.getView('setting', 'version_update_logs', {
                 list:this.update_logs[this.current_version],
                 current_version: this.current_version
             }), '<button class="btn btn-primary module-close js-handler">Close</button>');

@@ -411,6 +411,13 @@ App.event.extend('form', function() {
                 e.stopPropagation();
             });
         },
+
+        show_curl: function() {
+            $('.form-container').on('click', '#curl-button', function(e) {
+                self.module['tools.curl'].show();
+                e.stopPropagation();
+            });
+        },
         url_change: function() {
             $('.form-container').on('change', '#request-url', function(e) {
                 let url = $.trim($(this).val());

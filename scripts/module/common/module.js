@@ -451,13 +451,16 @@ App.module.extend('common', function() {
         // 构造数据
         let send_data = null;
         if (request_type === 'GET') {
-            url += url.indexOf('?') === -1 ? '?' : '&';
+            // url += url.indexOf('?') === -1 ? '?' : '&';
             if (typeof data === 'object') {
                 send_data = [];
                 for (let i in data) {
                     if (data.hasOwnProperty(i)) {
                         send_data.push(i + '=' + data[i])
                     }
+                }
+                if (send_data.length > 0) {
+                    url += url.indexOf('?') === -1 ? '?' : '&';
                 }
                 url += encodeURI(send_data.join('&'))
             }

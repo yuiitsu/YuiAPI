@@ -26,7 +26,7 @@ YuiAPI是一个浏览器扩展，非常简单易用的API调试客户端，你�
 
 
 ## 当前版本
-v1.1.2 [Update logs](https://www.yuiapi.com)
+v1.1.16 [Update logs](https://www.yuiapi.com)
 
 ## 支持浏览器
 

@@ -4,7 +4,7 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.15',
+    current_version: 'v1.1.16',
 
     /**
      * 更新记录
@@ -13,8 +13,11 @@ const Version = {
         'v1.2.0': [
             'You can now log in with your github account. Turn on sync and the historical data will be saved to the cloud and shared across multiple computers or browsers. Supports Chrome / Firefox / Edge.'
         ],
-        'v1.1.16': [
+        'v1.1.17': [
             'Now you can convert a request to cURL.'
+        ],
+        'v1.1.16': [
+            'Fixed some bugs.'
         ],
         'v1.1.15': [
             'Fixed some bugs.'

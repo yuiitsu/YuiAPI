@@ -210,7 +210,7 @@ App.module.extend('history', function() {
     this.add = function(params) {
         // 获取host
         this.host = this.module.common.getHost(params['url']);
-        let dataHashKey = this.module.common.md5(params['url']);
+        let dataHashKey = this.module.common.md5(params['url'] + params['type']);
         //
         let historyData = this.getData();
         if (historyData[dataHashKey]) {

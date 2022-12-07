@@ -4,14 +4,17 @@
  */
 const Version = {
     //
-    current_version: 'v1.1.16',
+    current_version: 'v1.2.0',
 
     /**
      * 更新记录
      */
     update_logs: {
-        'v1.2.0': [
+        'v2.0.0': [
             'You can now log in with your github account. Turn on sync and the historical data will be saved to the cloud and shared across multiple computers or browsers. Supports Chrome / Firefox / Edge.'
+        ],
+        'v1.2.0': [
+            'Support Manifest v3'
         ],
         'v1.1.17': [
             'Now you can convert a request to cURL.'

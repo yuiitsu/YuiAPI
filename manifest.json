@@ -1,19 +1,14 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "YuiAPI",
     "short_name": "YuiAPI",
-    "version": "1.1.16",
+    "version": "1.2.0",
     "description":"An easy-to-use rest client that helps you test the api",
     "homepage_url": "https://www.yuiapi.com",
     "author":"Yuiitsu",
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
     "background": {
-        "scripts": [
-            "scripts/lib/jquery-3.4.1.min.js",
-            "scripts/app.js",
-            "scripts/module/background/module.js"
-        ]
+        "service_worker": "scripts/module/background/module.js"
     },
     "content_scripts": [{
         "matches": [
@@ -26,12 +21,14 @@
             "scripts/module/content/module.js"
         ]
     }],
-    "browser_action": {
+    "action": {
         "default_title": "YuiAPI",
         "default_icon": "images/yuiapi-logo-32.png"
     },
     "permissions": [
-        "cookies",
+        "cookies"
+    ],
+    "host_permissions": [
         "http://*/*",
         "https://*/*"
     ],

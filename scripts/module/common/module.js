@@ -469,10 +469,10 @@ App.module.extend('common', function() {
                 send_data = [];
                 for (let i in data) {
                     if (data.hasOwnProperty(i)) {
-                        send_data.push(i + '=' + data[i])
+                        send_data.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
                     }
                 }
-                send_data = encodeURI(send_data.join('&'));
+                send_data = send_data.join('&');
             } else {
                 send_data = data;
             }

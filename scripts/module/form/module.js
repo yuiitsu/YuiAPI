@@ -251,6 +251,10 @@ App.module.extend('form', function() {
         let target = $('#form-data-headers'),
             form_data = {},
             i = 0;
+        //
+        if (target.length === 0) {
+            return false;
+        }
 
         let select_obj = target.find('.form-select'),
             key_obj = target.find('.form-key'),
@@ -278,7 +282,6 @@ App.module.extend('form', function() {
             }
             i++;
         });
-
         Model.set('requestHeaders', form_data);
     };
 

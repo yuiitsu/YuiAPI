@@ -4,6 +4,37 @@
 App.module.extend('history', function() {
 
     let self = this;
+    let trimCount = 5;
+
+    let isQuotaExceeded = function(error) {
+        return error && (error.name === 'QuotaExceededError' ||
+            error.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+            error.code === 22 || error.code === 1014);
+    };
+
+    let getStorageSnapshot = function(keys) {
+        let snapshot = {};
+        for (let i = 0; i < keys.length; i++) {
+            snapshot[keys[i]] = localStorage.getItem(keys[i]);
+        }
+        return snapshot;
+    };
+
+    let restoreStorageSnapshot = function(snapshot) {
+        let keys = Object.keys(snapshot);
+        try {
+            for (let i = 0; i < keys.length; i++) {
+                localStorage.removeItem(keys[i]);
+            }
+            for (let i = 0; i < keys.length; i++) {
+                if (snapshot[keys[i]] !== null) {
+                    localStorage.setItem(keys[i], snapshot[keys[i]]);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
     this.host =  '';
     this.listKey = 'history_list';
     this.dataKey = 'history_data';
@@ -12,6 +43,11 @@ App.module.extend('history', function() {
     this.assert_default_key = 'assert_default_data';
     this.search_key = '';
     this.history_tab_key = 'history_tab';
+    this.history_tab_active_key = 'history_tab_active';
+    this.tabs = [];
+    this.tabDrafts = {};
+    this.activeTabKey = '';
+    this.tabsReady = false;
 
     // 默认数据
     Model.default['historyList'] = '=1';
@@ -31,7 +67,7 @@ App.module.extend('history', function() {
         Model.set('folderGroup', Model.default.folderGroup).watch('folderGroup', this.renderHistoryList);
         // 初始化数据
         this.initData();
-
+        this.initTabs();
     };
 
     /**
@@ -218,33 +254,111 @@ App.module.extend('history', function() {
         }
         historyData[dataHashKey] = params;
         historyData[dataHashKey]['host'] = this.host;
-        this.setItem(this.dataKey, historyData);
-        //
+
         let historyHashData = this.getListData(this.listKey);
         let index = historyHashData.indexOf(dataHashKey);
         if (index !== -1) {
             historyHashData.splice(index, 1);
         }
         historyHashData.push(dataHashKey);
-        this.setItem(this.listKey, historyHashData);
-        //
-        let hostData = this.getListData(this.hostCacheKey);
-        if (hostData.indexOf(this.host) === -1) {
-            hostData.push(this.host);
-        }
-        if (hostData.length > 0) {
-            this.setItem(this.hostCacheKey, hostData);
-        }
 
         // assertion
+        let assertResult = this.get_obj_data(this.assert_key);
         if (params['assertion_data']) {
-            let assert_result = this.get_obj_data(this.assert_key);
-            assert_result[dataHashKey] = params['assertion_data'];
-            this.setItem(this.assert_key, assert_result);
+            assertResult[dataHashKey] = params['assertion_data'];
         }
 
+        if (!this.saveHistory(historyData, historyHashData, assertResult, dataHashKey)) {
+            this.module.common.notification('Unable to save history data.', 'danger');
+            return false;
+        }
+
+        Model.set('hostList', this.getHostList());
+        this.syncTabAfterSave(dataHashKey, params, historyData);
         // 渲染history list
         this.renderHistoryList();
+        return true;
+    };
+
+    /**
+     * Save all related history indexes together. If storage is full, remove the
+     * oldest records from the same in-memory data that will be retried.
+     */
+    this.saveHistory = function(historyData, historyList, assertData, currentKey) {
+        let storageKeys = [this.dataKey, this.listKey, this.hostCacheKey, this.assert_key],
+            snapshot = getStorageSnapshot(storageKeys),
+            seen = {};
+
+        // Repair stale indexes and orphaned data left by earlier quota failures.
+        for (let i = historyList.length - 1; i >= 0; i--) {
+            let key = historyList[i];
+            if (!historyData.hasOwnProperty(key) || seen.hasOwnProperty(key)) {
+                historyList.splice(i, 1);
+            } else {
+                seen[key] = true;
+            }
+        }
+        for (let key in historyData) {
+            if (historyData.hasOwnProperty(key) && !seen.hasOwnProperty(key)) {
+                delete historyData[key];
+            }
+        }
+        for (let key in assertData) {
+            if (assertData.hasOwnProperty(key) && !seen.hasOwnProperty(key)) {
+                delete assertData[key];
+            }
+        }
+
+        while (true) {
+            let hostList = this.buildHostList(historyData, historyList);
+            try {
+                localStorage.setItem(this.dataKey, JSON.stringify(historyData));
+                localStorage.setItem(this.listKey, JSON.stringify(historyList));
+                localStorage.setItem(this.hostCacheKey, JSON.stringify(hostList));
+                if (Object.keys(assertData).length > 0) {
+                    localStorage.setItem(this.assert_key, JSON.stringify(assertData));
+                } else {
+                    localStorage.removeItem(this.assert_key);
+                }
+                return true;
+            } catch (error) {
+                if (!isQuotaExceeded(error)) {
+                    console.error(error);
+                    restoreStorageSnapshot(snapshot);
+                    return false;
+                }
+
+                let removed = 0;
+                while (historyList.length > 0 && removed < trimCount) {
+                    let removeIndex = historyList[0] === currentKey ? 1 : 0;
+                    if (removeIndex >= historyList.length) {
+                        break;
+                    }
+                    let removeKey = historyList.splice(removeIndex, 1)[0];
+                    delete historyData[removeKey];
+                    delete assertData[removeKey];
+                    removed++;
+                }
+
+                // The current record cannot fit even after every older record is removed.
+                if (removed === 0) {
+                    restoreStorageSnapshot(snapshot);
+                    return false;
+                }
+            }
+        }
+    };
+
+    this.buildHostList = function(historyData, historyList) {
+        let hostList = [];
+        for (let i = 0; i < historyList.length; i++) {
+            let item = historyData[historyList[i]],
+                host = item ? item['host'] : '';
+            if (host && hostList.indexOf(host) === -1) {
+                hostList.push(host);
+            }
+        }
+        return hostList;
     };
 
     /**
@@ -285,12 +399,21 @@ App.module.extend('history', function() {
     this.setItem = function(key, data) {
         try {
             localStorage.setItem(key, JSON.stringify(data));
+            return true;
         } catch (e) {
-            if (e.name === 'QuotaExceededError') {
-                this.clearPre();
-                localStorage.setItem(key, JSON.stringify(data));
+            let historyKeys = [this.dataKey, this.listKey, this.hostCacheKey, this.assert_key];
+            if (isQuotaExceeded(e) && historyKeys.indexOf(key) === -1 && this.clearPre()) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    return true;
+                } catch (retryError) {
+                    console.error(retryError);
+                }
+            } else {
+                console.error(e);
             }
         }
+        return false;
     };
 
     /**
@@ -427,6 +550,7 @@ App.module.extend('history', function() {
             }
         }
         this.setItem(this.listKey, hashList);
+        this.detachHistoryTabs([key]);
         //
         Model.set('historyList', JSON.stringify(historyData));
     };
@@ -465,6 +589,7 @@ App.module.extend('history', function() {
             }
         }
         this.setItem(this.listKey, hashList);
+        this.detachHistoryTabs(delHistoryKey);
         //
         Model.set('hostList', hostList);
         Model.set('historyList', JSON.stringify(historyData));
@@ -474,29 +599,65 @@ App.module.extend('history', function() {
      * 清除较早数据
      */
     this.clearPre = function() {
-        let list = this.getListData(this.listKey);
-        if (list.length <= 5) {
-            // 全部清除
-            this.clearAll();
-        } else {
-            // 清除最早5条
-            let data = this.getData();
-            for (let i = 0; i < 5; i++) {
-                let key = list[i];
+        let list = this.getListData(this.listKey),
+            data = this.getData(),
+            assertData = this.get_obj_data(this.assert_key),
+            removeCount = Math.min(trimCount, list.length),
+            removedKeys = list.splice(0, removeCount),
+            snapshot = getStorageSnapshot([
+                this.dataKey, this.listKey, this.hostCacheKey, this.assert_key
+            ]),
+            activeKeys = {};
+
+        if (removedKeys.length === 0) {
+            return false;
+        }
+
+        for (let i = 0; i < removedKeys.length; i++) {
+            delete data[removedKeys[i]];
+            delete assertData[removedKeys[i]];
+        }
+        for (let i = 0; i < list.length; i++) {
+            activeKeys[list[i]] = true;
+        }
+        for (let key in data) {
+            if (data.hasOwnProperty(key) && !activeKeys.hasOwnProperty(key)) {
                 delete data[key];
             }
-            list.splice(0, 5);
+        }
+        for (let key in assertData) {
+            if (assertData.hasOwnProperty(key) && !activeKeys.hasOwnProperty(key)) {
+                delete assertData[key];
+            }
+        }
+
+        try {
             localStorage.setItem(this.dataKey, JSON.stringify(data));
             localStorage.setItem(this.listKey, JSON.stringify(list));
+            localStorage.setItem(this.hostCacheKey, JSON.stringify(this.buildHostList(data, list)));
+            if (Object.keys(assertData).length > 0) {
+                localStorage.setItem(this.assert_key, JSON.stringify(assertData));
+            } else {
+                localStorage.removeItem(this.assert_key);
+            }
+            this.detachHistoryTabs(removedKeys);
+            return true;
+        } catch (error) {
+            console.error(error);
+            restoreStorageSnapshot(snapshot);
+            return false;
         }
     };
     /**
      * 清除所有数据
      */
     this.clearAll = function() {
+        let historyKeys = this.getListData(this.listKey);
         localStorage.removeItem(this.dataKey);
         localStorage.removeItem(this.listKey);
         localStorage.removeItem(this.hostCacheKey);
+        localStorage.removeItem(this.assert_key);
+        this.detachHistoryTabs(historyKeys);
     };
 
     /**
@@ -532,31 +693,325 @@ App.module.extend('history', function() {
         this.module.common.notification('save ok.');
     };
 
-    this.open_data = function(key) {
-        let historyData = self.getData();
-        if (historyData[key]) {
-            let requestType = historyData[key]['type'],
-                form_data_type = historyData[key]['data_type'] ? historyData[key]['data_type'] : 'form-data',
-                headers = historyData[key]['headers'],
-                response_content_type = historyData[key]['response_content_type'],
-                result = historyData[key]['result'],
-                time = historyData[key]['time'],
-                status = historyData[key]['status'];
+    this.getTabMeta = function(key, requestData, isDraft) {
+        requestData = requestData || {};
+        return {
+            key: key,
+            hash: key,
+            name: requestData['name'] || '',
+            url: requestData['url'] || '',
+            type: requestData['type'] || 'GET',
+            draft: isDraft === true
+        };
+    };
 
-            let response_data = {
-                'headers': headers ? headers : '',
-                'response': result,
-                'responseContentType': response_content_type,
-                'use_time': time,
-                'status': status
-            };
-            Model.set('requestFormType', form_data_type);
-            Model.set('requestFormTypeTmp', form_data_type);
-            Model.set('requestData', historyData[key]);
-            Model.set('requestData_' + form_data_type, historyData[key]['data']);
-            Model.set('requestHeaders', historyData[key]['request_headers'] ? historyData[key]['request_headers'] : {});
-            Model.set('authentication', historyData[key]['authentication']);
-            Model.set('responseData', response_data);
+    this.initTabs = function() {
+        let historyData = this.getData(),
+            storedTabs = this.getListData(this.history_tab_key),
+            result = [];
+
+        for (let i = 0; i < storedTabs.length; i++) {
+            let key = storedTabs[i]['key'] || storedTabs[i]['hash'];
+            if (key && historyData.hasOwnProperty(key)) {
+                result.push(this.getTabMeta(key, historyData[key], false));
+            }
         }
+
+        this.tabs = result;
+        this.activeTabKey = localStorage.getItem(this.history_tab_active_key) || '';
+        if (!this.hasTab(this.activeTabKey)) {
+            this.activeTabKey = this.tabs.length > 0 ? this.tabs[this.tabs.length - 1]['key'] : '';
+        }
+        this.tabsReady = true;
+        this.renderTabs();
+    };
+
+    this.restoreTabs = function() {
+        if (!this.tabsReady) {
+            this.initTabs();
+        }
+        if (this.activeTabKey && this.hasTab(this.activeTabKey)) {
+            this.activateTab(this.activeTabKey, false, true);
+        } else {
+            this.newTab(false);
+        }
+    };
+
+    this.hasTab = function(key) {
+        for (let i = 0; i < this.tabs.length; i++) {
+            if (this.tabs[i]['key'] === key) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this.getTabIndex = function(key) {
+        for (let i = 0; i < this.tabs.length; i++) {
+            if (this.tabs[i]['key'] === key) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    this.persistTabs = function() {
+        let storedTabs = [];
+        for (let i = 0; i < this.tabs.length; i++) {
+            if (!this.tabs[i]['draft']) {
+                storedTabs.push(this.tabs[i]);
+            }
+        }
+        try {
+            localStorage.setItem(this.history_tab_key, JSON.stringify(storedTabs));
+            if (this.activeTabKey && !/^draft-/.test(this.activeTabKey)) {
+                let activeIndex = this.getTabIndex(this.activeTabKey);
+                if (activeIndex !== -1 && !this.tabs[activeIndex]['draft']) {
+                    localStorage.setItem(this.history_tab_active_key, this.activeTabKey);
+                } else {
+                    localStorage.removeItem(this.history_tab_active_key);
+                }
+            } else {
+                localStorage.removeItem(this.history_tab_active_key);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    this.renderTabs = function() {
+        if (!this.tabsReady) {
+            return;
+        }
+        self.view.display('history', 'history_tab', {
+            list: this.tabs,
+            activeKey: this.activeTabKey
+        }, '#tabbar');
+    };
+
+    this.saveActiveTabDraft = function() {
+        if (!this.activeTabKey || !this.hasTab(this.activeTabKey) ||
+            !this.module.form || !this.module.form.capture_request) {
+            return false;
+        }
+        let state = this.module.form.capture_request(),
+            index = this.getTabIndex(this.activeTabKey);
+        this.tabDrafts[this.activeTabKey] = state;
+        if (index !== -1) {
+            let meta = this.getTabMeta(
+                this.activeTabKey,
+                state['requestData'],
+                this.tabs[index]['draft']
+            );
+            this.tabs[index] = meta;
+        }
+        this.persistTabs();
+        this.renderTabs();
+        return true;
+    };
+
+    this.canChangeTabs = function() {
+        if (Model.get('sending')) {
+            this.module.common.notification('Wait for the current request to finish.', 'warring');
+            return false;
+        }
+        return true;
+    };
+
+    this.createDraftKey = function() {
+        let key = 'draft-' + Date.now();
+        while (this.hasTab(key)) {
+            key += '-1';
+        }
+        return key;
+    };
+
+    this.newTab = function(saveCurrent) {
+        if (!this.canChangeTabs()) {
+            return false;
+        }
+        if (saveCurrent !== false) {
+            this.saveActiveTabDraft();
+        }
+        let key = this.createDraftKey();
+        let requestData = this.module.form.get_empty_request();
+        this.tabs.push(this.getTabMeta(key, requestData, true));
+        this.tabDrafts[key] = {requestData: requestData, responseData: ''};
+        this.activeTabKey = key;
+        this.persistTabs();
+        this.renderTabs();
+        this.module.form.load_request(requestData, '');
+        return key;
+    };
+
+    this.openTab = function(key) {
+        if (!this.canChangeTabs()) {
+            return false;
+        }
+        let historyData = this.getData();
+        if (!historyData.hasOwnProperty(key)) {
+            return false;
+        }
+        if (this.activeTabKey === key && this.hasTab(key)) {
+            return true;
+        }
+        if (this.activeTabKey !== key) {
+            this.saveActiveTabDraft();
+        }
+        if (!this.hasTab(key)) {
+            this.tabs.push(this.getTabMeta(key, historyData[key], false));
+        }
+        return this.activateTab(key, false, true);
+    };
+
+    this.activateTab = function(key, saveCurrent, forceLoad) {
+        if (!this.canChangeTabs()) {
+            return false;
+        }
+        if (!this.hasTab(key)) {
+            return false;
+        }
+        if (saveCurrent !== false && this.activeTabKey !== key) {
+            this.saveActiveTabDraft();
+        }
+        if (this.activeTabKey === key && forceLoad !== true) {
+            return true;
+        }
+
+        this.activeTabKey = key;
+        this.persistTabs();
+        this.renderTabs();
+
+        if (this.tabDrafts.hasOwnProperty(key)) {
+            let state = this.tabDrafts[key];
+            this.module.form.load_request(state['requestData'], state['responseData']);
+            return true;
+        }
+        return this.loadHistoryData(key);
+    };
+
+    this.closeTab = function(key) {
+        if (!this.canChangeTabs()) {
+            return false;
+        }
+        let index = this.getTabIndex(key);
+        if (index === -1) {
+            return false;
+        }
+        let wasActive = this.activeTabKey === key;
+        this.tabs.splice(index, 1);
+        delete this.tabDrafts[key];
+
+        if (!wasActive) {
+            this.persistTabs();
+            this.renderTabs();
+            return true;
+        }
+
+        this.activeTabKey = '';
+        if (this.tabs.length === 0) {
+            this.newTab(false);
+        } else {
+            let nextIndex = Math.min(Math.max(index - 1, 0), this.tabs.length - 1);
+            this.activateTab(this.tabs[nextIndex]['key'], false, true);
+        }
+        return true;
+    };
+
+    this.detachHistoryTabs = function(keys) {
+        if (!this.tabsReady || !keys || keys.length === 0) {
+            return;
+        }
+        if (keys.indexOf(this.activeTabKey) !== -1) {
+            this.saveActiveTabDraft();
+        }
+        for (let i = this.tabs.length - 1; i >= 0; i--) {
+            if (keys.indexOf(this.tabs[i]['key']) !== -1) {
+                if (this.tabDrafts.hasOwnProperty(this.tabs[i]['key'])) {
+                    this.tabs[i]['draft'] = true;
+                } else {
+                    this.tabs.splice(i, 1);
+                }
+            }
+        }
+        if (!this.hasTab(this.activeTabKey)) {
+            this.activeTabKey = '';
+        }
+        this.persistTabs();
+        this.renderTabs();
+    };
+
+    this.syncTabAfterSave = function(key, requestData, historyData) {
+        if (!this.tabsReady) {
+            return;
+        }
+        let oldKey = this.activeTabKey,
+            oldIndex = this.getTabIndex(oldKey),
+            existingIndex = this.getTabIndex(key);
+
+        if (existingIndex !== -1 && existingIndex !== oldIndex) {
+            if (this.tabDrafts.hasOwnProperty(key)) {
+                let preservedKey = this.createDraftKey(),
+                    preservedState = this.tabDrafts[key];
+                this.tabs[existingIndex] = this.getTabMeta(
+                    preservedKey,
+                    preservedState['requestData'],
+                    true
+                );
+                this.tabDrafts[preservedKey] = preservedState;
+                delete this.tabDrafts[key];
+            } else {
+                this.tabs.splice(existingIndex, 1);
+                if (existingIndex < oldIndex) {
+                    oldIndex--;
+                }
+            }
+        }
+
+        let meta = this.getTabMeta(key, requestData, false);
+        if (oldIndex === -1) {
+            this.tabs.push(meta);
+        } else {
+            this.tabs[oldIndex] = meta;
+        }
+        if (oldKey) {
+            delete this.tabDrafts[oldKey];
+        }
+        delete this.tabDrafts[key];
+        this.activeTabKey = key;
+
+        for (let i = this.tabs.length - 1; i >= 0; i--) {
+            let tab = this.tabs[i];
+            if (!tab['draft'] && !historyData.hasOwnProperty(tab['key'])) {
+                if (this.tabDrafts.hasOwnProperty(tab['key'])) {
+                    tab['draft'] = true;
+                } else {
+                    this.tabs.splice(i, 1);
+                }
+            }
+        }
+        this.persistTabs();
+        this.renderTabs();
+    };
+
+    this.loadHistoryData = function(key) {
+        let historyData = self.getData();
+        if (!historyData[key]) {
+            return false;
+        }
+        let data = historyData[key],
+            responseData = {
+                headers: data['headers'] || '',
+                response: data['result'],
+                responseContentType: data['response_content_type'] || '',
+                use_time: data['time'],
+                status: data['status']
+            };
+        self.module.form.load_request(data, responseData);
+        return true;
+    };
+
+    this.open_data = function(key) {
+        return this.openTab(key);
     };
 });

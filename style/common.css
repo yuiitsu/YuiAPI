@@ -176,5 +176,126 @@ button{width:100%;height: 30px;}
 ::-webkit-scrollbar-thumb:window-inactive {background:rgba(0,0,0,0.1);}
 
 .tabbar-container {
-    background-color: #ff0000;;
+    height:44px;
+    min-width:0;
+    overflow:hidden;
+    padding:5px 4px 0;
+}
+.history-tabbar {
+    align-items:flex-end;
+    height:39px;
+    min-width:0;
+}
+.history-tab-list {
+    align-items:flex-end;
+    min-width:0;
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+.history-tab-list::-webkit-scrollbar {
+    height:3px;
+}
+.history-tab-item {
+    align-items:center;
+    border:1px solid transparent;
+    border-bottom:0;
+    cursor:pointer;
+    flex:0 1 180px;
+    height:32px;
+    max-width:180px;
+    min-width:100px;
+    padding-left:8px;
+}
+.history-tab-item.active {
+    height:35px;
+}
+.history-tab-method {
+    flex:0 0 auto;
+    font-size:9px;
+    font-weight:700;
+    margin-right:6px;
+}
+.history-tab-label {
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.history-tab-close,
+.history-tab-new,
+.history-tab-import {
+    background:transparent;
+    border:0;
+    cursor:pointer;
+    flex:0 0 28px;
+    height:28px;
+    padding:0;
+    width:28px;
+}
+.history-tab-close {
+    opacity:0.65;
+}
+.history-tab-close:hover {
+    opacity:1;
+}
+.history-tab-new {
+    align-self:center;
+    font-size:18px;
+    margin-left:3px;
+}
+.history-tab-import {
+    align-items:center;
+    align-self:center;
+    display:flex;
+    flex:0 0 70px;
+    gap:4px;
+    justify-content:center;
+    margin-left:2px;
+    width:70px;
+}
+.theme-dark .history-tab-item {
+    background-color:rgb(50, 54, 57);
+    color:rgb(190, 193, 196);
+}
+.theme-dark .history-tab-item.active {
+    background-color:rgb(41, 44, 47);
+    border-color:rgb(65, 68, 70);
+    color:rgb(226, 228, 231);
+}
+.theme-dark .history-tab-close,
+.theme-dark .history-tab-new,
+.theme-dark .history-tab-import {
+    color:rgb(226, 228, 231);
+}
+.theme-light .history-tab-item {
+    background-color:#f7f7f7;
+    color:#777;
+}
+.theme-light .history-tab-item.active {
+    background-color:#fff;
+    border-color:#ccc;
+    color:#222;
+}
+.theme-light .history-tab-close,
+.theme-light .history-tab-new,
+.theme-light .history-tab-import {
+    color:#444;
+}
+
+@media (max-width: 720px) {
+    .theme-selector {
+        display:none;
+    }
+    .header .logo {
+        padding:0 6px;
+    }
+    .header .logo span {
+        display:none;
+    }
+    .header .logo img {
+        margin-right:0;
+    }
+    .nav {
+        width:90px;
+    }
 }

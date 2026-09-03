@@ -56,7 +56,7 @@ App.module.extend('form', function() {
         Model.set('requestFormTypeTmp', 'form-data').watch('requestFormTypeTmp', this.change_form);
         // 整个请求数据对象，包括url，request type, params等
         // Model.set('urlParams', Model.default.urlParams).watch('urlParams', this.show_url_params);
-        Model.set('requestHeaders', Model.default.request_headers);
+        Model.set('requestHeaders', Model.default.requestHeaders);
         Model.set('authentication', Model.default.authentication);
         Model.set('requestData', Model.default.request_data).watch('requestData', this.renderForm);
         // 请求参数,三种类型分别存储
@@ -67,6 +67,94 @@ App.module.extend('form', function() {
         Model.set('sending', Model.default.sending).watch('sending', this.renderSending);
         // 渲染页面
         this.view.display('form', 'layout', {}, '.form-container');
+        this.module.history.restoreTabs();
+    };
+
+    this.get_empty_request = function() {
+        return {
+            name: '',
+            host: '',
+            url: '',
+            type: 'GET',
+            group_id: 0,
+            data_type: 'form-data',
+            request_headers: {},
+            authentication: {type: '', data: {}},
+            headersLineType: '',
+            params: {},
+            data: {},
+            status: 0,
+            time: 0,
+            response_content_type: '',
+            headers: '',
+            result: '',
+            assertion_data: ''
+        };
+    };
+
+    this.capture_request = function() {
+        let requestData = Model.get('requestData') || this.get_empty_request(),
+            requestFormType = Model.get('requestFormType') || 'form-data',
+            headersLineType = $.trim($('.form-request-headers-tab.bg-level-0').text()),
+            bodyData;
+
+        this.get_headers_params();
+        if (requestFormType === 'raw') {
+            bodyData = {
+                content_type: $('#raw-content-type').val() || 'text/plain',
+                data: $('#form-data-raw-textarea').val() || ''
+            };
+            Model.set('requestData_raw', bodyData);
+        } else {
+            this.get_params();
+            bodyData = Model.get('requestData_' + requestFormType) || {};
+        }
+
+        return {
+            requestData: {
+                name: $.trim($('#api-name').val()),
+                host: requestData['host'] || '',
+                url: $.trim($('#request-url').val()),
+                type: $('#request-type').val() || 'GET',
+                group_id: requestData['group_id'] || 0,
+                data_type: requestFormType,
+                request_headers: Model.get('requestHeaders') || {},
+                authentication: Model.get('authentication') || {type: '', data: {}},
+                headersLineType: headersLineType || requestData['headersLineType'] || '',
+                params: {},
+                data: bodyData,
+                status: 0,
+                time: 0,
+                response_content_type: '',
+                headers: '',
+                result: '',
+                assertion_data: requestData['assertion_data'] || ''
+            },
+            responseData: Model.get('responseData') || ''
+        };
+    };
+
+    this.load_request = function(requestData, responseData) {
+        requestData = requestData || this.get_empty_request();
+        let requestFormType = requestData['data_type'] || 'form-data',
+            requestHeaders = requestData['request_headers'] || {},
+            authentication = requestData['authentication'] || {type: '', data: {}};
+
+        requestData['data_type'] = requestFormType;
+        requestData['data'] = requestData['data'] || {};
+        requestData['request_headers'] = requestHeaders;
+        requestData['authentication'] = authentication;
+
+        Model.set('requestData_form-data', {});
+        Model.set('requestData_form-data-true', {});
+        Model.set('requestData_raw', '');
+        Model.set('requestData_' + requestFormType, requestData['data'] || {});
+        Model.set('requestHeaders', requestHeaders);
+        Model.set('authentication', authentication);
+        Model.set('requestFormType', requestFormType);
+        Model.set('requestFormTypeTmp', requestFormType);
+        Model.set('requestData', requestData);
+        Model.set('responseData', responseData || '');
     };
 
     /**
@@ -77,7 +165,7 @@ App.module.extend('form', function() {
         // 处理headers的显示，即有数据时，默认打开headers表单
         let request_headers = requestData['request_headers'];
         if (request_headers && Object.keys(request_headers).length > 0) {
-            requestData['headers_line_type'] = 'Headers';
+            requestData['headersLineType'] = requestData['headersLineType'] || 'Headers';
         }
         // 分析url参数
         let url = requestData.url;
@@ -414,4 +502,3 @@ App.module.extend('form', function() {
     };
 
 });
-

@@ -21,8 +21,15 @@ App.module.extend('response', function() {
         let requestData = Model.get('requestData'),
             responseData = Model.get('responseData'),
             showResponseDataType = Model.get('showResponseDataType'),
-            contentType = responseData['responseContentType'],
-            renderData = {
+            contentType;
+
+        if (!responseData) {
+            self.view.display('response', 'empty', {}, '.response-container');
+            return;
+        }
+
+        contentType = responseData['responseContentType'];
+        let renderData = {
                 headers: responseData['headers'],
                 response: responseData['response'],
                 responseContentType: responseData['responseContentType'],
@@ -105,11 +112,44 @@ App.module.extend('response', function() {
 
         let result = [];
 
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatPrimitive(value) {
+            let classValue = 'code-number',
+                serialized;
+            if (typeof value === 'string') {
+                classValue = 'code-string';
+            } else if (typeof value === 'boolean') {
+                classValue = 'code-boolean';
+            } else if (value === null) {
+                classValue = 'code-null';
+            }
+
+            serialized = JSON.stringify(value);
+            if (serialized === undefined) {
+                serialized = String(value);
+            }
+            return '<span class="code-value ' + classValue + '">' +
+                escapeHtml(serialized) + '</span>';
+        }
+
         function iteration(data, isStart) {
             let dataType = Object.prototype.toString.call(data),
                 isArray = false,
                 symbolStart = '',
                 symbolEnd = '';
+
+            if (dataType !== '[object Object]' && dataType !== '[object Array]') {
+                result.push('<div class="row-root">' + formatPrimitive(data) + '</div>');
+                return;
+            }
             if (dataType === '[object Object]') {
                 symbolStart = '{';
                 symbolEnd = '}';
@@ -131,7 +171,8 @@ App.module.extend('response', function() {
                     let dataType = Object.prototype.toString.call(data[i]),
                         symbolStart = '',
                         symbolEnd = '',
-                        key = isArray ? '' : '<span class="code-key">'+ i +': </span>';
+                        key = isArray ? '' : '<span class="code-key">' +
+                            escapeHtml(JSON.stringify(i)) + ': </span>';
 
                     if (dataType === '[object Object]') {
                         symbolStart = '{';
@@ -158,15 +199,8 @@ App.module.extend('response', function() {
                             result.push(symbolEnd + '</span></div>');
                         }
                     } else {
-                        let classValue = 'code-number',
-                            value = data[i];
-                        if (typeof data[i] === 'string') {
-                            classValue = 'code-string';
-                            value = '"'+ value + '"';
-                            value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        }
                         result.push('<div class="child row-node">'+ key +
-                            '<span class="code-value '+ classValue +'">'+ value +'</span></div>');
+                            formatPrimitive(data[i]) + '</div>');
                     }
                 }
             }

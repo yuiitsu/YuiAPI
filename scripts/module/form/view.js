@@ -15,12 +15,19 @@ App.view.extend('form', function() {
                 <input type="text" 
                     class="input-text form-name bg-level-3 border-level-0 display-flex-auto" 
                     placeholder="API Name" value="{{ name }}" id="api-name" />
+                <button type="button" class="btn btn-default form-curl-export-button" id="curl-export-button"
+                    title="Export cURL">
+                    <i class="mdi mdi-export"></i> export
+                </button>
             </div>
 
             <div class="form-url-line display-flex-row">
                 <div class="form-request-type">
-                    {{ var requestTypeList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'] }}
+                    {{ var requestTypeList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'] }}
                     <select id="request-type" class="bg-level-3 border-level-0">
+                        {{ if data['type'] && requestTypeList.indexOf(data['type']) === -1 }}
+                        <option value="{{ data['type'] }}" selected="selected">{{ data['type'] }}</option>
+                        {{ end }}
                         {{ for var i in requestTypeList }}
                         {{ var selected = requestTypeList[i] === data['type'] ? 'selected="selected"' : '' }}
                         <option value="{{ requestTypeList[i] }}" {{ selected }}>{{ requestTypeList[i] }}</option>
@@ -77,7 +84,6 @@ App.view.extend('form', function() {
                 <nav class="display-flex-auto">
                     <span class="bg-level-0"><strong>Body</strong></span>
                 </nav>
-                <div class="cursor-pointer" id="curl-button">cURL</div>
             </div>
             <div class="form-request-data-type-container display-flex-row border-top-level-1">
                 <div class="display-flex-auto">
@@ -457,6 +463,9 @@ App.view.extend('form', function() {
                 {{ var raw_content_type_list = [{'k': 'text/plain', 'v': 'Text(text/plain)'}, {'k': 'application/json', 'v': 'JSON(application/json)'}, {'k': 'application/xml', 'v': 'XML(application/xml)'}, {'k': 'text/html', 'v': 'HTML(text/html)'}] }}
                 <select id="raw-content-type" class="bg-level-3 border-level-0">
                     {{ var content_type = data ? data['content_type'] : '' }}
+                    {{ if content_type && ['text/plain', 'application/json', 'application/xml', 'text/html'].indexOf(content_type) === -1 }}
+                        <option value="{{ content_type }}" selected="selected">{{ content_type }}</option>
+                    {{ end }}
                     {{ for var i in raw_content_type_list }}
                     {{ var item = raw_content_type_list[i] }}
                     {{ var selected = item['k'] === content_type ? 'selected="selected"' : '' }}

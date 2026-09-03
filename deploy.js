@@ -24,6 +24,7 @@ let excludes = {
         '.git',
         '.idea',
         'node_modules',
+        'tests',
         'dist'
     ],
     'mini': [

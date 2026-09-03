@@ -57,6 +57,15 @@ App.event.extend('form', function() {
                         },
                         is_form_data = true;
 
+                    let hasHeader = function(headers, name) {
+                        for (let key in headers) {
+                            if (headers.hasOwnProperty(key) && key.toLowerCase() === name.toLowerCase()) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    };
+
                     //
                     if (header_data && Object.keys(header_data).length > 0) {
                         for (let i in header_data) {
@@ -74,9 +83,9 @@ App.event.extend('form', function() {
                             break;
                         case "form-data":
                             formData = self.module.common.getFormParams().form();
-                            //if (!request_params['headers'].hasOwnProperty('content-type')) {
+                            if (!hasHeader(request_params['headers'], 'content-type')) {
                                 request_params['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
-                            //}
+                            }
                             is_form_data = false;
                             break;
                         case "raw":
@@ -87,7 +96,7 @@ App.event.extend('form', function() {
                                 'content_type': content_type,
                                 'data': formData['data']
                             };
-                            if (!request_params['headers'].hasOwnProperty('content-type')) {
+                            if (!hasHeader(request_params['headers'], 'content-type')) {
                                 request_params.headers['Content-Type'] = content_type;
                             }
                             break;
@@ -412,9 +421,9 @@ App.event.extend('form', function() {
             });
         },
 
-        show_curl: function() {
-            $('.form-container').on('click', '#curl-button', function(e) {
-                self.module['tools.curl'].show();
+        export_curl: function() {
+            $('.form-container').on('click', '#curl-export-button', function(e) {
+                self.module['tools.curl'].showExport();
                 e.stopPropagation();
             });
         },

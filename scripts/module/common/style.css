@@ -49,6 +49,7 @@
 .notification{color:#fff;height:30px;line-height:30px;padding:0 10px;border-radius: 3px;}
 .notification-warring{background-color:#FFAA33;}
 .notification-warring i{color:#ff0000;}
+.bg-warring{background-color:#FFAA33;}
 
 /* dialog */
 .dialog{position: relative;left:0;top:0;}

@@ -2,11 +2,30 @@
     padding: 10px;
 }
 .form-header {
-
+    align-items: center;
 }
 .form-name {
     padding: 3px 10px;
     border-radius: 25px;
+}
+.form-curl-export-button {
+    align-items: center;
+    display: flex;
+    flex: 0 0 80px;
+    gap: 5px;
+    justify-content: center;
+    margin-left: 6px;
+    width: 80px;
+}
+.curl-dialog-box textarea {
+    display: block;
+    height: 280px;
+    padding: 10px;
+    width: 100%;
+}
+.curl-import-error {
+    min-height: 30px;
+    padding: 7px 0;
 }
 .form-host-selector {
     font-size: 24px;

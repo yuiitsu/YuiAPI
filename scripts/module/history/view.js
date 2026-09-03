@@ -184,14 +184,30 @@ App.view.extend('history', function() {
      */
     this.history_tab = function() {
         return `
-            {{ for var i in data }}
-            {{ var focus = data[i]['focus'] === 1 ? 'focus' : '' }}
-            <div class="history-tab-item display-flex-auto {{ focus }}" data-hash="{{ data[i]['hash'] }}" title="{{ data[i]['url'] }}">
-                <em></em>
-                {{ data[i]['name'] }} {{ data[i]['url'] }}
-                <span data-hash="{{ data[i]['hash'] }}"><i class="mdi mdi-close"></i></span>
+            <div class="history-tabbar display-flex-row">
+                <div class="history-tab-list display-flex-auto display-flex-row">
+                    {{ for var i in data['list'] }}
+                    {{ var tab = data['list'][i] }}
+                    {{ var active = tab['key'] === data['activeKey'] ? 'active' : '' }}
+                    {{ var label = tab['name'] ? tab['name'] : (tab['url'] ? tab['url'] : 'New Request') }}
+                    {{ var title = tab['url'] ? tab['url'] : label }}
+                    <div class="history-tab-item display-flex-row {{ active }}" data-key="{{ tab['key'] }}"
+                        title="{{ title }}">
+                        <span class="history-tab-method">{{ tab['type'] }}</span>
+                        <span class="history-tab-label display-flex-auto">{{ label }}</span>
+                        <button type="button" class="history-tab-close" data-key="{{ tab['key'] }}" title="Close tab">
+                            <i class="mdi mdi-close"></i>
+                        </button>
+                    </div>
+                    {{ end }}
+                </div>
+                <button type="button" class="history-tab-new" title="New request">
+                    <i class="mdi mdi-plus"></i>
+                </button>
+                <button type="button" class="history-tab-import" title="Import cURL">
+                    <i class="mdi mdi-import"></i><span>import</span>
+                </button>
             </div>
-            {{ end }}
         `;
     }
 });

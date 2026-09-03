@@ -105,6 +105,22 @@ App.event.extend('history', function() {
             });
         },
 
+        historyTabs: function() {
+            $('#tabbar').on('click', '.history-tab-item', function(e) {
+                self.module.history.activateTab($(this).attr('data-key'));
+                e.stopPropagation();
+            }).on('click', '.history-tab-close', function(e) {
+                self.module.history.closeTab($(this).attr('data-key'));
+                e.stopPropagation();
+            }).on('click', '.history-tab-new', function(e) {
+                self.module.history.newTab();
+                e.stopPropagation();
+            }).on('click', '.history-tab-import', function(e) {
+                self.module['tools.curl'].showImport();
+                e.stopPropagation();
+            });
+        },
+
         /**
          * 拖拽
          */
